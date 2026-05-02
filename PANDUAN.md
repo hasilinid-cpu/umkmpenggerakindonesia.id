@@ -1,193 +1,82 @@
-# 🚀 Panduan Deploy UMKM Penggerak Indonesia
-**Frontend → Vercel | Backend/Database → Supabase**
+# 🚀 Panduan Lengkap UMKM Penggerak Indonesia
+**Frontend → Vercel | Backend/Database → Supabase | CMS → admin.html**
 
 ---
 
 ## DAFTAR ISI
-1. [Setup Supabase (Database)](#1-setup-supabase)
-2. [Konfigurasi Website](#2-konfigurasi-website)
-3. [Deploy ke Vercel](#3-deploy-ke-vercel)
-4. [Cek Data Pendaftar](#4-cek-data)
-5. [Troubleshooting](#5-troubleshooting)
+1. Setup Database Baru (Schema v2)
+2. Cara Pakai Admin Panel CMS
+3. Update & Deploy ke Vercel
+4. Troubleshooting
 
 ---
 
-## 1. Setup Supabase (Database) {#1-setup-supabase}
+## 1. Setup Database Baru (Schema v2)
 
-### A. Buat Akun & Project Supabase
-1. Buka **https://supabase.com** → klik **Start your project**
-2. Login dengan akun GitHub (gratis)
-3. Klik **New Project**
-4. Isi:
-   - **Organization**: pilih atau buat baru
-   - **Name**: `umkm-penggerak`
-   - **Database Password**: buat password yang kuat (simpan!)
-   - **Region**: pilih **Southeast Asia (Singapore)**
-5. Klik **Create new project** → tunggu ~2 menit
+> Jalankan ini SEKALI di Supabase SQL Editor untuk membuat semua tabel baru.
 
-### B. Buat Tabel `pendaftar`
-1. Di dashboard Supabase, klik menu **SQL Editor** (ikon database di sidebar kiri)
-2. Klik **New query**, tempel SQL berikut, lalu klik **Run**:
+1. Buka https://supabase.com → project Anda
+2. Klik SQL Editor → New query
+3. Copy seluruh isi file schema.sql → paste → klik Run
+4. Pastikan muncul "Success"
 
-```sql
--- Buat tabel pendaftar
-CREATE TABLE pendaftar (
-  id          UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  nama        TEXT NOT NULL,
-  whatsapp    TEXT NOT NULL,
-  email       TEXT NOT NULL,
-  jenis_usaha TEXT,
-  kota        TEXT,
-  created_at  TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Aktifkan Row Level Security
-ALTER TABLE pendaftar ENABLE ROW LEVEL SECURITY;
-
--- Izinkan siapa saja INSERT (pendaftaran publik)
-CREATE POLICY "Allow public insert"
-  ON pendaftar FOR INSERT
-  WITH CHECK (true);
-
--- Hanya admin (authenticated) yang bisa SELECT
-CREATE POLICY "Allow admin select"
-  ON pendaftar FOR SELECT
-  USING (auth.role() = 'authenticated');
-```
-
-3. Pastikan muncul pesan **"Success. No rows returned"**
-
-### C. Ambil API Keys
-1. Klik menu **Project Settings** (ikon gear) → **API**
-2. Catat dua nilai ini:
-   - **Project URL** → contoh: `https://abcdefghij.supabase.co`
-   - **anon / public key** → string panjang dimulai `eyJ...`
+Tabel yang dibuat:
+- programs      → data program/kelas pelatihan
+- mentors       → data mentor
+- testimonials  → data testimoni
+- site_settings → pengaturan teks hero, statistik, dll
+- pendaftar     → data pendaftar
 
 ---
 
-## 2. Konfigurasi Website {#2-konfigurasi-website}
+## 2. Cara Pakai Admin Panel CMS
 
-Buka file **`index.html`**, cari baris ini (sekitar baris 560):
+Buka Admin Panel:
+→ https://domain-anda.vercel.app/admin.html
 
-```javascript
-const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-```
+Buat Akun Admin di Supabase:
+1. Supabase → Authentication → Users
+2. Klik Add user → masukkan email & password
+3. Gunakan email & password ini untuk login di admin.html
 
-Ganti dengan nilai yang Anda catat tadi:
-
-```javascript
-const SUPABASE_URL = 'https://abcdefghij.supabase.co';   // ← ganti ini
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6...'; // ← dan ini
-```
-
-**Simpan file.**
-
-> 💡 **Tips keamanan**: `anon key` aman dipakai di frontend karena sudah dibatasi oleh Row Level Security (RLS) yang kita buat di langkah sebelumnya.
+Fitur Admin Panel:
+- Dashboard   : statistik jumlah data
+- Program     : tambah/edit/hapus program pelatihan
+- Mentor      : tambah/edit/hapus data mentor
+- Testimoni   : tambah/edit/hapus + set featured
+- Pengaturan  : edit teks hero, statistik, WhatsApp admin
+- Pendaftar   : lihat semua pendaftar + export CSV
 
 ---
 
-## 3. Deploy ke Vercel {#3-deploy-ke-vercel}
+## 3. Deploy ke Vercel
 
-### Metode A: Drag & Drop (Paling Mudah — 2 Menit)
-1. Buka **https://vercel.com** → Login / Sign Up (gratis)
-2. Di dashboard Vercel, klik tombol **Add New → Project**
-3. Pilih tab **"Or upload files"** (di bagian bawah halaman)
-4. **Drag & drop** seluruh folder `umkm-penggerak` ke area upload
-5. Vercel otomatis mendeteksi sebagai static site
-6. Klik **Deploy**
-7. Tunggu ~30 detik → website Anda **LIVE!** 🎉
+Jika sudah connect GitHub ke Vercel:
+→ Setiap push ke GitHub OTOMATIS deploy. Tidak perlu langkah tambahan.
 
-URL otomatis: `https://umkm-penggerak-xxx.vercel.app`
-
----
-
-### Metode B: Via GitHub (Rekomendasi untuk Update Mudah)
-
-**Langkah 1 — Upload ke GitHub:**
-1. Buka **https://github.com** → Login → klik **New repository**
-2. Nama repo: `umkm-penggerak` → centang **Public** → klik **Create**
-3. Di halaman repo baru, klik **uploading an existing file**
-4. Upload file `index.html` dan `vercel.json`
-5. Klik **Commit changes**
-
-**Langkah 2 — Connect ke Vercel:**
-1. Buka **https://vercel.com** → **Add New → Project**
-2. Klik **Import Git Repository** → pilih repo `umkm-penggerak`
-3. Biarkan semua setting default → klik **Deploy**
-4. Selesai! Setiap push ke GitHub akan **auto-deploy** otomatis ✅
-
-**Langkah 3 — Custom Domain (Opsional):**
-1. Di Vercel dashboard → pilih project → menu **Settings → Domains**
-2. Tambahkan domain Anda, misal: `umkmpenggera.id`
-3. Ikuti instruksi untuk update DNS di domain registrar Anda
+File yang harus ada di GitHub:
+  index.html   - Website utama
+  admin.html   - CMS Admin Panel
+  schema.sql   - SQL setup database
+  vercel.json  - Konfigurasi Vercel
+  PANDUAN.md   - Panduan ini
 
 ---
 
-## 4. Cek Data Pendaftar {#4-cek-data}
+## 4. Troubleshooting
 
-### Lihat di Supabase Dashboard
-1. Buka **https://supabase.com** → project Anda
-2. Klik menu **Table Editor** → pilih tabel **pendaftar**
-3. Semua data pendaftaran akan muncul di sini secara real-time
-
-### Export ke Excel/CSV
-1. Di Table Editor, klik tombol **Export** (pojok kanan atas)
-2. Pilih format **CSV** → download otomatis
-
-### Query Lanjutan (SQL Editor)
-```sql
--- Lihat semua pendaftar terbaru
-SELECT * FROM pendaftar ORDER BY created_at DESC;
-
--- Hitung per jenis usaha
-SELECT jenis_usaha, COUNT(*) as total 
-FROM pendaftar 
-GROUP BY jenis_usaha 
-ORDER BY total DESC;
-
--- Pendaftar minggu ini
-SELECT * FROM pendaftar 
-WHERE created_at >= NOW() - INTERVAL '7 days';
-```
+Program/mentor tidak muncul    → Jalankan schema.sql di Supabase SQL Editor
+Admin tidak bisa login         → Buat user di Supabase → Authentication → Users
+Data edit tidak muncul         → Refresh browser, tunggu ~5 detik
+Failed to fetch di form        → Cek SUPABASE_URL dan ANON_KEY di index.html
+Vercel tidak auto-deploy       → Cek Settings → Git di Vercel dashboard
 
 ---
 
-## 5. Troubleshooting {#5-troubleshooting}
+TIPS:
+- Urutan tampil: atur kolom "urutan" (angka kecil = tampil pertama)
+- Sembunyikan konten: nonaktifkan toggle "aktif"
+- Featured testimoni: aktifkan toggle featured → background merah
+- Export pendaftar: menu Pendaftar → klik Export CSV
 
-| Masalah | Solusi |
-|---------|--------|
-| Form muncul error "Failed to fetch" | Pastikan `SUPABASE_URL` dan `SUPABASE_ANON_KEY` sudah diisi dengan benar |
-| Data tidak masuk ke tabel | Cek di Supabase → SQL Editor → jalankan `SELECT * FROM pendaftar` |
-| Website tidak bisa dibuka | Di Vercel dashboard → cek tab **Deployments** → lihat log error |
-| Form tidak bisa submit | Buka DevTools browser (F12) → tab Console → lihat pesan error |
-| Ingin reset tabel | Di SQL Editor jalankan: `TRUNCATE TABLE pendaftar;` |
-
----
-
-## STRUKTUR FILE
-
-```
-umkm-penggerak/
-├── index.html        ← Website utama (edit konten di sini)
-├── vercel.json       ← Konfigurasi Vercel (jangan diubah)
-└── PANDUAN.md        ← File panduan ini
-```
-
----
-
-## KUSTOMISASI KONTEN
-
-| Yang ingin diubah | Lokasi di index.html |
-|-------------------|----------------------|
-| Nama & logo | Cari teks "UMKM Penggerak" |
-| Warna merah brand | Cari `--red: #E30613` di bagian `:root` |
-| Statistik hero (10K+, 250+, dst) | Cari bagian `hero-stats` |
-| Program pelatihan | Cari komentar `<!-- PROGRAMS -->` |
-| Data mentor | Cari komentar `<!-- MENTORS -->` |
-| Testimoni | Cari komentar `<!-- TESTIMONIALS -->` |
-
----
-
-**© 2025 UMKM Penggerak Indonesia**
-Dibuat dengan ❤️ untuk UMKM Indonesia yang lebih maju.
+© 2025 UMKM Penggerak Indonesia

@@ -4,488 +4,200 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UMKM Penggerak Indonesia — Platform #1 Pemberdayaan UMKM</title>
-  <meta name="description" content="Platform edukasi, pendampingan, dan komunitas terbaik untuk memberdayakan UMKM Indonesia naik kelas.">
+  <meta name="description" content="Platform edukasi & pelatihan terbaik untuk memberdayakan UMKM Indonesia naik kelas.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
-
-  <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
-    :root {
-      --red: #E30613;
-      --red-dark: #B8000F;
-      --red-light: #FFF1F1;
-      --red-mid: #FFD6D8;
-      --black: #0D0D0D;
-      --gray-dark: #1A1A1A;
-      --gray-mid: #4B4B4B;
-      --gray-soft: #767676;
-      --gray-light: #F2F2F0;
-      --white: #FAFAF8;
-      --font-head: 'Fraunces', Georgia, serif;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --radius: 16px;
-      --radius-sm: 10px;
-      --shadow: 0 4px 24px rgba(0,0,0,.08);
-      --shadow-lg: 0 16px 48px rgba(0,0,0,.12);
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-body);
-      background: var(--white);
-      color: var(--black);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── NOISE TEXTURE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 9999; opacity: .4;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px; height: 64px;
-      background: rgba(250,250,248,.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0,0,0,.07);
-    }
-    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo-mark {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: var(--red);
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-weight: 900; font-size: 12px; font-family: var(--font-body);
-      letter-spacing: -.02em;
-    }
-    .logo-name { font-weight: 800; font-size: 14px; color: var(--black); }
-    .logo-sub { font-size: 9px; color: var(--red); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; display: block; }
-    .nav-links { display: flex; gap: 6px; }
-    .nav-links a {
-      font-size: 13px; font-weight: 500; color: var(--gray-mid);
-      text-decoration: none; padding: 6px 12px; border-radius: 8px;
-      transition: color .2s, background .2s;
-    }
-    .nav-links a:hover { color: var(--black); background: var(--gray-light); }
-    .nav-cta { display: flex; gap: 8px; }
-    .btn { font-family: var(--font-body); font-weight: 700; font-size: 13px; border: none; cursor: pointer; border-radius: var(--radius-sm); padding: 9px 18px; transition: all .2s; }
-    .btn-ghost { background: transparent; color: var(--black); border: 1.5px solid rgba(0,0,0,.15); }
-    .btn-ghost:hover { border-color: var(--black); }
-    .btn-red { background: var(--red); color: #fff; }
-    .btn-red:hover { background: var(--red-dark); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(227,6,19,.3); }
-
-    /* ── HERO ── */
-    .hero {
-      display: grid; grid-template-columns: 1fr 1fr;
-      min-height: calc(100vh - 64px);
-      overflow: hidden;
-    }
-    .hero-left {
-      padding: 64px 48px 64px 48px;
-      display: flex; flex-direction: column; justify-content: center;
-      position: relative;
-    }
-    .hero-left::before {
-      content: '';
-      position: absolute; bottom: -60px; left: -60px;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(227,6,19,.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: var(--red-light); border: 1px solid var(--red-mid);
-      border-radius: 99px; padding: 6px 14px;
-      font-size: 11px; font-weight: 700; color: var(--red);
-      letter-spacing: .07em; text-transform: uppercase;
-      margin-bottom: 24px; width: fit-content;
-    }
-    .badge-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--red);
-      animation: pulse 1.8s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.85)} }
-    .hero h1 {
-      font-family: var(--font-head);
-      font-size: clamp(44px, 5vw, 72px);
-      font-weight: 900; line-height: 1.0;
-      color: var(--black);
-      margin-bottom: 20px;
-      letter-spacing: -.02em;
-    }
-    .hero h1 em { color: var(--red); font-style: italic; }
-    .hero-desc {
-      font-size: 15px; line-height: 1.7;
-      color: var(--gray-soft); max-width: 420px;
-      margin-bottom: 32px;
-    }
-    .hero-btns { display: flex; gap: 12px; margin-bottom: 40px; }
-    .btn-lg { padding: 14px 28px; font-size: 14px; border-radius: 12px; }
-    .btn-hero-red {
-      background: var(--red); color: #fff; border: none;
-      font-family: var(--font-body); font-weight: 700; font-size: 14px;
-      padding: 14px 28px; border-radius: 12px; cursor: pointer;
-      display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 8px 24px rgba(227,6,19,.3);
-      transition: all .25s;
-    }
-    .btn-hero-red:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(227,6,19,.4); }
-    .btn-hero-outline {
-      background: transparent; color: var(--black);
-      border: 2px solid rgba(0,0,0,.15);
-      font-family: var(--font-body); font-weight: 600; font-size: 14px;
-      padding: 14px 24px; border-radius: 12px; cursor: pointer;
-      transition: all .25s;
-    }
-    .btn-hero-outline:hover { border-color: var(--black); }
-    .hero-stats {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 16px; padding-top: 32px;
-      border-top: 1px solid rgba(0,0,0,.08);
-    }
-    .stat-val {
-      font-family: var(--font-head);
-      font-size: 26px; font-weight: 900; color: var(--red);
-      line-height: 1;
-    }
-    .stat-lbl { font-size: 11px; color: var(--gray-soft); margin-top: 4px; }
-
-    .hero-right {
-      background: var(--black);
-      position: relative; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .hero-right::before {
-      content: '';
-      position: absolute; top: -120px; right: -120px;
-      width: 400px; height: 400px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(227,6,19,.3) 0%, transparent 70%);
-    }
-    .hero-right::after {
-      content: '';
-      position: absolute; bottom: -80px; left: -80px;
-      width: 280px; height: 280px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(227,6,19,.15) 0%, transparent 70%);
-    }
-    .hero-visual-wrap { position: relative; z-index: 2; }
-    .hero-card {
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 24px; padding: 28px;
-      text-align: center; width: 260px;
-      backdrop-filter: blur(8px);
-    }
-    .hero-card-icon { font-size: 56px; display: block; margin-bottom: 14px; }
-    .hero-card p { color: rgba(255,255,255,.6); font-size: 12px; font-weight: 500; }
-    .float-card {
-      position: absolute; right: -20px; top: -24px;
-      background: #fff; border-radius: 16px; padding: 14px 16px;
-      box-shadow: 0 12px 32px rgba(0,0,0,.2);
-      width: 170px; animation: float 4s ease-in-out infinite;
-    }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-    .float-card .fc-title { font-size: 11px; font-weight: 700; color: var(--black); margin-bottom: 4px; }
-    .float-card .fc-body { font-size: 10px; color: var(--gray-soft); line-height: 1.5; }
-    .float-badge {
-      position: absolute; left: -24px; bottom: -16px;
-      background: var(--red); border-radius: 14px; padding: 10px 14px;
-      animation: float 4s ease-in-out infinite .8s;
-    }
-    .float-badge .fb-val { font-family: var(--font-head); font-size: 20px; font-weight: 900; color: #fff; }
-    .float-badge .fb-lbl { font-size: 9px; color: rgba(255,255,255,.7); }
-
-    /* ── TRUST BAR ── */
-    .trust-bar {
-      background: var(--gray-light);
-      padding: 18px 48px;
-      display: flex; align-items: center; gap: 48px;
-      border-bottom: 1px solid rgba(0,0,0,.06);
-      overflow: hidden;
-    }
-    .trust-label { font-size: 11px; font-weight: 700; color: var(--gray-soft); white-space: nowrap; text-transform: uppercase; letter-spacing: .1em; }
-    .trust-logos { display: flex; gap: 32px; align-items: center; flex: 1; }
-    .trust-item { font-size: 13px; font-weight: 700; color: rgba(0,0,0,.25); white-space: nowrap; }
-
-    /* ── SECTIONS ── */
-    section { padding: 80px 48px; }
-    .section-tag {
-      display: flex; align-items: center; gap: 8px;
-      margin-bottom: 12px;
-    }
-    .tag-bar { width: 28px; height: 3px; background: var(--red); border-radius: 2px; }
-    .tag-txt { font-size: 10px; font-weight: 800; color: var(--red); letter-spacing: .15em; text-transform: uppercase; }
-    h2.section-title {
-      font-family: var(--font-head);
-      font-size: clamp(28px, 3.5vw, 42px);
-      font-weight: 900; color: var(--black);
-      line-height: 1.1; letter-spacing: -.02em;
-    }
-    h2.section-title em { color: var(--red); font-style: italic; }
-    .section-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
-    .link-all { font-size: 13px; font-weight: 700; color: var(--red); text-decoration: none; display: flex; align-items: center; gap: 4px; }
-    .link-all:hover { text-decoration: underline; }
-
-    /* ── PROGRAMS GRID ── */
-    .programs-section { background: var(--gray-light); }
-    .programs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .prog-card {
-      background: var(--white); border-radius: var(--radius);
-      border: 1px solid rgba(0,0,0,.06);
-      overflow: hidden; cursor: pointer;
-      transition: transform .25s, box-shadow .25s;
-    }
-    .prog-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-    .prog-thumb {
-      height: 110px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 40px; position: relative;
-    }
-    .prog-cat {
-      position: absolute; top: 10px; left: 10px;
-      font-size: 9px; font-weight: 800; color: #fff;
-      padding: 4px 9px; border-radius: 99px;
-      text-transform: uppercase; letter-spacing: .07em;
-    }
-    .prog-body { padding: 16px; }
-    .prog-title { font-size: 13px; font-weight: 700; color: var(--black); line-height: 1.4; margin-bottom: 10px; }
-    .prog-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .prog-mentor { font-size: 11px; color: var(--gray-soft); display: flex; align-items: center; gap: 5px; }
-    .mentor-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--red); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-    .badge-free { background: #ECFDF5; color: #065F46; font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
-    .badge-premium { background: #FFFBEB; color: #92400E; font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
-    .prog-btn {
-      width: 100%; background: var(--red); color: #fff; border: none;
-      border-radius: 9px; padding: 9px; font-size: 11px;
-      font-weight: 700; font-family: var(--font-body); cursor: pointer;
-      transition: background .2s;
-    }
-    .prog-btn:hover { background: var(--red-dark); }
-
-    /* ── HOW IT WORKS ── */
-    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .how-card {
-      padding: 28px; border-radius: var(--radius);
-      border: 1px solid rgba(0,0,0,.07);
-      position: relative; overflow: hidden;
-      transition: box-shadow .25s;
-    }
-    .how-card:hover { box-shadow: var(--shadow); }
-    .how-num {
-      position: absolute; top: -8px; right: 16px;
-      font-family: var(--font-head); font-size: 88px;
-      font-weight: 900; color: rgba(0,0,0,.04);
-      line-height: 1; pointer-events: none;
-    }
-    .how-icon { font-size: 32px; margin-bottom: 14px; display: block; }
-    .how-title { font-size: 15px; font-weight: 800; color: var(--black); margin-bottom: 8px; }
-    .how-desc { font-size: 13px; color: var(--gray-soft); line-height: 1.6; }
-
-    /* ── MENTORS ── */
-    .mentors-section { background: var(--black); }
-    .mentors-section .section-tag .tag-txt { color: var(--red); }
-    .mentors-section h2.section-title { color: #fff; }
-    .mentors-section .link-all { color: rgba(255,255,255,.4); }
-    .mentors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-    .mentor-card {
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: var(--radius); padding: 22px 16px; text-align: center;
-      transition: background .25s, transform .25s;
-    }
-    .mentor-card:hover { background: rgba(255,255,255,.09); transform: translateY(-3px); }
-    .m-avatar-wrap { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
-    .m-spec { font-size: 9px; font-weight: 800; color: var(--red); background: rgba(227,6,19,.15); padding: 3px 9px; border-radius: 99px; display: inline-block; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
-    .m-name { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 3px; }
-    .m-role { font-size: 11px; color: rgba(255,255,255,.4); margin-bottom: 12px; }
-    .m-stats-row { display: flex; justify-content: center; gap: 16px; padding: 10px 0; border-top: 1px solid rgba(255,255,255,.08); border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 12px; }
-    .m-stat-v { font-size: 13px; font-weight: 800; color: #fff; }
-    .m-stat-l { font-size: 9px; color: rgba(255,255,255,.4); }
-    .m-btn { width: 100%; background: transparent; border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 7px; font-size: 11px; color: rgba(255,255,255,.5); cursor: pointer; font-family: var(--font-body); transition: border-color .2s, color .2s; }
-    .m-btn:hover { border-color: rgba(255,255,255,.4); color: #fff; }
-
-    /* ── REGISTER SECTION (Supabase) ── */
-    .register-section {
-      background: var(--red);
-      position: relative; overflow: hidden;
-    }
-    .register-section::before {
-      content: '';
-      position: absolute; top: -100px; right: -100px;
-      width: 400px; height: 400px; border-radius: 50%;
-      background: rgba(255,255,255,.08); pointer-events: none;
-    }
-    .register-section::after {
-      content: '';
-      position: absolute; bottom: -80px; left: 20%;
-      width: 300px; height: 300px; border-radius: 50%;
-      background: rgba(0,0,0,.08); pointer-events: none;
-    }
-    .register-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; position: relative; z-index: 1; }
-    .reg-left .rtag { font-size: 10px; font-weight: 800; color: rgba(255,255,255,.6); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
-    .reg-left h2 {
-      font-family: var(--font-head);
-      font-size: clamp(28px, 3.5vw, 46px);
-      font-weight: 900; color: #fff;
-      line-height: 1.05; letter-spacing: -.02em;
-      margin-bottom: 16px;
-    }
-    .reg-left p { font-size: 14px; color: rgba(255,255,255,.75); line-height: 1.6; margin-bottom: 24px; }
-    .benefits { list-style: none; }
-    .benefits li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff; margin-bottom: 10px; }
-    .check-icon { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
-
-    /* ── FORM ── */
-    .reg-form-wrap {
-      background: #fff; border-radius: 20px;
-      padding: 32px; box-shadow: 0 24px 64px rgba(0,0,0,.2);
-    }
-    .form-title { font-size: 18px; font-weight: 800; color: var(--black); margin-bottom: 4px; }
-    .form-sub { font-size: 13px; color: var(--gray-soft); margin-bottom: 22px; }
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--black); margin-bottom: 5px; }
-    .form-group input, .form-group select {
-      width: 100%; padding: 11px 14px;
-      border: 1.5px solid rgba(0,0,0,.12);
-      border-radius: 9px; font-family: var(--font-body);
-      font-size: 13px; color: var(--black);
-      background: var(--white);
-      transition: border-color .2s;
-      outline: none;
-    }
-    .form-group input:focus, .form-group select:focus { border-color: var(--red); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .form-submit {
-      width: 100%; background: var(--red); color: #fff;
-      border: none; border-radius: 10px; padding: 13px;
-      font-size: 14px; font-weight: 700; font-family: var(--font-body);
-      cursor: pointer; transition: all .25s; margin-top: 4px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .form-submit:hover { background: var(--red-dark); transform: translateY(-1px); }
-    .form-submit:disabled { opacity: .7; cursor: not-allowed; transform: none; }
-    .form-note { font-size: 11px; color: var(--gray-soft); text-align: center; margin-top: 12px; }
-    .form-success {
-      display: none; text-align: center; padding: 20px 0;
-    }
-    .form-success .success-icon { font-size: 48px; display: block; margin-bottom: 12px; }
-    .form-success h3 { font-size: 18px; font-weight: 800; color: var(--black); margin-bottom: 6px; }
-    .form-success p { font-size: 13px; color: var(--gray-soft); }
-    .form-error { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
-
-    /* ── TESTIMONIALS ── */
-    .testimonials-section { background: var(--white); }
-    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .testi-card {
-      background: var(--white); border: 1px solid rgba(0,0,0,.08);
-      border-radius: var(--radius); padding: 24px;
-      transition: box-shadow .25s;
-    }
-    .testi-card:hover { box-shadow: var(--shadow); }
-    .testi-card:first-child { background: var(--red); border-color: var(--red); }
-    .testi-card:first-child .testi-text { color: rgba(255,255,255,.9); }
-    .testi-card:first-child .testi-name { color: #fff; }
-    .testi-card:first-child .testi-role { color: rgba(255,255,255,.6); }
-    .testi-card:first-child .quote { color: rgba(255,255,255,.3); }
-    .testi-stars { color: #F5A623; font-size: 12px; margin-bottom: 14px; }
-    .testi-text { font-size: 13px; line-height: 1.7; color: var(--gray-mid); margin-bottom: 18px; }
-    .testi-author { display: flex; align-items: center; gap: 10px; }
-    .testi-ava { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-    .testi-name { font-size: 13px; font-weight: 700; color: var(--black); }
-    .testi-role { font-size: 11px; color: var(--gray-soft); }
-
-    /* ── FOOTER ── */
-    footer { background: var(--black); padding: 56px 48px 24px; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 40px; }
-    .footer-desc { font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.7; margin: 12px 0 18px; max-width: 240px; }
-    .soc-links { display: flex; gap: 8px; }
-    .soc-btn {
-      width: 34px; height: 34px; border-radius: 9px;
-      background: rgba(255,255,255,.08);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; border: none; cursor: pointer; color: rgba(255,255,255,.6);
-      transition: background .2s, color .2s;
-    }
-    .soc-btn:hover { background: var(--red); color: #fff; }
-    .footer-col h4 { font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; }
-    .footer-col a { display: block; font-size: 12px; color: rgba(255,255,255,.4); text-decoration: none; margin-bottom: 9px; transition: color .2s; }
-    .footer-col a:hover { color: #fff; }
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,.07);
-      padding-top: 20px; display: flex; justify-content: space-between; align-items: center;
-    }
-    .footer-bottom p { font-size: 11px; color: rgba(255,255,255,.3); }
-    .footer-tagline { font-size: 11px; color: rgba(255,255,255,.3); }
-    .footer-tagline span { color: var(--red); font-weight: 700; }
-
-    /* ── TOAST NOTIFICATION ── */
-    #toast {
-      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-      background: var(--black); color: #fff;
-      padding: 14px 20px; border-radius: 12px;
-      font-size: 13px; font-weight: 500;
-      box-shadow: 0 8px 24px rgba(0,0,0,.25);
-      transform: translateY(80px); opacity: 0;
-      transition: all .3s; pointer-events: none;
-      display: flex; align-items: center; gap: 10px;
-    }
-    #toast.show { transform: translateY(0); opacity: 1; }
-    #toast.success { background: #065F46; }
-    #toast.error { background: #991B1B; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { padding: 0 20px; }
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
-      .hero-left { padding: 48px 24px; }
-      section { padding: 48px 24px; }
-      .programs-grid, .mentors-grid, .testimonials-grid { grid-template-columns: 1fr 1fr; }
-      .how-grid { grid-template-columns: 1fr; }
-      .register-inner { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .trust-bar { padding: 14px 24px; gap: 24px; }
-    }
-    @media (max-width: 600px) {
-      .programs-grid, .mentors-grid, .testimonials-grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 38px; }
-      .hero-stats { grid-template-columns: repeat(2, 1fr); }
-      .form-row { grid-template-columns: 1fr; }
-    }
+    :root{--red:#E30613;--red-dark:#B8000F;--red-light:#FFF1F1;--red-mid:#FFD6D8;--black:#0D0D0D;--gray-dark:#1A1A1A;--gray-mid:#4B4B4B;--gray-soft:#767676;--gray-light:#F2F2F0;--white:#FAFAF8;--font-head:'Fraunces',Georgia,serif;--font-body:'Plus Jakarta Sans',sans-serif;--radius:16px;--radius-sm:10px;--shadow:0 4px 24px rgba(0,0,0,.08);--shadow-lg:0 16px 48px rgba(0,0,0,.12)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-body);background:var(--white);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(250,250,248,.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.07)}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-mark{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px}
+    .logo-name{font-weight:800;font-size:14px;color:var(--black)}
+    .logo-sub{font-size:9px;color:var(--red);font-weight:700;letter-spacing:.12em;text-transform:uppercase;display:block}
+    .nav-links{display:flex;gap:6px}
+    .nav-links a{font-size:13px;font-weight:500;color:var(--gray-mid);text-decoration:none;padding:6px 12px;border-radius:8px;transition:color .2s,background .2s}
+    .nav-links a:hover{color:var(--black);background:var(--gray-light)}
+    .nav-cta{display:flex;gap:8px}
+    .btn{font-family:var(--font-body);font-weight:700;font-size:13px;border:none;cursor:pointer;border-radius:var(--radius-sm);padding:9px 18px;transition:all .2s}
+    .btn-ghost{background:transparent;color:var(--black);border:1.5px solid rgba(0,0,0,.15)}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-red:hover{background:var(--red-dark);transform:translateY(-1px);box-shadow:0 6px 16px rgba(227,6,19,.3)}
+    /* HERO */
+    .hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px);overflow:hidden}
+    .hero-left{padding:64px 48px;display:flex;flex-direction:column;justify-content:center;position:relative}
+    .hero-left::before{content:'';position:absolute;bottom:-60px;left:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(227,6,19,.08) 0%,transparent 70%);pointer-events:none}
+    .hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--red-light);border:1px solid var(--red-mid);border-radius:99px;padding:6px 14px;font-size:11px;font-weight:700;color:var(--red);letter-spacing:.07em;text-transform:uppercase;margin-bottom:24px;width:fit-content}
+    .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.8s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
+    .hero h1{font-family:var(--font-head);font-size:clamp(44px,5vw,72px);font-weight:900;line-height:1.0;color:var(--black);margin-bottom:20px;letter-spacing:-.02em}
+    .hero h1 em{color:var(--red);font-style:italic}
+    .hero-desc{font-size:15px;line-height:1.7;color:var(--gray-soft);max-width:420px;margin-bottom:32px}
+    .hero-btns{display:flex;gap:12px;margin-bottom:40px}
+    .btn-hero-red{background:var(--red);color:#fff;border:none;font-family:var(--font-body);font-weight:700;font-size:14px;padding:14px 28px;border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(227,6,19,.3);transition:all .25s}
+    .btn-hero-red:hover{background:var(--red-dark);transform:translateY(-2px);box-shadow:0 12px 32px rgba(227,6,19,.4)}
+    .btn-hero-outline{background:transparent;color:var(--black);border:2px solid rgba(0,0,0,.15);font-family:var(--font-body);font-weight:600;font-size:14px;padding:14px 24px;border-radius:12px;cursor:pointer;transition:all .25s}
+    .btn-hero-outline:hover{border-color:var(--black)}
+    .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding-top:32px;border-top:1px solid rgba(0,0,0,.08)}
+    .stat-val{font-family:var(--font-head);font-size:26px;font-weight:900;color:var(--red);line-height:1}
+    .stat-lbl{font-size:11px;color:var(--gray-soft);margin-top:4px}
+    .hero-right{background:var(--black);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .hero-right::before{content:'';position:absolute;top:-120px;right:-120px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(227,6,19,.3) 0%,transparent 70%)}
+    .hero-right::after{content:'';position:absolute;bottom:-80px;left:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(227,6,19,.15) 0%,transparent 70%)}
+    .hero-visual-wrap{position:relative;z-index:2}
+    .hero-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;text-align:center;width:260px;backdrop-filter:blur(8px)}
+    .hero-card-icon{font-size:56px;display:block;margin-bottom:14px}
+    .hero-card p{color:rgba(255,255,255,.6);font-size:12px;font-weight:500}
+    .float-card{position:absolute;right:-20px;top:-24px;background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 12px 32px rgba(0,0,0,.2);width:170px;animation:float 4s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    .float-card .fc-title{font-size:11px;font-weight:700;color:var(--black);margin-bottom:4px}
+    .float-card .fc-body{font-size:10px;color:var(--gray-soft);line-height:1.5}
+    .float-badge{position:absolute;left:-24px;bottom:-16px;background:var(--red);border-radius:14px;padding:10px 14px;animation:float 4s ease-in-out infinite .8s}
+    .float-badge .fb-val{font-family:var(--font-head);font-size:20px;font-weight:900;color:#fff}
+    .float-badge .fb-lbl{font-size:9px;color:rgba(255,255,255,.7)}
+    /* TRUST BAR */
+    .trust-bar{background:var(--gray-light);padding:18px 48px;display:flex;align-items:center;gap:48px;border-bottom:1px solid rgba(0,0,0,.06);overflow:hidden}
+    .trust-label{font-size:11px;font-weight:700;color:var(--gray-soft);white-space:nowrap;text-transform:uppercase;letter-spacing:.1em}
+    .trust-logos{display:flex;gap:32px;align-items:center;flex:1}
+    .trust-item{font-size:13px;font-weight:700;color:rgba(0,0,0,.25);white-space:nowrap}
+    /* SECTIONS */
+    section{padding:80px 48px}
+    .section-tag{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+    .tag-bar{width:28px;height:3px;background:var(--red);border-radius:2px}
+    .tag-txt{font-size:10px;font-weight:800;color:var(--red);letter-spacing:.15em;text-transform:uppercase}
+    h2.section-title{font-family:var(--font-head);font-size:clamp(28px,3.5vw,42px);font-weight:900;color:var(--black);line-height:1.1;letter-spacing:-.02em}
+    h2.section-title em{color:var(--red);font-style:italic}
+    .section-header-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px}
+    .link-all{font-size:13px;font-weight:700;color:var(--red);text-decoration:none}
+    /* PROGRAMS */
+    .programs-section{background:var(--gray-light)}
+    .programs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .prog-card{background:var(--white);border-radius:var(--radius);border:1px solid rgba(0,0,0,.06);overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s}
+    .prog-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .prog-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
+    .prog-cat{position:absolute;top:10px;left:10px;font-size:9px;font-weight:800;color:#fff;padding:4px 9px;border-radius:99px;text-transform:uppercase;letter-spacing:.07em}
+    .prog-body{padding:16px}
+    .prog-title{font-size:13px;font-weight:700;color:var(--black);line-height:1.4;margin-bottom:10px}
+    .prog-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .prog-mentor{font-size:11px;color:var(--gray-soft);display:flex;align-items:center;gap:5px}
+    .mentor-dot{width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .badge-free{background:#ECFDF5;color:#065F46;font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px}
+    .badge-premium{background:#FFFBEB;color:#92400E;font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px}
+    .prog-btn{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:9px;font-size:11px;font-weight:700;font-family:var(--font-body);cursor:pointer;transition:background .2s}
+    .prog-btn:hover{background:var(--red-dark)}
+    /* HOW */
+    .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .how-card{padding:28px;border-radius:var(--radius);border:1px solid rgba(0,0,0,.07);position:relative;overflow:hidden;transition:box-shadow .25s}
+    .how-card:hover{box-shadow:var(--shadow)}
+    .how-num{position:absolute;top:-8px;right:16px;font-family:var(--font-head);font-size:88px;font-weight:900;color:rgba(0,0,0,.04);line-height:1;pointer-events:none}
+    .how-icon{font-size:32px;margin-bottom:14px;display:block}
+    .how-title{font-size:15px;font-weight:800;color:var(--black);margin-bottom:8px}
+    .how-desc{font-size:13px;color:var(--gray-soft);line-height:1.6}
+    /* MENTORS */
+    .mentors-section{background:var(--black)}
+    .mentors-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .mentor-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:22px 16px;text-align:center;transition:background .25s,transform .25s}
+    .mentor-card:hover{background:rgba(255,255,255,.09);transform:translateY(-3px)}
+    .m-avatar-wrap{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px}
+    .m-spec{font-size:9px;font-weight:800;color:var(--red);background:rgba(227,6,19,.15);padding:3px 9px;border-radius:99px;display:inline-block;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+    .m-name{font-size:14px;font-weight:800;color:#fff;margin-bottom:3px}
+    .m-role{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:12px}
+    .m-stats-row{display:flex;justify-content:center;gap:16px;padding:10px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:12px}
+    .m-stat-v{font-size:13px;font-weight:800;color:#fff}
+    .m-stat-l{font-size:9px;color:rgba(255,255,255,.4)}
+    .m-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:7px;font-size:11px;color:rgba(255,255,255,.5);cursor:pointer;font-family:var(--font-body);transition:border-color .2s,color .2s}
+    .m-btn:hover{border-color:rgba(255,255,255,.4);color:#fff}
+    /* TESTIMONIALS */
+    .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .testi-card{background:var(--white);border:1px solid rgba(0,0,0,.08);border-radius:var(--radius);padding:24px;transition:box-shadow .25s}
+    .testi-card:hover{box-shadow:var(--shadow)}
+    .testi-card.featured{background:var(--red);border-color:var(--red)}
+    .testi-card.featured .testi-text{color:rgba(255,255,255,.9)}
+    .testi-card.featured .testi-name{color:#fff}
+    .testi-card.featured .testi-role{color:rgba(255,255,255,.6)}
+    .testi-stars{color:#F5A623;font-size:12px;margin-bottom:14px}
+    .testi-text{font-size:13px;line-height:1.7;color:var(--gray-mid);margin-bottom:18px}
+    .testi-author{display:flex;align-items:center;gap:10px}
+    .testi-ava{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--red-light)}
+    .testi-name{font-size:13px;font-weight:700;color:var(--black)}
+    .testi-role{font-size:11px;color:var(--gray-soft)}
+    /* REGISTER */
+    .register-section{background:var(--red);position:relative;overflow:hidden}
+    .register-section::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
+    .register-section::after{content:'';position:absolute;bottom:-80px;left:20%;width:300px;height:300px;border-radius:50%;background:rgba(0,0,0,.08);pointer-events:none}
+    .register-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;position:relative;z-index:1}
+    .reg-left .rtag{font-size:10px;font-weight:800;color:rgba(255,255,255,.6);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+    .reg-left h2{font-family:var(--font-head);font-size:clamp(28px,3.5vw,46px);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-.02em;margin-bottom:16px}
+    .reg-left p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:24px}
+    .benefits{list-style:none}
+    .benefits li{display:flex;align-items:center;gap:10px;font-size:13px;color:#fff;margin-bottom:10px}
+    .check-icon{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+    .reg-form-wrap{background:#fff;border-radius:20px;padding:32px;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+    .form-title{font-size:18px;font-weight:800;color:var(--black);margin-bottom:4px}
+    .form-sub{font-size:13px;color:var(--gray-soft);margin-bottom:22px}
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;font-size:12px;font-weight:700;color:var(--black);margin-bottom:5px}
+    .form-group input,.form-group select{width:100%;padding:11px 14px;border:1.5px solid rgba(0,0,0,.12);border-radius:9px;font-family:var(--font-body);font-size:13px;color:var(--black);background:var(--white);transition:border-color .2s;outline:none}
+    .form-group input:focus,.form-group select:focus{border-color:var(--red)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-submit{width:100%;background:var(--red);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;font-family:var(--font-body);cursor:pointer;transition:all .25s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+    .form-submit:hover{background:var(--red-dark);transform:translateY(-1px)}
+    .form-submit:disabled{opacity:.7;cursor:not-allowed;transform:none}
+    .form-note{font-size:11px;color:var(--gray-soft);text-align:center;margin-top:12px}
+    .form-success{display:none;text-align:center;padding:20px 0}
+    .form-success .success-icon{font-size:48px;display:block;margin-bottom:12px}
+    .form-success h3{font-size:18px;font-weight:800;color:var(--black);margin-bottom:6px}
+    .form-success p{font-size:13px;color:var(--gray-soft)}
+    .form-error{font-size:12px;color:var(--red);margin-top:6px;display:none}
+    /* FOOTER */
+    footer{background:var(--black);padding:56px 48px 24px}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+    .footer-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.7;margin:12px 0 18px;max-width:240px}
+    .soc-links{display:flex;gap:8px}
+    .soc-btn{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:13px;border:none;cursor:pointer;color:rgba(255,255,255,.6);transition:background .2s,color .2s}
+    .soc-btn:hover{background:var(--red);color:#fff}
+    .footer-col h4{font-size:11px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}
+    .footer-col a{display:block;font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;margin-bottom:9px;transition:color .2s}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;align-items:center}
+    .footer-bottom p,.footer-tagline{font-size:11px;color:rgba(255,255,255,.3)}
+    .footer-tagline span{color:var(--red);font-weight:700}
+    /* TOAST */
+    #toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--black);color:#fff;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.25);transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;display:flex;align-items:center;gap:10px}
+    #toast.show{transform:translateY(0);opacity:1}
+    #toast.success{background:#065F46}
+    #toast.error{background:#991B1B}
+    /* SKELETON LOADER */
+    .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    /* RESPONSIVE */
+    @media(max-width:900px){nav{padding:0 20px}.nav-links{display:none}.hero{grid-template-columns:1fr}.hero-right{display:none}.hero-left{padding:48px 24px}section{padding:48px 24px}.programs-grid,.mentors-grid,.testi-grid{grid-template-columns:1fr 1fr}.how-grid{grid-template-columns:1fr}.register-inner{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.trust-bar{padding:14px 24px;gap:24px}}
+    @media(max-width:600px){.programs-grid,.mentors-grid,.testi-grid{grid-template-columns:1fr}.hero h1{font-size:38px}.hero-stats{grid-template-columns:repeat(2,1fr)}.form-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 
-<!-- TOAST -->
 <div id="toast"><span id="toast-icon">✓</span><span id="toast-msg">Berhasil!</span></div>
 
 <!-- NAV -->
 <nav>
   <a href="#" class="logo">
     <div class="logo-mark">UP</div>
-    <div>
-      <span class="logo-name">UMKM Penggerak</span>
-      <span class="logo-sub">Indonesia</span>
-    </div>
+    <div><span class="logo-name">UMKM Penggerak</span><span class="logo-sub">Indonesia</span></div>
   </a>
   <div class="nav-links">
     <a href="#programs">Akademi</a>
     <a href="#mentors">Mentor</a>
     <a href="#how">Cara Kerja</a>
     <a href="#testimonials">Testimoni</a>
-    <a href="#register">Tentang</a>
   </div>
   <div class="nav-cta">
-    <button class="btn btn-ghost" onclick="showToast('Fitur login segera hadir!', 'info')">Masuk</button>
+    <button class="btn btn-ghost" onclick="showToast('Fitur login segera hadir!','info')">Masuk</button>
     <button class="btn btn-red" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Daftar Gratis</button>
   </div>
 </nav>
@@ -494,33 +206,24 @@
 <div class="hero">
   <div class="hero-left">
     <div class="hero-badge"><span class="badge-dot"></span>Platform #1 Pemberdayaan UMKM</div>
-    <h1>Satu Gerakan,<br><em>Jutaan</em><br>Perubahan.</h1>
-    <p class="hero-desc">Platform edukasi, pendampingan, dan komunitas terbaik untuk memberdayakan UMKM Indonesia—naik kelas, berdaya saing, dan berdampak nyata.</p>
+    <h1 id="hero-title">Satu Gerakan,<br><em>Jutaan</em><br>Perubahan.</h1>
+    <p class="hero-desc" id="hero-desc">Platform edukasi, pendampingan, dan komunitas terbaik untuk memberdayakan UMKM Indonesia—naik kelas, berdaya saing, dan berdampak nyata.</p>
     <div class="hero-btns">
-      <button class="btn-hero-red" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Mulai Sekarang <span>→</span></button>
+      <button class="btn-hero-red" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Mulai Sekarang →</button>
       <button class="btn-hero-outline" onclick="document.getElementById('programs').scrollIntoView({behavior:'smooth'})">Lihat Program</button>
     </div>
     <div class="hero-stats">
-      <div><div class="stat-val">10K+</div><div class="stat-lbl">Member Aktif</div></div>
-      <div><div class="stat-val">250+</div><div class="stat-lbl">Program</div></div>
-      <div><div class="stat-val">100+</div><div class="stat-lbl">Mentor</div></div>
-      <div><div class="stat-val">5K+</div><div class="stat-lbl">UMKM Terbantu</div></div>
+      <div><div class="stat-val" id="s-member">10K+</div><div class="stat-lbl">Member Aktif</div></div>
+      <div><div class="stat-val" id="s-program">250+</div><div class="stat-lbl">Program</div></div>
+      <div><div class="stat-val" id="s-mentor">100+</div><div class="stat-lbl">Mentor</div></div>
+      <div><div class="stat-val" id="s-umkm">5K+</div><div class="stat-lbl">UMKM Terbantu</div></div>
     </div>
   </div>
   <div class="hero-right">
     <div class="hero-visual-wrap">
-      <div class="float-card">
-        <div class="fc-title">🚀 UMKM Naik Kelas!</div>
-        <div class="fc-body">Omzet tumbuh rata-rata 3× dalam 6 bulan bersama kami.</div>
-      </div>
-      <div class="hero-card">
-        <span class="hero-card-icon">🏪</span>
-        <p>Bergabung bersama 10.000+ pelaku UMKM Indonesia</p>
-      </div>
-      <div class="float-badge">
-        <div class="fb-val">98%</div>
-        <div class="fb-lbl">Tingkat Puas</div>
-      </div>
+      <div class="float-card"><div class="fc-title">🚀 UMKM Naik Kelas!</div><div class="fc-body">Omzet tumbuh rata-rata 3× dalam 6 bulan bersama kami.</div></div>
+      <div class="hero-card"><span class="hero-card-icon">🏪</span><p>Bergabung bersama 10.000+ pelaku UMKM Indonesia</p></div>
+      <div class="float-badge"><div class="fb-val">98%</div><div class="fb-lbl">Tingkat Puas</div></div>
     </div>
   </div>
 </div>
@@ -529,12 +232,7 @@
 <div class="trust-bar">
   <span class="trust-label">Didukung oleh</span>
   <div class="trust-logos">
-    <span class="trust-item">Kemenkop UKM</span>
-    <span class="trust-item">Bank BRI</span>
-    <span class="trust-item">Tokopedia</span>
-    <span class="trust-item">GoPay</span>
-    <span class="trust-item">Mandiri</span>
-    <span class="trust-item">GoFood</span>
+    <span class="trust-item">Kemenkop UKM</span><span class="trust-item">Bank BRI</span><span class="trust-item">Tokopedia</span><span class="trust-item">GoPay</span><span class="trust-item">Mandiri</span><span class="trust-item">GoFood</span>
   </div>
 </div>
 
@@ -547,101 +245,24 @@
     </div>
     <a href="#" class="link-all">Lihat Semua →</a>
   </div>
-  <div class="programs-grid">
-    <div class="prog-card">
-      <div class="prog-thumb" style="background:linear-gradient(135deg,#EEF3FD,#DBEAFE)">📊<span class="prog-cat" style="background:#3B82F6">Strategi</span></div>
-      <div class="prog-body">
-        <div class="prog-title">Strategi Marketing Digital untuk UMKM</div>
-        <div class="prog-meta">
-          <div class="prog-mentor"><div class="mentor-dot">A</div>Andi Pratama · 2.4K</div>
-          <span class="badge-free">Gratis</span>
-        </div>
-        <button class="prog-btn" onclick="handleProgram(this)">Ikuti Program</button>
-      </div>
-    </div>
-    <div class="prog-card">
-      <div class="prog-thumb" style="background:linear-gradient(135deg,#FFF7ED,#FED7AA)">💰<span class="prog-cat" style="background:#F97316">Keuangan</span></div>
-      <div class="prog-body">
-        <div class="prog-title">Kelola Keuangan UMKM Agar Bisnis Bertumbuh</div>
-        <div class="prog-meta">
-          <div class="prog-mentor"><div class="mentor-dot">R</div>Rina Wijaya · 1.8K</div>
-          <span class="badge-premium">Premium</span>
-        </div>
-        <button class="prog-btn" onclick="handleProgram(this)">Ikuti Program</button>
-      </div>
-    </div>
-    <div class="prog-card">
-      <div class="prog-thumb" style="background:linear-gradient(135deg,#FEF2F2,#FECACA)">🎨<span class="prog-cat" style="background:#E30613">Branding</span></div>
-      <div class="prog-body">
-        <div class="prog-title">Bangun Brand Kuat Peningkat Penjualan</div>
-        <div class="prog-meta">
-          <div class="prog-mentor"><div class="mentor-dot">D</div>Denny Santoso · 1.3K</div>
-          <span class="badge-premium">Premium</span>
-        </div>
-        <button class="prog-btn" onclick="handleProgram(this)">Ikuti Program</button>
-      </div>
-    </div>
-    <div class="prog-card">
-      <div class="prog-thumb" style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7)">⚙️<span class="prog-cat" style="background:#22C55E">Operasional</span></div>
-      <div class="prog-body">
-        <div class="prog-title">Optimasi Operasional UMKM agar Efisien</div>
-        <div class="prog-meta">
-          <div class="prog-mentor"><div class="mentor-dot">F</div>Fitri Amelia · 980</div>
-          <span class="badge-free">Gratis</span>
-        </div>
-        <button class="prog-btn" onclick="handleProgram(this)">Ikuti Program</button>
-      </div>
-    </div>
-    <div class="prog-card">
-      <div class="prog-thumb" style="background:linear-gradient(135deg,#FAF5FF,#EDE9FE)">🚀<span class="prog-cat" style="background:#8B5CF6">Inovasi</span></div>
-      <div class="prog-body">
-        <div class="prog-title">Inovasi Produk untuk UMKM Masa Depan</div>
-        <div class="prog-meta">
-          <div class="prog-mentor"><div class="mentor-dot">Y</div>Yudha · 1.1K</div>
-          <span class="badge-premium">Premium</span>
-        </div>
-        <button class="prog-btn" onclick="handleProgram(this)">Ikuti Program</button>
-      </div>
-    </div>
-    <div class="prog-card">
-      <div class="prog-thumb" style="background:linear-gradient(135deg,#F0FFFE,#CCFBF1)">🛒<span class="prog-cat" style="background:#0D9488">Marketplace</span></div>
-      <div class="prog-body">
-        <div class="prog-title">Ekspansi ke Marketplace Nasional</div>
-        <div class="prog-meta">
-          <div class="prog-mentor"><div class="mentor-dot">A</div>Andi Pratama · 2.1K</div>
-          <span class="badge-free">Gratis</span>
-        </div>
-        <button class="prog-btn" onclick="handleProgram(this)">Ikuti Program</button>
-      </div>
-    </div>
+  <div class="programs-grid" id="programs-grid">
+    <!-- skeleton -->
+    <div style="height:220px;border-radius:16px" class="skeleton"></div>
+    <div style="height:220px;border-radius:16px" class="skeleton"></div>
+    <div style="height:220px;border-radius:16px" class="skeleton"></div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
+<!-- HOW -->
 <section id="how">
   <div style="max-width:700px;margin-bottom:48px">
     <div class="section-tag"><div class="tag-bar"></div><span class="tag-txt">Cara Kerja</span></div>
     <h2 class="section-title">Tiga Langkah Menuju<br>UMKM yang <em>Lebih Maju</em></h2>
   </div>
   <div class="how-grid">
-    <div class="how-card">
-      <span class="how-num">01</span>
-      <span class="how-icon">📝</span>
-      <div class="how-title">Daftar & Pilih Program</div>
-      <div class="how-desc">Buat akun gratis dan temukan ratusan program pelatihan yang sesuai dengan kebutuhan dan jenis UMKM Anda.</div>
-    </div>
-    <div class="how-card">
-      <span class="how-num">02</span>
-      <span class="how-icon">🎓</span>
-      <div class="how-title">Belajar Bersama Mentor Ahli</div>
-      <div class="how-desc">Ikuti sesi kelas online, video on-demand, dan sesi tanya jawab langsung bersama mentor berpengalaman.</div>
-    </div>
-    <div class="how-card">
-      <span class="how-num">03</span>
-      <span class="how-icon">📈</span>
-      <div class="how-title">Terapkan & Naik Kelas</div>
-      <div class="how-desc">Implementasikan ilmu, dapatkan pendampingan, dan bergabung di komunitas UMKM aktif untuk terus bertumbuh.</div>
-    </div>
+    <div class="how-card"><span class="how-num">01</span><span class="how-icon">📝</span><div class="how-title">Daftar & Pilih Program</div><div class="how-desc">Buat akun gratis dan temukan ratusan program pelatihan yang sesuai dengan kebutuhan dan jenis UMKM Anda.</div></div>
+    <div class="how-card"><span class="how-num">02</span><span class="how-icon">🎓</span><div class="how-title">Belajar Bersama Mentor Ahli</div><div class="how-desc">Ikuti sesi kelas online, video on-demand, dan sesi tanya jawab langsung bersama mentor berpengalaman.</div></div>
+    <div class="how-card"><span class="how-num">03</span><span class="how-icon">📈</span><div class="how-title">Terapkan & Naik Kelas</div><div class="how-desc">Implementasikan ilmu, dapatkan pendampingan, dan bergabung di komunitas UMKM aktif untuk terus bertumbuh.</div></div>
   </div>
 </section>
 
@@ -650,83 +271,34 @@
   <div class="section-header-row">
     <div>
       <div class="section-tag"><div class="tag-bar"></div><span class="tag-txt">Para Ahli</span></div>
-      <h2 class="section-title">Mentor <em>Profesional</em></h2>
+      <h2 class="section-title" style="color:#fff">Mentor <em>Profesional</em></h2>
     </div>
     <a href="#" class="link-all" style="color:rgba(255,255,255,.35)">Lihat Semua →</a>
   </div>
-  <div class="mentors-grid">
-    <div class="mentor-card">
-      <div class="m-avatar-wrap" style="background:linear-gradient(135deg,#60A5FA,#2563EB)">👨‍💼</div>
-      <span class="m-spec">Strategi Bisnis</span>
-      <div class="m-name">Andi Pratama</div>
-      <div class="m-role">Digital Marketing Specialist</div>
-      <div class="m-stats-row"><div><div class="m-stat-v">⭐ 4.9</div><div class="m-stat-l">Rating</div></div><div style="width:1px;background:rgba(255,255,255,.1)"></div><div><div class="m-stat-v">2.4K</div><div class="m-stat-l">Peserta</div></div></div>
-      <button class="m-btn">Lihat Profil</button>
-    </div>
-    <div class="mentor-card">
-      <div class="m-avatar-wrap" style="background:linear-gradient(135deg,#FB923C,#EA580C)">👩‍💼</div>
-      <span class="m-spec">Keuangan</span>
-      <div class="m-name">Rina Wijaya</div>
-      <div class="m-role">Financial Expert</div>
-      <div class="m-stats-row"><div><div class="m-stat-v">⭐ 4.8</div><div class="m-stat-l">Rating</div></div><div style="width:1px;background:rgba(255,255,255,.1)"></div><div><div class="m-stat-v">1.8K</div><div class="m-stat-l">Peserta</div></div></div>
-      <button class="m-btn">Lihat Profil</button>
-    </div>
-    <div class="mentor-card">
-      <div class="m-avatar-wrap" style="background:linear-gradient(135deg,#F87171,#DC2626)">👨‍🎨</div>
-      <span class="m-spec">Branding</span>
-      <div class="m-name">Denny Santoso</div>
-      <div class="m-role">Brand Consultant</div>
-      <div class="m-stats-row"><div><div class="m-stat-v">⭐ 4.9</div><div class="m-stat-l">Rating</div></div><div style="width:1px;background:rgba(255,255,255,.1)"></div><div><div class="m-stat-v">1.3K</div><div class="m-stat-l">Peserta</div></div></div>
-      <button class="m-btn">Lihat Profil</button>
-    </div>
-    <div class="mentor-card">
-      <div class="m-avatar-wrap" style="background:linear-gradient(135deg,#4ADE80,#16A34A)">👩‍🏫</div>
-      <span class="m-spec">Operasional</span>
-      <div class="m-name">Fitri Amelia</div>
-      <div class="m-role">Business Coach</div>
-      <div class="m-stats-row"><div><div class="m-stat-v">⭐ 4.7</div><div class="m-stat-l">Rating</div></div><div style="width:1px;background:rgba(255,255,255,.1)"></div><div><div class="m-stat-v">980</div><div class="m-stat-l">Peserta</div></div></div>
-      <button class="m-btn">Lihat Profil</button>
-    </div>
+  <div class="mentors-grid" id="mentors-grid">
+    <div style="height:240px;border-radius:16px;background:rgba(255,255,255,.08)" class="skeleton"></div>
+    <div style="height:240px;border-radius:16px;background:rgba(255,255,255,.08)" class="skeleton"></div>
+    <div style="height:240px;border-radius:16px;background:rgba(255,255,255,.08)" class="skeleton"></div>
+    <div style="height:240px;border-radius:16px;background:rgba(255,255,255,.08)" class="skeleton"></div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="testimonials-section" id="testimonials">
+<section id="testimonials">
   <div class="section-header-row">
     <div>
       <div class="section-tag"><div class="tag-bar"></div><span class="tag-txt">Cerita Sukses</span></div>
       <h2 class="section-title">Mereka Sudah<br>Merasakan <em>Manfaatnya</em></h2>
     </div>
   </div>
-  <div class="testimonials-grid">
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Berkat UMKM Penggerak, omzet toko saya naik 3 kali lipat dalam 6 bulan. Programnya sangat praktis dan langsung bisa diterapkan!"</p>
-      <div class="testi-author">
-        <div class="testi-ava" style="background:rgba(255,255,255,.2)">🧑‍🍳</div>
-        <div><div class="testi-name" style="color:#fff">Budi Setiawan</div><div class="testi-role">Pemilik Restoran, Bandung</div></div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Saya bisa ekspansi ke 3 marketplace hanya dalam 2 bulan setelah mengikuti program Marketplace di sini. Luar biasa!"</p>
-      <div class="testi-author">
-        <div class="testi-ava" style="background:var(--red-light)">👩‍💻</div>
-        <div><div class="testi-name">Sari Andini</div><div class="testi-role">Pemilik Toko Online, Jakarta</div></div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Mentor di sini bukan cuma ngajari teori, tapi langsung kasih solusi nyata untuk masalah bisnis saya. Worth it banget!"</p>
-      <div class="testi-author">
-        <div class="testi-ava" style="background:#ECFDF5">👨‍🌾</div>
-        <div><div class="testi-name">Agus Hermawan</div><div class="testi-role">Petani & Pengusaha, Jawa Tengah</div></div>
-      </div>
-    </div>
+  <div class="testi-grid" id="testi-grid">
+    <div style="height:180px;border-radius:16px" class="skeleton"></div>
+    <div style="height:180px;border-radius:16px" class="skeleton"></div>
+    <div style="height:180px;border-radius:16px" class="skeleton"></div>
   </div>
 </section>
 
-<!-- REGISTER (Supabase) -->
+<!-- REGISTER -->
 <section class="register-section" id="register">
   <div class="register-inner">
     <div class="reg-left">
@@ -738,7 +310,7 @@
         <li><div class="check-icon">✓</div>Sesi mentoring eksklusif 1-on-1</li>
         <li><div class="check-icon">✓</div>Komunitas UMKM aktif 10.000+ member</li>
         <li><div class="check-icon">✓</div>Sertifikat resmi setiap program</li>
-        <li><div class="check-icon">✓</div>Update materi pembelajaran setiap minggu</li>
+        <li><div class="check-icon">✓</div>Update materi setiap minggu</li>
       </ul>
     </div>
     <div>
@@ -748,50 +320,31 @@
           <div class="form-sub">Isi data diri Anda — hanya butuh 1 menit!</div>
           <form id="register-form" onsubmit="handleRegister(event)">
             <div class="form-row">
-              <div class="form-group">
-                <label>Nama Lengkap *</label>
-                <input type="text" id="f-name" placeholder="Nama Anda" required>
-              </div>
-              <div class="form-group">
-                <label>No. WhatsApp *</label>
-                <input type="tel" id="f-phone" placeholder="08xxxxxxxxxx" required>
-              </div>
+              <div class="form-group"><label>Nama Lengkap *</label><input type="text" id="f-name" placeholder="Nama Anda" required></div>
+              <div class="form-group"><label>No. WhatsApp *</label><input type="tel" id="f-phone" placeholder="08xxxxxxxxxx" required></div>
             </div>
-            <div class="form-group">
-              <label>Email *</label>
-              <input type="email" id="f-email" placeholder="email@contoh.com" required>
-            </div>
+            <div class="form-group"><label>Email *</label><input type="email" id="f-email" placeholder="email@contoh.com" required></div>
             <div class="form-row">
-              <div class="form-group">
-                <label>Jenis Usaha *</label>
+              <div class="form-group"><label>Jenis Usaha *</label>
                 <select id="f-type" required>
                   <option value="">Pilih jenis usaha</option>
-                  <option>Kuliner / F&B</option>
-                  <option>Fashion & Tekstil</option>
-                  <option>Kerajinan Tangan</option>
-                  <option>Pertanian / Agribisnis</option>
-                  <option>Perdagangan / Retail</option>
-                  <option>Jasa</option>
-                  <option>Lainnya</option>
+                  <option>Kuliner / F&B</option><option>Fashion & Tekstil</option><option>Kerajinan Tangan</option><option>Pertanian / Agribisnis</option><option>Perdagangan / Retail</option><option>Jasa</option><option>Lainnya</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label>Kota / Kabupaten *</label>
-                <input type="text" id="f-city" placeholder="Kota Anda" required>
-              </div>
+              <div class="form-group"><label>Kota / Kabupaten *</label><input type="text" id="f-city" placeholder="Kota Anda" required></div>
             </div>
             <div id="form-err" class="form-error">Terjadi kesalahan. Silakan coba lagi.</div>
             <button type="submit" class="form-submit" id="submit-btn">
               <span id="submit-text">Daftar Gratis Sekarang →</span>
               <span id="submit-loader" style="display:none">⏳ Mendaftar...</span>
             </button>
-            <p class="form-note">🔒 Data Anda aman & tidak akan disebarkan ke pihak lain.</p>
+            <p class="form-note">🔒 Data Anda aman & tidak akan disebarkan.</p>
           </form>
         </div>
         <div class="form-success" id="form-success">
           <span class="success-icon">🎉</span>
           <h3>Pendaftaran Berhasil!</h3>
-          <p>Selamat datang! Tim kami akan menghubungi Anda melalui WhatsApp dalam 24 jam.</p>
+          <p>Tim kami akan menghubungi Anda melalui WhatsApp dalam 24 jam.</p>
         </div>
       </div>
     </div>
@@ -802,33 +355,13 @@
 <footer>
   <div class="footer-grid">
     <div>
-      <div class="logo">
-        <div class="logo-mark">UP</div>
-        <div>
-          <span class="logo-name" style="color:#fff">UMKM Penggerak</span>
-          <span class="logo-sub">Indonesia</span>
-        </div>
-      </div>
+      <div class="logo"><div class="logo-mark">UP</div><div><span class="logo-name" style="color:#fff">UMKM Penggerak</span><span class="logo-sub">Indonesia</span></div></div>
       <p class="footer-desc">Bersama menggerakkan UMKM Indonesia menuju masa depan yang lebih maju, berdaya saing, dan berdampak.</p>
-      <div class="soc-links">
-        <button class="soc-btn">📸</button>
-        <button class="soc-btn">▶</button>
-        <button class="soc-btn">f</button>
-        <button class="soc-btn">in</button>
-      </div>
+      <div class="soc-links"><button class="soc-btn">📸</button><button class="soc-btn">▶</button><button class="soc-btn">f</button><button class="soc-btn">in</button></div>
     </div>
-    <div class="footer-col">
-      <h4>Platform</h4>
-      <a href="#">Akademi</a><a href="#">Mentor</a><a href="#">Komunitas</a><a href="#">Event</a>
-    </div>
-    <div class="footer-col">
-      <h4>Informasi</h4>
-      <a href="#">Tentang Kami</a><a href="#">Blog & Artikel</a><a href="#">FAQ</a><a href="#">Kontak</a>
-    </div>
-    <div class="footer-col">
-      <h4>Legal</h4>
-      <a href="#">Syarat & Ketentuan</a><a href="#">Kebijakan Privasi</a><a href="#">Kebijakan Refund</a>
-    </div>
+    <div class="footer-col"><h4>Platform</h4><a href="#">Akademi</a><a href="#">Mentor</a><a href="#">Komunitas</a><a href="#">Event</a></div>
+    <div class="footer-col"><h4>Informasi</h4><a href="#">Tentang Kami</a><a href="#">Blog & Artikel</a><a href="#">FAQ</a><a href="#">Kontak</a></div>
+    <div class="footer-col"><h4>Legal</h4><a href="#">Syarat & Ketentuan</a><a href="#">Kebijakan Privasi</a><a href="#">Kebijakan Refund</a></div>
   </div>
   <div class="footer-bottom">
     <p>© 2025 UMKM Penggerak Indonesia. Semua hak dilindungi.</p>
@@ -837,90 +370,143 @@
 </footer>
 
 <script>
-  // ── SUPABASE CONFIG ──
-  // Ganti dengan URL dan ANON KEY dari project Supabase Anda
-  const SUPABASE_URL = 'https://rupdpwzlfkvleazohgzp.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cGRwd3psZmt2bGVhem9oZ3pwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NjQ1NTUsImV4cCI6MjA5MzI0MDU1NX0.BR93T03eHnTX7bi_hqinuS16zBcuWTJyRbViiFKDGNk';
+const SUPABASE_URL = 'https://rupdpwzlfkvleazohgzp.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cGRwd3psZmt2bGVhem9oZ3pwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NjQ1NTUsImV4cCI6MjA5MzI0MDU1NX0.BR93T03eHnTX7bi_hqinuS16zBcuWTJyRbViiFKDGNk';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const { createClient } = supabase;
-  const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// LOAD SEMUA KONTEN
+async function loadContent() {
+  await Promise.all([loadSettings(), loadPrograms(), loadMentors(), loadTestimonials()]);
+}
 
-  // ── FORM REGISTER ──
-  async function handleRegister(e) {
-    e.preventDefault();
-    const btn = document.getElementById('submit-btn');
-    const txt = document.getElementById('submit-text');
-    const loader = document.getElementById('submit-loader');
-    const errEl = document.getElementById('form-err');
+async function loadSettings() {
+  try {
+    const { data } = await db.from('site_settings').select('*');
+    if (!data) return;
+    const s = Object.fromEntries(data.map(r => [r.key, r.value]));
+    if (s.stat_member) document.getElementById('s-member').textContent = s.stat_member;
+    if (s.stat_program) document.getElementById('s-program').textContent = s.stat_program;
+    if (s.stat_mentor) document.getElementById('s-mentor').textContent = s.stat_mentor;
+    if (s.stat_umkm) document.getElementById('s-umkm').textContent = s.stat_umkm;
+    if (s.hero_desc) document.getElementById('hero-desc').textContent = s.hero_desc;
+  } catch(e) {}
+}
 
-    // UI loading state
-    btn.disabled = true;
-    txt.style.display = 'none';
-    loader.style.display = 'inline';
-    errEl.style.display = 'none';
+async function loadPrograms() {
+  try {
+    const { data } = await db.from('programs').select('*').eq('aktif', true).order('urutan');
+    if (!data || !data.length) return;
+    document.getElementById('programs-grid').innerHTML = data.map(p => `
+      <div class="prog-card" style="opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s">
+        <div class="prog-thumb" style="background:${p.warna_bg}">${p.emoji}<span class="prog-cat" style="background:${p.warna_cat}">${p.kategori}</span></div>
+        <div class="prog-body">
+          <div class="prog-title">${p.judul}</div>
+          <div class="prog-meta">
+            <div class="prog-mentor"><div class="mentor-dot">${p.mentor_inisial}</div>${p.mentor_nama} · ${p.peserta >= 1000 ? (p.peserta/1000).toFixed(1)+'K' : p.peserta}</div>
+            <span class="${p.tipe === 'Gratis' ? 'badge-free' : 'badge-premium'}">${p.tipe}</span>
+          </div>
+          <button class="prog-btn" onclick="handleProgram(this)">Ikuti Program</button>
+        </div>
+      </div>`).join('');
+    animateCards('.prog-card');
+  } catch(e) {}
+}
 
-    const payload = {
+async function loadMentors() {
+  try {
+    const { data } = await db.from('mentors').select('*').eq('aktif', true).order('urutan');
+    if (!data || !data.length) return;
+    document.getElementById('mentors-grid').innerHTML = data.map(m => `
+      <div class="mentor-card" style="opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s">
+        <div class="m-avatar-wrap" style="background:${m.warna_avatar}">${m.emoji}</div>
+        <span class="m-spec">${m.spesialisasi}</span>
+        <div class="m-name">${m.nama}</div>
+        <div class="m-role">${m.peran}</div>
+        <div class="m-stats-row">
+          <div><div class="m-stat-v">⭐ ${m.rating}</div><div class="m-stat-l">Rating</div></div>
+          <div style="width:1px;background:rgba(255,255,255,.1)"></div>
+          <div><div class="m-stat-v">${m.peserta >= 1000 ? (m.peserta/1000).toFixed(1)+'K' : m.peserta}</div><div class="m-stat-l">Peserta</div></div>
+        </div>
+        <button class="m-btn">Lihat Profil</button>
+      </div>`).join('');
+    animateCards('.mentor-card');
+  } catch(e) {}
+}
+
+async function loadTestimonials() {
+  try {
+    const { data } = await db.from('testimonials').select('*').eq('aktif', true).order('created_at');
+    if (!data || !data.length) return;
+    document.getElementById('testi-grid').innerHTML = data.map(t => `
+      <div class="testi-card ${t.featured ? 'featured' : ''}" style="opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s">
+        <div class="testi-stars">${'★'.repeat(t.bintang)}</div>
+        <p class="testi-text">"${t.isi}"</p>
+        <div class="testi-author">
+          <div class="testi-ava" style="${t.featured ? 'background:rgba(255,255,255,.2)' : ''}">${t.emoji}</div>
+          <div><div class="testi-name" style="${t.featured ? 'color:#fff' : ''}">${t.nama}</div><div class="testi-role">${t.peran}</div></div>
+        </div>
+      </div>`).join('');
+    animateCards('.testi-card');
+  } catch(e) {}
+}
+
+function animateCards(sel) {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((el, i) => {
+      if (el.isIntersecting) {
+        setTimeout(() => {
+          el.target.style.opacity = '1';
+          el.target.style.transform = 'translateY(0)';
+        }, i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll(sel).forEach(el => obs.observe(el));
+}
+
+// FORM
+async function handleRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const txt = document.getElementById('submit-text');
+  const loader = document.getElementById('submit-loader');
+  const errEl = document.getElementById('form-err');
+  btn.disabled = true; txt.style.display = 'none'; loader.style.display = 'inline'; errEl.style.display = 'none';
+  try {
+    const { error } = await db.from('pendaftar').insert([{
       nama: document.getElementById('f-name').value.trim(),
       whatsapp: document.getElementById('f-phone').value.trim(),
       email: document.getElementById('f-email').value.trim(),
       jenis_usaha: document.getElementById('f-type').value,
       kota: document.getElementById('f-city').value.trim(),
-      created_at: new Date().toISOString()
-    };
-
-    try {
-      const { error } = await db.from('pendaftar').insert([payload]);
-      if (error) throw error;
-      // Tampilkan sukses
-      document.getElementById('form-container').style.display = 'none';
-      document.getElementById('form-success').style.display = 'block';
-      showToast('🎉 Pendaftaran berhasil!', 'success');
-    } catch (err) {
-      console.error(err);
-      errEl.textContent = 'Terjadi kesalahan: ' + (err.message || 'Silakan coba lagi.');
-      errEl.style.display = 'block';
-      btn.disabled = false;
-      txt.style.display = 'inline';
-      loader.style.display = 'none';
-    }
+    }]);
+    if (error) throw error;
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    showToast('🎉 Pendaftaran berhasil!', 'success');
+  } catch(err) {
+    errEl.textContent = 'Gagal: ' + (err.message || 'Silakan coba lagi.');
+    errEl.style.display = 'block';
+    btn.disabled = false; txt.style.display = 'inline'; loader.style.display = 'none';
   }
+}
 
-  // ── PROGRAM BUTTON ──
-  function handleProgram(btn) {
-    document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
-    showToast('Daftar dulu untuk mengakses program ini!', 'info');
-  }
+function handleProgram() {
+  document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+  showToast('Daftar dulu untuk mengakses program ini!', 'info');
+}
 
-  // ── TOAST ──
-  function showToast(msg, type = 'info') {
-    const toast = document.getElementById('toast');
-    const msgEl = document.getElementById('toast-msg');
-    const icon = document.getElementById('toast-icon');
-    msgEl.textContent = msg;
-    toast.className = '';
-    if (type === 'success') { toast.classList.add('success'); icon.textContent = '✓'; }
-    else if (type === 'error') { toast.classList.add('error'); icon.textContent = '✕'; }
-    else { icon.textContent = 'ℹ'; }
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3500);
-  }
+function showToast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-icon').textContent = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
+  t.className = type === 'success' ? 'success' : type === 'error' ? 'error' : '';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
 
-  // ── SCROLL REVEAL ──
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(el => {
-      if (el.isIntersecting) {
-        el.target.style.opacity = '1';
-        el.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.prog-card, .how-card, .mentor-card, .testi-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity .5s ease, transform .5s ease';
-    observer.observe(el);
-  });
+loadContent();
 </script>
 </body>
 </html>
