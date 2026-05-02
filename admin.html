@@ -9,7 +9,7 @@
   <style>
     :root{--red:#E30613;--red-dark:#B8000F;--black:#0D0D0D;--bg:#F4F4F2;--white:#fff;--sidebar:220px;--gray:#6B7280;--border:#E5E7EB;--font:'Plus Jakarta Sans',sans-serif}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:var(--font);background:var(--bg);color:var(--black);display:flex;min-height:100vh}
+    body{font-family:var(--font);background:var(--bg);color:var(--black);min-height:100vh}
     /* SIDEBAR */
     .sidebar{width:var(--sidebar);background:var(--black);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:50}
     .sb-logo{padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
@@ -134,7 +134,7 @@
 </div>
 
 <!-- ADMIN APP -->
-<div id="admin-app" style="display:none;width:100%;display:none">
+<div id="admin-app" style="display:none;width:100%">
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sb-logo">
@@ -297,7 +297,9 @@ async function checkAuth() {
 
 function showAdmin() {
   document.getElementById('login-page').style.display = 'none';
-  document.getElementById('admin-app').style.display = 'flex';
+  const app = document.getElementById('admin-app');
+  app.style.display = 'flex';
+  app.style.width = '100%';
   const e = currentUser?.email || 'admin';
   document.getElementById('sb-email').textContent = e;
   document.getElementById('sb-av').textContent = e[0].toUpperCase();
