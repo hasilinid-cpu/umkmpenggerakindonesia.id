@@ -36,7 +36,7 @@ button{cursor:pointer}
 .lc-hint{font-size:11px;color:#9CA3AF;text-align:center;margin-top:14px}
 
 /* ══ APP SHELL ══ */
-#app{display:none;min-height:100vh}
+#app{display:none;min-height:100vh;flex-direction:row}
 
 /* SIDEBAR */
 .sb{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:var(--blk);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
@@ -58,7 +58,7 @@ button{cursor:pointer}
 .sb-out:hover{color:#fff}
 
 /* MAIN */
-.main{margin-left:var(--sw);min-height:100vh;display:flex;flex-direction:column}
+.main{margin-left:var(--sw);flex:1;min-height:100vh;display:flex;flex-direction:column;min-width:0;width:calc(100% - var(--sw))}
 .topbar{background:var(--wh);border-bottom:1px solid var(--bd);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .tb-title{font-family:var(--head);font-size:15px;font-weight:800;color:var(--blk)}
 .tb-right{display:flex;align-items:center;gap:12px}
@@ -180,7 +180,7 @@ tr:hover td{background:#FAFAFA}
 @media(max-width:768px){
   .sb{transform:translateX(-100%);transition:transform .3s}
   .sb.open{transform:translateX(0)}
-  .main{margin-left:0}
+  .main{margin-left:0;width:100%}
   .sc-row{grid-template-columns:1fr 1fr}
   .sg{grid-template-columns:1fr}
   .fr2{grid-template-columns:1fr}
@@ -188,7 +188,7 @@ tr:hover td{background:#FAFAFA}
   .content{padding:16px}
   .mob-menu{display:flex!important}
 }
-.mob-menu{display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--blk)}
+.mob-menu{display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--blk);padding:4px}
 .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
 .sb-overlay.on{display:block}
 </style>
@@ -461,14 +461,22 @@ async function login(){
   if(error){showErr(err,'Email atau password salah.');btn.textContent='Masuk ke Admin Panel →';btn.disabled=false;}
   else{USER=data.user;mountApp();}
 }
-async function logout(){await db.auth.signOut();el('app').style.display='none';el('login-page').style.display='flex';USER=null;}
+async function logout(){
+  await db.auth.signOut();
+  el('app').style.display='none';
+  el('login-page').style.display='flex';
+  USER=null;
+}
 async function checkAuth(){
   const {data}=await db.auth.getSession();
   if(data?.session?.user){USER=data.session.user;mountApp();}
   else{el('login-page').style.display='flex';}
 }
 function mountApp(){
-  el('login-page').style.display='none';el('app').style.display='block';
+  el('login-page').style.display='none';
+  const app=el('app');
+  app.style.display='flex';
+  app.style.flexDirection='row';
   const em=USER?.email||'admin';
   el('sb-em').textContent=em;el('sb-av').textContent=em[0].toUpperCase();
   el('tb-date').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
