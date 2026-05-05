@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>UMKM Penggerak Indonesia — Belajar. Bergerak. Berdampak.</title>
-<meta name="description" content="Platform edukasi dan pelatihan terbaik untuk memberdayakan UMKM Indonesia naik kelas.">
+<meta name="description" content="Platform edukasi dan pelatihan terbaik untuk memberdayakan UMKM Indonesia naik kelas, berdaya saing, dan berdampak nyata.">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --red:#E30613;--redd:#B8000F;--red2:#F44336;
+  --red:#E30613;--redd:#B8000F;
   --black:#111111;--gray:#6D6E71;--gray2:#9CA3AF;
-  --orange:#FF6D00;--blue:#0D47A1;--teal:#00BFA5;
   --white:#FFFFFF;--bg:#F7F7F7;--bg2:#F2F2F2;--border:#E5E5E5;
   --head:'Poppins',sans-serif;--body:'Inter',sans-serif;
   --r:16px;--rs:10px;
@@ -44,14 +45,14 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .hero h1{font-family:var(--head);font-size:clamp(40px,4.5vw,66px);font-weight:900;line-height:1.05;color:var(--black);letter-spacing:-.03em;margin-bottom:20px}
 .hero h1 .red{color:var(--red)}
 .hero-desc{font-family:var(--body);font-size:15px;line-height:1.8;color:var(--gray);max-width:440px;margin-bottom:36px}
-.hero-cta{display:flex;gap:12px;margin-bottom:52px}
+.hero-cta{display:flex;gap:12px;margin-bottom:52px;flex-wrap:wrap}
 .btn-primary{font-family:var(--head);font-weight:700;font-size:13px;background:var(--red);color:#fff;border:none;border-radius:var(--rs);padding:13px 28px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px;box-shadow:0 8px 20px rgba(227,6,19,.3)}
 .btn-primary:hover{background:var(--redd);transform:translateY(-2px);box-shadow:0 12px 28px rgba(227,6,19,.4)}
 .btn-outline{font-family:var(--head);font-weight:600;font-size:13px;background:transparent;color:var(--black);border:2px solid var(--border);border-radius:var(--rs);padding:13px 24px;cursor:pointer;transition:all .25s}
 .btn-outline:hover{border-color:var(--black)}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);padding-top:36px;border-top:1px solid var(--border)}
 .stat{padding-right:24px;border-right:1px solid var(--border)}
-.stat:last-child{border-right:none}
+.stat:last-child{border-right:none;padding-right:0}
 .stat:not(:first-child){padding-left:24px}
 .stat-val{font-family:var(--head);font-size:28px;font-weight:900;color:var(--red);line-height:1}
 .stat-lbl{font-family:var(--body);font-size:11px;color:var(--gray2);margin-top:5px}
@@ -74,21 +75,21 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .htag{font-family:var(--body);font-size:11px;font-weight:500;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:5px 12px}
 
 /* TRUST */
-.trust{background:var(--bg2);padding:16px 60px;display:flex;align-items:center;gap:40px;border-bottom:1px solid var(--border)}
+.trust{background:var(--bg2);padding:16px 60px;display:flex;align-items:center;gap:40px;border-bottom:1px solid var(--border);overflow:hidden}
 .trust-lbl{font-family:var(--head);font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}
 .trust-items{display:flex;gap:28px;align-items:center;flex:1;flex-wrap:wrap}
 .trust-item{font-family:var(--head);font-size:12px;font-weight:700;color:rgba(0,0,0,.2)}
 
 /* COUNTER */
-.counter-section{background:var(--red);padding:56px 60px}
-.counter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;text-align:center}
+.counter-sec{background:var(--red);padding:56px 60px}
+.counter-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
 .counter-item{padding:24px;border-right:1px solid rgba(255,255,255,.15)}
 .counter-item:last-child{border-right:none}
 .counter-val{font-family:var(--head);font-size:clamp(36px,4vw,56px);font-weight:900;color:#fff;line-height:1;margin-bottom:8px}
 .counter-lbl{font-family:var(--body);font-size:13px;color:rgba(255,255,255,.75)}
 .counter-ico{font-size:28px;display:block;margin-bottom:10px}
 
-/* SECTION */
+/* SECTIONS */
 section{padding:88px 60px}
 .stag{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .stag-bar{width:32px;height:3px;background:var(--red);border-radius:2px}
@@ -96,8 +97,8 @@ section{padding:88px 60px}
 h2.title{font-family:var(--head);font-size:clamp(26px,3vw,40px);font-weight:900;color:var(--black);line-height:1.1;letter-spacing:-.02em;margin-bottom:8px}
 h2.title .red{color:var(--red)}
 .title-sub{font-family:var(--body);font-size:14px;color:var(--gray);line-height:1.6;max-width:500px}
-.sec-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px}
-.see-all{font-family:var(--head);font-size:12px;font-weight:700;color:var(--red);text-decoration:none;border:1.5px solid var(--red);padding:8px 16px;border-radius:8px;transition:all .2s}
+.sec-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;gap:16px;flex-wrap:wrap}
+.see-all{font-family:var(--head);font-size:12px;font-weight:700;color:var(--red);text-decoration:none;border:1.5px solid var(--red);padding:8px 16px;border-radius:8px;transition:all .2s;white-space:nowrap}
 .see-all:hover{background:var(--red);color:#fff}
 
 /* PROGRAMS */
@@ -111,25 +112,25 @@ h2.title .red{color:var(--red)}
 .prog-body{padding:18px}
 .prog-title{font-family:var(--head);font-size:13px;font-weight:700;color:var(--black);line-height:1.4;margin-bottom:6px}
 .prog-desc{font-family:var(--body);font-size:11px;color:var(--gray);line-height:1.5;margin-bottom:12px}
+.prog-info{display:flex;gap:12px;margin-bottom:10px}
+.prog-info-item{font-family:var(--body);font-size:10px;color:var(--gray)}
 .prog-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .prog-author{display:flex;align-items:center;gap:7px;font-family:var(--body);font-size:11px;color:var(--gray)}
-.prog-av{width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.prog-av{width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .badge-free{background:#E8F5E9;color:#2E7D32;font-family:var(--head);font-size:9px;font-weight:700;padding:3px 9px;border-radius:6px}
 .badge-premium{background:#FFF8E1;color:#F57F17;font-family:var(--head);font-size:9px;font-weight:700;padding:3px 9px;border-radius:6px}
 .prog-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
-.prog-price{font-family:var(--head);font-size:14px;font-weight:800;color:var(--black)}
-.prog-price.free{color:#2E7D32;font-size:12px}
+.prog-price{font-family:var(--head);font-size:15px;font-weight:800;color:var(--black)}
+.prog-price.free{color:#2E7D32;font-size:12px;font-weight:700}
 .prog-btn-daftar{font-family:var(--head);font-weight:700;font-size:11px;background:var(--red);color:#fff;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;transition:background .2s}
 .prog-btn-daftar:hover{background:var(--redd)}
-.prog-info{display:flex;gap:12px;margin-bottom:12px}
-.prog-info-item{display:flex;align-items:center;gap:4px;font-family:var(--body);font-size:10px;color:var(--gray)}
 
 /* HOW */
 .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .how-card{padding:32px;border-radius:var(--r);border:1px solid var(--border);position:relative;overflow:hidden;transition:box-shadow .25s,border-color .25s}
 .how-card:hover{box-shadow:var(--sh);border-color:var(--red)}
 .how-num{position:absolute;top:-10px;right:20px;font-family:var(--head);font-size:100px;font-weight:900;color:rgba(0,0,0,.03);line-height:1;pointer-events:none}
-.how-step{display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#fff;font-family:var(--head);font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+.how-step{display:inline-flex;align-items:center;background:var(--red);color:#fff;font-family:var(--head);font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
 .how-ico{font-size:36px;margin-bottom:16px;display:block}
 .how-title{font-family:var(--head);font-size:15px;font-weight:700;color:var(--black);margin-bottom:10px}
 .how-desc{font-family:var(--body);font-size:13px;color:var(--gray);line-height:1.7}
@@ -159,13 +160,32 @@ h2.title .red{color:var(--red)}
 .alumni-name{font-family:var(--head);font-size:14px;font-weight:700;color:var(--black)}
 .alumni-usaha{font-family:var(--body);font-size:11px;color:var(--gray);margin-top:2px}
 .alumni-kota{font-family:var(--body);font-size:10px;color:var(--gray2);margin-top:2px}
-.alumni-pencapaian{font-family:var(--body);font-size:13px;color:var(--black);line-height:1.6;margin-bottom:16px}
+.alumni-pencapaian{font-family:var(--body);font-size:13px;color:var(--black);line-height:1.6;margin-bottom:16px;font-style:italic}
 .alumni-omzet{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:10px;padding:12px 14px}
 .omzet-item{flex:1}
 .omzet-label{font-family:var(--head);font-size:9px;font-weight:700;color:var(--gray2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
 .omzet-val{font-family:var(--head);font-size:12px;font-weight:700;color:var(--black)}
 .omzet-arrow{font-size:18px;color:var(--red)}
 .alumni-program{margin-top:12px;font-family:var(--head);font-size:10px;font-weight:600;color:var(--red);background:#FFF0F0;padding:4px 10px;border-radius:6px;display:inline-block}
+
+/* TESTIMONIALS */
+.testi-bg{background:var(--white)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:box-shadow .25s;position:relative}
+.testi-card:hover{box-shadow:var(--sh)}
+.testi-card.featured{background:var(--red);border-color:var(--red)}
+.testi-card.featured .testi-text{color:rgba(255,255,255,.9)}
+.testi-card.featured .testi-name{color:#fff!important}
+.testi-card.featured .testi-role{color:rgba(255,255,255,.65)}
+.testi-card.featured .testi-av{background:rgba(255,255,255,.15)}
+.quote-mark{position:absolute;top:16px;right:20px;font-family:var(--head);font-size:64px;font-weight:900;color:rgba(0,0,0,.05);line-height:1;pointer-events:none}
+.testi-card.featured .quote-mark{color:rgba(255,255,255,.1)}
+.testi-stars{color:#F9A825;font-size:13px;margin-bottom:14px;letter-spacing:2px}
+.testi-text{font-family:var(--body);font-size:13px;line-height:1.75;color:var(--gray);margin-bottom:20px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg2);flex-shrink:0}
+.testi-name{font-family:var(--head);font-size:13px;font-weight:700;color:var(--black)}
+.testi-role{font-family:var(--body);font-size:11px;color:var(--gray)}
 
 /* BLOG */
 .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -180,23 +200,6 @@ h2.title .red{color:var(--red)}
 .blog-author{font-family:var(--body);font-size:11px;color:var(--gray2)}
 .blog-read{font-family:var(--head);font-size:11px;font-weight:700;color:var(--red)}
 
-/* TESTIMONIALS */
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.testi-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:box-shadow .25s;position:relative}
-.testi-card:hover{box-shadow:var(--sh)}
-.testi-card.featured{background:var(--red);border-color:var(--red)}
-.testi-card.featured .testi-text,.testi-card.featured .testi-name{color:#fff}
-.testi-card.featured .testi-role{color:rgba(255,255,255,.65)}
-.quote-mark{position:absolute;top:16px;right:20px;font-family:var(--head);font-size:64px;font-weight:900;color:rgba(0,0,0,.05);line-height:1}
-.testi-card.featured .quote-mark{color:rgba(255,255,255,.1)}
-.testi-stars{color:#F9A825;font-size:13px;margin-bottom:14px;letter-spacing:2px}
-.testi-text{font-family:var(--body);font-size:13px;line-height:1.75;color:var(--gray);margin-bottom:20px}
-.testi-author{display:flex;align-items:center;gap:12px}
-.testi-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg2);flex-shrink:0}
-.testi-card.featured .testi-av{background:rgba(255,255,255,.15)}
-.testi-name{font-family:var(--head);font-size:13px;font-weight:700;color:var(--black)}
-.testi-role{font-family:var(--body);font-size:11px;color:var(--gray)}
-
 /* FOOTER */
 footer{background:var(--black);padding:64px 60px 28px}
 .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.07)}
@@ -207,50 +210,48 @@ footer{background:var(--black);padding:64px 60px 28px}
 .footer-col h4{font-family:var(--head);font-size:10px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.12em;margin-bottom:16px}
 .footer-col a{display:block;font-family:var(--body);font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;margin-bottom:10px;transition:color .2s}
 .footer-col a:hover{color:#fff}
-.footer-bot{padding-top:24px;display:flex;justify-content:space-between;align-items:center}
+.footer-bot{padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .footer-bot p{font-family:var(--body);font-size:11px;color:rgba(255,255,255,.25)}
 .footer-tag{font-family:var(--head);font-size:11px;color:rgba(255,255,255,.25)}
 .footer-tag span{color:var(--red);font-weight:700}
 
-/* MODAL OVERLAY */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
-.overlay.show{opacity:1;pointer-events:all}
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.show{opacity:1;pointer-events:all}
 .modal{background:#fff;border-radius:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.3);transform:translateY(20px);transition:transform .3s}
-.overlay.show .modal{transform:translateY(0)}
+.modal-overlay.show .modal{transform:translateY(0)}
 .modal-head{padding:22px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
 .modal-title{font-family:var(--head);font-size:16px;font-weight:800;color:var(--black)}
 .modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray);line-height:1;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .modal-close:hover{background:var(--bg2)}
 .modal-body{padding:28px}
 
-/* PROGRAM DETAIL MODAL */
-.prog-detail-header{background:var(--bg);border-radius:16px;padding:24px;margin-bottom:20px;display:flex;align-items:center;gap:20px}
+/* PROGRAM DETAIL */
+.pdh{background:var(--bg);border-radius:16px;padding:24px;margin-bottom:20px;display:flex;align-items:center;gap:20px}
 .pdh-emoji{font-size:52px}
 .pdh-info{flex:1}
 .pdh-cat{font-family:var(--head);font-size:9px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
 .pdh-title{font-family:var(--head);font-size:16px;font-weight:800;color:var(--black);margin-bottom:8px}
-.pdh-meta{display:flex;gap:16px}
-.pdh-meta-item{font-family:var(--body);font-size:11px;color:var(--gray)}
-.prog-detail-desc{font-family:var(--body);font-size:13px;color:var(--gray);line-height:1.75;margin-bottom:20px}
-.prog-detail-price{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:12px;padding:16px 20px;margin-bottom:20px}
+.pdh-meta{display:flex;gap:16px;flex-wrap:wrap}
+.pdh-meta span{font-family:var(--body);font-size:11px;color:var(--gray)}
+.prog-desc-long{font-family:var(--body);font-size:13px;color:var(--gray);line-height:1.75;margin-bottom:20px}
+.pdp-box{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:12px;padding:16px 20px;margin-bottom:20px}
 .pdp-label{font-family:var(--head);font-size:11px;font-weight:600;color:var(--gray)}
 .pdp-price{font-family:var(--head);font-size:22px;font-weight:900;color:var(--black)}
 .pdp-price.free{color:#2E7D32}
-
-/* FORM */
+.form-section-title{font-family:var(--head);font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px}
 .fg{margin-bottom:14px}
 .fg label{display:block;font-family:var(--head);font-size:11px;font-weight:700;color:var(--black);margin-bottom:6px}
-.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--body);font-size:13px;color:var(--black);background:var(--bg);outline:none;transition:border-color .2s}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--red);background:#fff}
+.fg input,.fg select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--body);font-size:13px;color:var(--black);background:var(--bg);outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus{border-color:var(--red);background:#fff}
 .fg2c{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn-submit{width:100%;background:var(--red);color:#fff;border:none;border-radius:10px;padding:14px;font-family:var(--head);font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+.form-err{font-family:var(--body);font-size:12px;color:var(--red);padding:10px 14px;background:#FEF2F2;border-radius:8px;display:none;margin-bottom:10px}
+.btn-submit{width:100%;background:var(--red);color:#fff;border:none;border-radius:10px;padding:14px;font-family:var(--head);font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-submit:hover{background:var(--redd);transform:translateY(-1px)}
 .btn-submit:disabled{opacity:.7;cursor:not-allowed;transform:none}
 .form-note{font-family:var(--body);font-size:11px;color:var(--gray2);text-align:center;margin-top:10px}
-.form-err{font-family:var(--body);font-size:12px;color:var(--red);margin-top:8px;padding:10px 14px;background:#FEF2F2;border-radius:8px;display:none}
 
-/* INVOICE PREVIEW */
-.invoice-wrap{font-family:var(--body)}
+/* INVOICE */
 .inv-header{background:var(--red);color:#fff;padding:28px;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:center}
 .inv-logo{font-family:var(--head);font-size:18px;font-weight:900}
 .inv-logo span{opacity:.7;font-size:11px;display:block;font-weight:400;margin-top:2px}
@@ -259,18 +260,19 @@ footer{background:var(--black);padding:64px 60px 28px}
 .inv-body{background:#FAFAFA;padding:28px;border-radius:0 0 16px 16px}
 .inv-section{margin-bottom:20px}
 .inv-section-title{font-family:var(--head);font-size:10px;font-weight:800;color:var(--gray);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
-.inv-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.inv-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
 .inv-row:last-child{border-bottom:none}
 .inv-row-label{font-family:var(--body);font-size:13px;color:var(--gray)}
 .inv-row-val{font-family:var(--head);font-size:13px;font-weight:700;color:var(--black)}
 .inv-total{background:var(--black);color:#fff;padding:16px 20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
 .inv-total-label{font-family:var(--head);font-size:13px;font-weight:600}
-.inv-total-val{font-family:var(--head);font-size:20px;font-weight:900;color:#fff}
+.inv-total-val{font-family:var(--head);font-size:20px;font-weight:900}
 .inv-bank{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-top:16px}
 .inv-bank-title{font-family:var(--head);font-size:11px;font-weight:800;color:var(--black);margin-bottom:10px}
-.inv-bank-detail{font-family:var(--body);font-size:13px;color:var(--gray);line-height:1.8}
+.inv-bank-detail{font-family:var(--body);font-size:13px;color:var(--gray);line-height:2}
 .inv-bank-detail strong{color:var(--black);font-weight:700}
-.inv-status{display:inline-flex;align-items:center;gap:6px;background:#FFF8E1;color:#F57F17;font-family:var(--head);font-size:10px;font-weight:700;padding:4px 12px;border-radius:99px;text-transform:uppercase;letter-spacing:.08em;margin-top:12px}
+.inv-status{display:inline-flex;align-items:center;gap:6px;background:#FFF8E1;color:#F57F17;font-family:var(--head);font-size:10px;font-weight:700;padding:5px 12px;border-radius:99px;text-transform:uppercase;letter-spacing:.08em;margin-top:12px}
+.inv-free{background:#E8F5E9;border-radius:12px;padding:16px;margin-top:16px;font-family:var(--body);font-size:13px;color:#2E7D32;text-align:center;line-height:1.6}
 .inv-actions{display:flex;gap:10px;margin-top:20px}
 .btn-print{flex:1;background:var(--black);color:#fff;border:none;border-radius:10px;padding:12px;font-family:var(--head);font-size:13px;font-weight:700;cursor:pointer;transition:background .2s}
 .btn-print:hover{background:#333}
@@ -280,14 +282,14 @@ footer{background:var(--black);padding:64px 60px 28px}
 /* BLOG MODAL */
 .blog-modal-cat{font-family:var(--head);font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
 .blog-modal-title{font-family:var(--head);font-size:20px;font-weight:800;color:var(--black);line-height:1.3;margin-bottom:12px}
-.blog-modal-meta{display:flex;gap:16px;font-family:var(--body);font-size:12px;color:var(--gray2);margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.blog-modal-content{font-family:var(--body);font-size:14px;color:var(--gray);line-height:1.8}
+.blog-modal-meta{display:flex;gap:16px;font-family:var(--body);font-size:12px;color:var(--gray2);margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.blog-modal-content{font-family:var(--body);font-size:14px;color:var(--gray);line-height:1.85}
 .blog-modal-content h2{font-family:var(--head);font-size:16px;font-weight:700;color:var(--black);margin:20px 0 8px}
 .blog-modal-content p{margin-bottom:14px}
 .blog-modal-content strong{color:var(--black);font-weight:600}
 
 /* TOAST */
-#toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--black);color:#fff;padding:14px 20px;border-radius:12px;font-family:var(--body);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;display:flex;align-items:center;gap:10px}
+#toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--black);color:#fff;padding:14px 20px;border-radius:12px;font-family:var(--body);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;display:flex;align-items:center;gap:10px;max-width:320px}
 #toast.show{transform:translateY(0);opacity:1}
 #toast.ok{background:#1B5E20}
 #toast.err{background:#B71C1C}
@@ -297,19 +299,37 @@ footer{background:var(--black);padding:64px 60px 28px}
 @keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* RESPONSIVE */
-@media(max-width:1024px){nav,section,.trust,.counter-section,footer{padding-left:28px;padding-right:28px}.cta-inner{gap:40px}}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.hero-right{display:none}.hero-left{padding:48px 28px}.prog-grid,.alumni-grid,.blog-grid,.testi-grid{grid-template-columns:1fr 1fr}.how-grid{grid-template-columns:1fr}.ment-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr}.counter-grid{grid-template-columns:1fr 1fr}.nav-links{display:none}}
-@media(max-width:600px){.prog-grid,.alumni-grid,.blog-grid,.testi-grid,.ment-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.fg2c{grid-template-columns:1fr}.counter-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:1024px){nav,section,.trust,.counter-sec,footer{padding-left:28px;padding-right:28px}}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}.hero-right{display:none}.hero-left{padding:48px 28px}
+  .prog-grid,.alumni-grid,.blog-grid,.testi-grid{grid-template-columns:1fr 1fr}
+  .how-grid{grid-template-columns:1fr}.ment-grid{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr 1fr}.counter-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+}
+@media(max-width:600px){
+  .prog-grid,.alumni-grid,.blog-grid,.testi-grid,.ment-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr 1fr}.fg2c{grid-template-columns:1fr}
+  .counter-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr}
+  .pdh{flex-direction:column;text-align:center}.fl1,.fl2{display:none}
+}
 </style>
 </head>
 <body>
 
+<!-- TOAST -->
 <div id="toast"><span id="t-ico">✓</span><span id="t-msg"></span></div>
 
 <!-- MODALS -->
-<div class="overlay" id="modal-prog"><div class="modal" id="modal-prog-content"></div></div>
-<div class="overlay" id="modal-invoice"><div class="modal" id="modal-invoice-content"></div></div>
-<div class="overlay" id="modal-blog"><div class="modal" id="modal-blog-content"></div></div>
+<div class="modal-overlay" id="overlay-prog">
+  <div class="modal" id="modal-prog-content"></div>
+</div>
+<div class="modal-overlay" id="overlay-invoice">
+  <div class="modal" id="modal-invoice-content"></div>
+</div>
+<div class="modal-overlay" id="overlay-blog">
+  <div class="modal" id="modal-blog-content"></div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -324,7 +344,7 @@ footer{background:var(--black);padding:64px 60px 28px}
     <a href="#blog">Artikel</a>
     <a href="#testimonials">Testimoni</a>
   </div>
-  <button class="btn-nav" onclick="scrollTo('programs')">Lihat Program →</button>
+  <button class="btn-nav" onclick="navScroll('programs')">Lihat Program →</button>
 </nav>
 
 <!-- HERO -->
@@ -334,8 +354,8 @@ footer{background:var(--black);padding:64px 60px 28px}
     <h1>Belajar.<br>Bergerak.<br><span class="red">Berdampak.</span></h1>
     <p class="hero-desc" id="hero-desc">Platform edukasi, pendampingan, dan komunitas terbaik untuk memberdayakan UMKM Indonesia — naik kelas, berdaya saing, dan berdampak nyata.</p>
     <div class="hero-cta">
-      <button class="btn-primary" onclick="scrollTo('programs')">Mulai Belajar Gratis →</button>
-      <button class="btn-outline" onclick="scrollTo('how')">Cara Kerja</button>
+      <button class="btn-primary" onclick="navScroll('programs')">Mulai Belajar Gratis →</button>
+      <button class="btn-outline" onclick="navScroll('how')">Cara Kerja</button>
     </div>
     <div class="stats-row">
       <div class="stat"><div class="stat-val" id="s-member">10K+</div><div class="stat-lbl">Member Aktif</div></div>
@@ -374,12 +394,12 @@ footer{background:var(--black);padding:64px 60px 28px}
 </div>
 
 <!-- COUNTER -->
-<div class="counter-section">
+<div class="counter-sec">
   <div class="counter-grid">
-    <div class="counter-item"><span class="counter-ico">🎓</span><div class="counter-val" data-target="10000" data-suffix="+" id="c1">0</div><div class="counter-lbl">Member Aktif Belajar</div></div>
-    <div class="counter-item"><span class="counter-ico">📚</span><div class="counter-val" data-target="250" data-suffix="+" id="c2">0</div><div class="counter-lbl">Program Tersedia</div></div>
-    <div class="counter-item"><span class="counter-ico">👨‍💼</span><div class="counter-val" data-target="100" data-suffix="+" id="c3">0</div><div class="counter-lbl">Mentor Berpengalaman</div></div>
-    <div class="counter-item"><span class="counter-ico">📈</span><div class="counter-val" data-target="98" data-suffix="%" id="c4">0</div><div class="counter-lbl">Tingkat Kepuasan</div></div>
+    <div class="counter-item"><span class="counter-ico">🎓</span><div class="counter-val" id="c1" data-target="10000" data-suffix="+">0</div><div class="counter-lbl">Member Aktif Belajar</div></div>
+    <div class="counter-item"><span class="counter-ico">📚</span><div class="counter-val" id="c2" data-target="250" data-suffix="+">0</div><div class="counter-lbl">Program Tersedia</div></div>
+    <div class="counter-item"><span class="counter-ico">👨‍💼</span><div class="counter-val" id="c3" data-target="100" data-suffix="+">0</div><div class="counter-lbl">Mentor Berpengalaman</div></div>
+    <div class="counter-item"><span class="counter-ico">📈</span><div class="counter-val" id="c4" data-target="98" data-suffix="%">0</div><div class="counter-lbl">Tingkat Kepuasan</div></div>
   </div>
 </div>
 
@@ -389,14 +409,14 @@ footer{background:var(--black);padding:64px 60px 28px}
     <div>
       <div class="stag"><div class="stag-bar"></div><span class="stag-txt">Akademi Kami</span></div>
       <h2 class="title">Program <span class="red">Unggulan</span></h2>
-      <p class="title-sub">Pilih program yang sesuai kebutuhan dan klik daftar untuk memulai perjalanan Anda.</p>
+      <p class="title-sub">Pilih program sesuai kebutuhan — klik Daftar untuk mulai perjalanan Anda.</p>
     </div>
     <a href="#" class="see-all">Lihat Semua →</a>
   </div>
   <div class="prog-grid" id="prog-grid">
-    <div style="height:280px;border-radius:16px" class="skel"></div>
-    <div style="height:280px;border-radius:16px" class="skel"></div>
-    <div style="height:280px;border-radius:16px" class="skel"></div>
+    <div style="height:280px" class="skel"></div>
+    <div style="height:280px" class="skel"></div>
+    <div style="height:280px" class="skel"></div>
   </div>
 </section>
 
@@ -404,10 +424,10 @@ footer{background:var(--black);padding:64px 60px 28px}
 <section id="how">
   <div style="max-width:680px;margin-bottom:52px">
     <div class="stag"><div class="stag-bar"></div><span class="stag-txt">Cara Kerja</span></div>
-    <h2 class="title">Tiga Langkah Menuju<br>UMKM yang <span class="red">Lebih Maju</span></h2>
+    <h2 class="title">Tiga Langkah Menuju UMKM yang <span class="red">Lebih Maju</span></h2>
   </div>
   <div class="how-grid">
-    <div class="how-card"><span class="how-num">01</span><div class="how-step">Langkah 1</div><span class="how-ico">📝</span><div class="how-title">Pilih & Daftar Program</div><div class="how-desc">Temukan program yang sesuai, klik Daftar, isi data, dan lakukan pembayaran. Invoice otomatis dikirim.</div></div>
+    <div class="how-card"><span class="how-num">01</span><div class="how-step">Langkah 1</div><span class="how-ico">📝</span><div class="how-title">Pilih & Daftar Program</div><div class="how-desc">Temukan program yang sesuai, klik Daftar, isi data, dan lakukan pembayaran. Invoice otomatis dibuat.</div></div>
     <div class="how-card"><span class="how-num">02</span><div class="how-step">Langkah 2</div><span class="how-ico">🎓</span><div class="how-title">Belajar Bersama Mentor</div><div class="how-desc">Ikuti sesi kelas online, video on-demand, dan tanya jawab langsung bersama mentor berpengalaman.</div></div>
     <div class="how-card"><span class="how-num">03</span><div class="how-step">Langkah 3</div><span class="how-ico">📈</span><div class="how-title">Terapkan & Naik Kelas</div><div class="how-desc">Implementasikan ilmu, dapatkan pendampingan, dan bergabung di komunitas UMKM aktif untuk terus bertumbuh.</div></div>
   </div>
@@ -423,10 +443,10 @@ footer{background:var(--black);padding:64px 60px 28px}
     </div>
   </div>
   <div class="ment-grid" id="ment-grid">
-    <div style="height:260px;border-radius:16px;background:rgba(255,255,255,.06)" class="skel"></div>
-    <div style="height:260px;border-radius:16px;background:rgba(255,255,255,.06)" class="skel"></div>
-    <div style="height:260px;border-radius:16px;background:rgba(255,255,255,.06)" class="skel"></div>
-    <div style="height:260px;border-radius:16px;background:rgba(255,255,255,.06)" class="skel"></div>
+    <div style="height:260px;background:rgba(255,255,255,.06)" class="skel"></div>
+    <div style="height:260px;background:rgba(255,255,255,.06)" class="skel"></div>
+    <div style="height:260px;background:rgba(255,255,255,.06)" class="skel"></div>
+    <div style="height:260px;background:rgba(255,255,255,.06)" class="skel"></div>
   </div>
 </section>
 
@@ -440,24 +460,24 @@ footer{background:var(--black);padding:64px 60px 28px}
     </div>
   </div>
   <div class="alumni-grid" id="alumni-grid">
-    <div style="height:220px;border-radius:16px" class="skel"></div>
-    <div style="height:220px;border-radius:16px" class="skel"></div>
-    <div style="height:220px;border-radius:16px" class="skel"></div>
+    <div style="height:220px" class="skel"></div>
+    <div style="height:220px" class="skel"></div>
+    <div style="height:220px" class="skel"></div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section id="testimonials">
+<section class="testi-bg" id="testimonials">
   <div class="sec-row">
     <div>
       <div class="stag"><div class="stag-bar"></div><span class="stag-txt">Cerita Sukses</span></div>
-      <h2 class="title">Mereka Sudah<br>Merasakan <span class="red">Manfaatnya</span></h2>
+      <h2 class="title">Mereka Sudah Merasakan <span class="red">Manfaatnya</span></h2>
     </div>
   </div>
   <div class="testi-grid" id="testi-grid">
-    <div style="height:200px;border-radius:16px" class="skel"></div>
-    <div style="height:200px;border-radius:16px" class="skel"></div>
-    <div style="height:200px;border-radius:16px" class="skel"></div>
+    <div style="height:200px" class="skel"></div>
+    <div style="height:200px" class="skel"></div>
+    <div style="height:200px" class="skel"></div>
   </div>
 </section>
 
@@ -471,9 +491,9 @@ footer{background:var(--black);padding:64px 60px 28px}
     </div>
   </div>
   <div class="blog-grid" id="blog-grid">
-    <div style="height:300px;border-radius:16px" class="skel"></div>
-    <div style="height:300px;border-radius:16px" class="skel"></div>
-    <div style="height:300px;border-radius:16px" class="skel"></div>
+    <div style="height:300px" class="skel"></div>
+    <div style="height:300px" class="skel"></div>
+    <div style="height:300px" class="skel"></div>
   </div>
 </section>
 
@@ -499,70 +519,74 @@ footer{background:var(--black);padding:64px 60px 28px}
 </footer>
 
 <script>
+/* ── SUPABASE ── */
 const SB_URL='https://rupdpwzlfkvleazohgzp.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cGRwd3psZmt2bGVhem9oZ3pwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NjQ1NTUsImV4cCI6MjA5MzI0MDU1NX0.BR93T03eHnTX7bi_hqinuS16zBcuWTJyRbViiFKDGNk';
 const {createClient}=supabase;
 const db=createClient(SB_URL,SB_KEY);
-let SETTINGS={};
 
-// ── INIT ──
+let SETTINGS={};
+let PROGRAMS=[];
+
+/* ── INIT ── */
 async function init(){
-  await Promise.all([loadSettings(),loadPrograms(),loadMentors(),loadAlumni(),loadTestimonials(),loadBlog()]);
-  initCounter();
+  await loadSettings();
+  await Promise.all([loadPrograms(),loadMentors(),loadAlumni(),loadTestimonials(),loadBlog()]);
+  initCounters();
+  initModalClose();
 }
 
+/* ── SETTINGS ── */
 async function loadSettings(){
   try{
     const {data}=await db.from('site_settings').select('*');
     if(!data)return;
     SETTINGS=Object.fromEntries(data.map(r=>[r.key,r.value]));
-    if(SETTINGS.stat_member) document.getElementById('s-member').textContent=SETTINGS.stat_member;
-    if(SETTINGS.stat_program) document.getElementById('s-program').textContent=SETTINGS.stat_program;
-    if(SETTINGS.stat_mentor) document.getElementById('s-mentor').textContent=SETTINGS.stat_mentor;
-    if(SETTINGS.stat_umkm) document.getElementById('s-umkm').textContent=SETTINGS.stat_umkm;
-    if(SETTINGS.hero_desc) document.getElementById('hero-desc').textContent=SETTINGS.hero_desc;
+    if(SETTINGS.stat_member)document.getElementById('s-member').textContent=SETTINGS.stat_member;
+    if(SETTINGS.stat_program)document.getElementById('s-program').textContent=SETTINGS.stat_program;
+    if(SETTINGS.stat_mentor)document.getElementById('s-mentor').textContent=SETTINGS.stat_mentor;
+    if(SETTINGS.stat_umkm)document.getElementById('s-umkm').textContent=SETTINGS.stat_umkm;
+    if(SETTINGS.hero_desc)document.getElementById('hero-desc').textContent=SETTINGS.hero_desc;
   }catch(e){}
 }
 
-// ── COUNTER ANIMATION ──
-function initCounter(){
+/* ── COUNTER ANIMATION ── */
+function initCounters(){
   const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        const el=e.target;
-        const target=parseInt(el.dataset.target);
-        const suffix=el.dataset.suffix||'';
-        let start=0;
-        const step=Math.ceil(target/80);
-        const timer=setInterval(()=>{
-          start+=step;
-          if(start>=target){start=target;clearInterval(timer);}
-          el.textContent=(start>=1000?(start/1000).toFixed(1)+'K':start)+suffix;
-        },20);
-        obs.unobserve(el);
-      }
+    entries.forEach(el=>{
+      if(!el.isIntersecting)return;
+      const t=parseInt(el.target.dataset.target)||0;
+      const s=el.target.dataset.suffix||'';
+      let n=0,step=Math.ceil(t/80);
+      const timer=setInterval(()=>{
+        n=Math.min(n+step,t);
+        el.target.textContent=(n>=1000?Math.round(n/1000)+'K':n)+s;
+        if(n>=t)clearInterval(timer);
+      },20);
+      obs.unobserve(el.target);
     });
   },{threshold:.3});
   document.querySelectorAll('.counter-val').forEach(el=>obs.observe(el));
 }
 
-// ── PROGRAMS ──
+/* ── PROGRAMS ── */
 async function loadPrograms(){
   try{
     const {data}=await db.from('programs').select('*').eq('aktif',true).order('urutan');
     if(!data?.length)return;
-    document.getElementById('prog-grid').innerHTML=data.map(p=>`
-      <div class="prog-card" style="opacity:0;transform:translateY(24px);transition:all .5s">
+    PROGRAMS=data;
+    document.getElementById('prog-grid').innerHTML=data.map((p,i)=>`
+      <div class="prog-card" data-idx="${i}" style="opacity:0;transform:translateY(24px);transition:all .5s" onclick="openProgram(${i})">
         <div class="prog-thumb" style="background:${p.warna_bg}">${p.emoji}
           <span class="prog-cat-badge" style="background:${p.warna_cat}">${p.kategori}</span>
-          <span class="prog-level">${p.level}</span>
+          <span class="prog-level">${p.level||'Pemula'}</span>
         </div>
         <div class="prog-body">
           <div class="prog-title">${p.judul}</div>
-          <div class="prog-desc">${(p.deskripsi||'').substring(0,80)}...</div>
+          <div class="prog-desc">${(p.deskripsi||'').substring(0,75)}...</div>
           <div class="prog-info">
-            <div class="prog-info-item">⏱ ${p.durasi||'Self-paced'}</div>
-            <div class="prog-info-item">👥 ${p.peserta>=1000?(p.peserta/1000).toFixed(1)+'K':p.peserta} peserta</div>
+            <span class="prog-info-item">⏱ ${p.durasi||'Self-paced'}</span>
+            <span class="prog-info-item">👥 ${p.peserta>=1000?(p.peserta/1000).toFixed(1)+'K':p.peserta||0} peserta</span>
           </div>
           <div class="prog-meta">
             <div class="prog-author"><div class="prog-av">${p.mentor_inisial||'M'}</div>${p.mentor_nama||'Mentor'}</div>
@@ -570,115 +594,125 @@ async function loadPrograms(){
           </div>
           <div class="prog-footer">
             <div class="prog-price ${p.harga===0?'free':''}">${p.harga===0?'GRATIS':'Rp '+p.harga.toLocaleString('id-ID')}</div>
-            <button class="prog-btn-daftar" onclick='openProgram(${JSON.stringify(p)})'>Daftar Sekarang</button>
+            <button class="prog-btn-daftar" onclick="event.stopPropagation();openProgram(${i})">Daftar Sekarang</button>
           </div>
         </div>
       </div>`).join('');
     anim('.prog-card');
-  }catch(e){console.error(e)}
+  }catch(e){console.error('loadPrograms:',e)}
 }
 
-// ── OPEN PROGRAM MODAL ──
-function openProgram(p){
-  const el=document.getElementById('modal-prog-content');
-  el.innerHTML=`
+/* ── OPEN PROGRAM MODAL ── */
+function openProgram(idx){
+  const p=PROGRAMS[idx];
+  if(!p)return;
+  const isFree=p.harga===0;
+  document.getElementById('modal-prog-content').innerHTML=`
     <div class="modal-head">
       <div class="modal-title">Detail Program</div>
-      <button class="modal-close" onclick="closeModal('modal-prog')">✕</button>
+      <button class="modal-close" onclick="closeOverlay('overlay-prog')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="prog-detail-header">
+      <div class="pdh">
         <div class="pdh-emoji">${p.emoji}</div>
         <div class="pdh-info">
           <div class="pdh-cat">${p.kategori}</div>
           <div class="pdh-title">${p.judul}</div>
           <div class="pdh-meta">
-            <span class="pdh-meta-item">⏱ ${p.durasi||'Self-paced'}</span>
-            <span class="pdh-meta-item">📊 ${p.level}</span>
-            <span class="pdh-meta-item">👥 ${p.peserta>=1000?(p.peserta/1000).toFixed(1)+'K':p.peserta} peserta</span>
+            <span>⏱ ${p.durasi||'Self-paced'}</span>
+            <span>📊 ${p.level||'Pemula'}</span>
+            <span>👥 ${p.peserta>=1000?(p.peserta/1000).toFixed(1)+'K':p.peserta||0} peserta</span>
           </div>
         </div>
       </div>
-      <p class="prog-detail-desc">${p.deskripsi_panjang||p.deskripsi||''}</p>
-      <div class="prog-detail-price">
-        <div><div class="pdp-label">Harga Program</div><div class="pdp-price ${p.harga===0?'free':''}">${p.harga===0?'GRATIS':'Rp '+p.harga.toLocaleString('id-ID')}</div></div>
+      <p class="prog-desc-long">${p.deskripsi_panjang||p.deskripsi||''}</p>
+      <div class="pdp-box">
+        <div><div class="pdp-label">Harga Program</div><div class="pdp-price ${isFree?'free':''}">${isFree?'GRATIS':'Rp '+p.harga.toLocaleString('id-ID')}</div></div>
         <div style="font-family:var(--body);font-size:11px;color:var(--gray)">Mentor: <strong>${p.mentor_nama||'-'}</strong></div>
       </div>
-      <div id="form-step">
-        <div style="font-family:var(--head);font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px">📝 Isi Data Pendaftaran</div>
-        <div class="fg2c">
-          <div class="fg"><label>Nama Lengkap *</label><input id="p-nama" placeholder="Nama Anda" required></div>
-          <div class="fg"><label>No. WhatsApp *</label><input id="p-wa" placeholder="08xxxxxxxxxx" required></div>
-        </div>
-        <div class="fg"><label>Email *</label><input type="email" id="p-email" placeholder="email@contoh.com" required></div>
-        <div class="fg2c">
-          <div class="fg"><label>Jenis Usaha</label>
-            <select id="p-usaha">
-              <option value="">Pilih jenis usaha</option>
-              <option>Kuliner / F&B</option><option>Fashion & Tekstil</option>
-              <option>Kerajinan Tangan</option><option>Pertanian</option>
-              <option>Perdagangan / Retail</option><option>Jasa</option><option>Lainnya</option>
-            </select>
-          </div>
-          <div class="fg"><label>Kota / Kabupaten</label><input id="p-kota" placeholder="Kota Anda"></div>
-        </div>
-        <div class="form-err" id="p-err"></div>
-        <button class="btn-submit" id="p-btn" onclick='submitOrder(${JSON.stringify(p)})'>
-          <span id="p-txt">${p.harga===0?'Daftar Gratis →':'Lanjut ke Pembayaran →'}</span>
-          <span id="p-load" style="display:none">⏳ Memproses...</span>
-        </button>
-        <p class="form-note">🔒 Data Anda aman dan tidak akan disebarkan ke pihak lain.</p>
+      <div class="form-section-title">📝 Isi Data Pendaftaran</div>
+      <div class="fg2c">
+        <div class="fg"><label>Nama Lengkap *</label><input type="text" id="p-nama" placeholder="Nama Anda"></div>
+        <div class="fg"><label>No. WhatsApp *</label><input type="tel" id="p-wa" placeholder="08xxxxxxxxxx"></div>
       </div>
+      <div class="fg"><label>Email *</label><input type="email" id="p-email" placeholder="email@contoh.com"></div>
+      <div class="fg2c">
+        <div class="fg"><label>Jenis Usaha</label>
+          <select id="p-usaha">
+            <option value="">Pilih jenis usaha</option>
+            <option>Kuliner / F&B</option><option>Fashion & Tekstil</option>
+            <option>Kerajinan Tangan</option><option>Pertanian</option>
+            <option>Perdagangan / Retail</option><option>Jasa</option><option>Lainnya</option>
+          </select>
+        </div>
+        <div class="fg"><label>Kota / Kabupaten</label><input type="text" id="p-kota" placeholder="Kota Anda"></div>
+      </div>
+      <div class="form-err" id="p-err"></div>
+      <button class="btn-submit" id="p-btn" onclick="submitOrder(${idx})">
+        <span id="p-txt">${isFree?'Daftar Gratis →':'Lanjut ke Pembayaran →'}</span>
+        <span id="p-load" style="display:none">⏳ Memproses...</span>
+      </button>
+      <p class="form-note">🔒 Data Anda aman dan tidak akan disebarkan ke pihak lain.</p>
     </div>`;
-  showModal('modal-prog');
+  openOverlay('overlay-prog');
 }
 
-// ── SUBMIT ORDER ──
-async function submitOrder(p){
-  const nama=document.getElementById('p-nama').value.trim();
-  const wa=document.getElementById('p-wa').value.trim();
-  const email=document.getElementById('p-email').value.trim();
-  const usaha=document.getElementById('p-usaha').value;
-  const kota=document.getElementById('p-kota').value.trim();
-  const err=document.getElementById('p-err');
-  if(!nama||!wa||!email){err.textContent='Nama, WhatsApp, dan Email wajib diisi.';err.style.display='block';return;}
+/* ── SUBMIT ORDER ── */
+async function submitOrder(idx){
+  const p=PROGRAMS[idx];
+  if(!p)return;
+  const nama=(document.getElementById('p-nama')?.value||'').trim();
+  const wa=(document.getElementById('p-wa')?.value||'').trim();
+  const email=(document.getElementById('p-email')?.value||'').trim();
+  const usaha=document.getElementById('p-usaha')?.value||'';
+  const kota=(document.getElementById('p-kota')?.value||'').trim();
+  const errEl=document.getElementById('p-err');
+  if(!nama||!wa||!email){
+    errEl.textContent='Nama, WhatsApp, dan Email wajib diisi.';
+    errEl.style.display='block';return;
+  }
   const btn=document.getElementById('p-btn');
   const txt=document.getElementById('p-txt');
   const load=document.getElementById('p-load');
-  btn.disabled=true;txt.style.display='none';load.style.display='inline';err.style.display='none';
+  btn.disabled=true;txt.style.display='none';load.style.display='inline';errEl.style.display='none';
   const invNo='INV-'+Date.now()+'-'+Math.random().toString(36).substr(2,4).toUpperCase();
   try{
     const {error}=await db.from('orders').insert([{
       invoice_no:invNo,
-      program_id:p.id,program_judul:p.judul,program_harga:p.harga,
-      nama,email,whatsapp:wa,kota,jenis_usaha:usaha,
-      status:p.harga===0?'lunas':'pending'
+      program_id:p.id,
+      program_judul:p.judul,
+      program_harga:p.harga||0,
+      nama,email,
+      whatsapp:wa,
+      kota,jenis_usaha:usaha,
+      status:(p.harga||0)===0?'lunas':'pending'
     }]);
     if(error)throw error;
-    closeModal('modal-prog');
-    showInvoice({invNo,p,nama,email,wa,kota,usaha});
+    closeOverlay('overlay-prog');
+    showInvoice(invNo,p,nama,email,wa);
     showToast('✓ Pendaftaran berhasil!','ok');
   }catch(e){
-    err.textContent='Gagal: '+(e.message||'Coba lagi.');err.style.display='block';
+    errEl.textContent='Gagal: '+(e.message||'Coba lagi.');
+    errEl.style.display='block';
     btn.disabled=false;txt.style.display='inline';load.style.display='none';
   }
 }
 
-// ── SHOW INVOICE ──
-function showInvoice({invNo,p,nama,email,wa}){
+/* ── INVOICE ── */
+function showInvoice(invNo,p,nama,email,wa){
   const bank=SETTINGS.bank_name||'BCA';
   const bankNo=SETTINGS.bank_no||'1234567890';
   const bankAn=SETTINGS.bank_atas_nama||'UMKM Penggerak Indonesia';
   const waAdmin=SETTINGS.whatsapp_admin||'6281234567890';
-  const isFree=p.harga===0;
-  const el=document.getElementById('modal-invoice-content');
-  el.innerHTML=`
+  const isFree=(p.harga||0)===0;
+  const tgl=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('modal-invoice-content').innerHTML=`
     <div class="modal-head">
       <div class="modal-title">🧾 Invoice Pendaftaran</div>
-      <button class="modal-close" onclick="closeModal('modal-invoice')">✕</button>
+      <button class="modal-close" onclick="closeOverlay('overlay-invoice')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="invoice-wrap" id="invoice-print">
+      <div id="inv-print">
         <div class="inv-header">
           <div class="inv-logo">UMKM Penggerak Indonesia<span>Belajar. Bergerak. Berdampak.</span></div>
           <div class="inv-no"><span>Nomor Invoice</span>${invNo}</div>
@@ -689,77 +723,75 @@ function showInvoice({invNo,p,nama,email,wa}){
             <div class="inv-row"><span class="inv-row-label">Nama</span><span class="inv-row-val">${nama}</span></div>
             <div class="inv-row"><span class="inv-row-label">Email</span><span class="inv-row-val">${email}</span></div>
             <div class="inv-row"><span class="inv-row-label">WhatsApp</span><span class="inv-row-val">${wa}</span></div>
-            <div class="inv-row"><span class="inv-row-label">Tanggal</span><span class="inv-row-val">${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</span></div>
+            <div class="inv-row"><span class="inv-row-label">Tanggal</span><span class="inv-row-val">${tgl}</span></div>
           </div>
           <div class="inv-section">
             <div class="inv-section-title">Detail Program</div>
             <div class="inv-row"><span class="inv-row-label">Program</span><span class="inv-row-val">${p.judul}</span></div>
-            <div class="inv-row"><span class="inv-row-label">Kategori</span><span class="inv-row-val">${p.kategori}</span></div>
+            <div class="inv-row"><span class="inv-row-label">Kategori</span><span class="inv-row-val">${p.kategori||'-'}</span></div>
             <div class="inv-row"><span class="inv-row-label">Mentor</span><span class="inv-row-val">${p.mentor_nama||'-'}</span></div>
             <div class="inv-row"><span class="inv-row-label">Durasi</span><span class="inv-row-val">${p.durasi||'Self-paced'}</span></div>
           </div>
           <div class="inv-total">
             <span class="inv-total-label">Total Pembayaran</span>
-            <span class="inv-total-val">${isFree?'GRATIS':'Rp '+p.harga.toLocaleString('id-ID')}</span>
+            <span class="inv-total-val">${isFree?'GRATIS':'Rp '+(p.harga||0).toLocaleString('id-ID')}</span>
           </div>
-          ${isFree?`<div style="background:#E8F5E9;border-radius:12px;padding:16px;margin-top:16px;font-family:var(--body);font-size:13px;color:#2E7D32;text-align:center">✅ Program ini GRATIS! Anda langsung dapat mengakses materi. Tim kami akan menghubungi via WhatsApp.</div>`:`
-          <div class="inv-bank">
-            <div class="inv-bank-title">💳 Informasi Pembayaran (Transfer Manual)</div>
-            <div class="inv-bank-detail">
-              Bank: <strong>${bank}</strong><br>
-              No. Rekening: <strong>${bankNo}</strong><br>
-              Atas Nama: <strong>${bankAn}</strong><br>
-              Nominal: <strong>Rp ${p.harga.toLocaleString('id-ID')}</strong><br>
-              Berita Transfer: <strong>${invNo}</strong>
+          ${isFree
+            ?`<div class="inv-free">✅ Program ini GRATIS! Tim kami akan menghubungi Anda via WhatsApp dalam 24 jam untuk info akses materi.</div>`
+            :`<div class="inv-bank">
+              <div class="inv-bank-title">💳 Informasi Transfer Pembayaran</div>
+              <div class="inv-bank-detail">
+                Bank: <strong>${bank}</strong><br>
+                No. Rekening: <strong>${bankNo}</strong><br>
+                Atas Nama: <strong>${bankAn}</strong><br>
+                Nominal Transfer: <strong>Rp ${(p.harga||0).toLocaleString('id-ID')}</strong><br>
+                Berita Transfer: <strong>${invNo}</strong>
+              </div>
             </div>
-          </div>
-          <div class="inv-status">⏳ Menunggu Konfirmasi Pembayaran</div>`}
+            <div class="inv-status">⏳ Menunggu Konfirmasi Pembayaran</div>`
+          }
         </div>
       </div>
       <div class="inv-actions">
-        <button class="btn-print" onclick="printInvoice()">🖨️ Print / Simpan PDF</button>
-        ${!isFree?`<button class="btn-wa" onclick="konfirmasiWA('${invNo}','${p.judul}',${p.harga},'${wa}','${waAdmin}')">📱 Konfirmasi via WhatsApp</button>`:''}
+        <button class="btn-print" onclick="printInv()">🖨️ Print / Simpan PDF</button>
+        ${!isFree?`<button class="btn-wa" onclick="konfirmasiWA('${invNo}','${encodeURIComponent(p.judul)}',${p.harga||0},'${waAdmin}')">📱 Konfirmasi via WA</button>`:''}
       </div>
     </div>`;
-  showModal('modal-invoice');
+  openOverlay('overlay-invoice');
 }
 
-function printInvoice(){
-  const content=document.getElementById('invoice-print').innerHTML;
-  const win=window.open('','_blank');
-  win.document.write(`<html><head><title>Invoice UMKM Penggerak</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',sans-serif;background:#f7f7f7;padding:20px}
-    .inv-header{background:#E30613;color:#fff;padding:28px;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:center}
-    .inv-logo{font-family:'Poppins',sans-serif;font-size:18px;font-weight:900}
-    .inv-logo span{opacity:.7;font-size:11px;display:block;font-weight:400;margin-top:2px}
-    .inv-no{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;text-align:right}
-    .inv-no span{font-size:10px;opacity:.7;display:block;margin-bottom:4px}
-    .inv-body{background:#FAFAFA;padding:28px;border-radius:0 0 16px 16px}
-    .inv-section{margin-bottom:20px}
-    .inv-section-title{font-family:'Poppins',sans-serif;font-size:10px;font-weight:800;color:#6D6E71;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
-    .inv-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E5E5E5}
-    .inv-row-label{font-size:13px;color:#6D6E71}
-    .inv-row-val{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:#111}
-    .inv-total{background:#111;color:#fff;padding:16px 20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
-    .inv-total-label{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600}
-    .inv-total-val{font-family:'Poppins',sans-serif;font-size:20px;font-weight:900}
-    .inv-bank{background:#fff;border:1.5px solid #E5E5E5;border-radius:12px;padding:16px;margin-top:16px}
-    .inv-bank-title{font-family:'Poppins',sans-serif;font-size:11px;font-weight:800;color:#111;margin-bottom:10px}
-    .inv-bank-detail{font-size:13px;color:#6D6E71;line-height:1.8}
-    .inv-bank-detail strong{color:#111;font-weight:700}
-    .inv-status{display:inline-flex;background:#FFF8E1;color:#F57F17;font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;padding:4px 12px;border-radius:99px;margin-top:12px}
-    </style></head><body>${content}</body></html>`);
-  win.document.close();
-  setTimeout(()=>win.print(),500);
+function printInv(){
+  const content=document.getElementById('inv-print')?.innerHTML||'';
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Invoice UMKM Penggerak</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',sans-serif;background:#f7f7f7;padding:24px;max-width:600px;margin:0 auto}
+  .inv-header{background:#E30613;color:#fff;padding:28px;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:center}
+  .inv-logo{font-family:'Poppins',sans-serif;font-size:17px;font-weight:900}.inv-logo span{opacity:.7;font-size:11px;display:block;font-weight:400;margin-top:2px}
+  .inv-no{font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;text-align:right}.inv-no span{font-size:10px;opacity:.7;display:block;margin-bottom:4px}
+  .inv-body{background:#fff;padding:28px;border-radius:0 0 16px 16px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+  .inv-section{margin-bottom:20px}.inv-section-title{font-family:'Poppins',sans-serif;font-size:10px;font-weight:800;color:#6D6E71;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+  .inv-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #eee}.inv-row:last-child{border:none}
+  .inv-row-label{font-size:13px;color:#6D6E71}.inv-row-val{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:#111}
+  .inv-total{background:#111;color:#fff;padding:16px 20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+  .inv-total-label{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600}.inv-total-val{font-family:'Poppins',sans-serif;font-size:20px;font-weight:900}
+  .inv-bank{background:#F8FAFC;border:1.5px solid #E5E5E5;border-radius:12px;padding:16px;margin-top:16px}
+  .inv-bank-title{font-family:'Poppins',sans-serif;font-size:11px;font-weight:800;color:#111;margin-bottom:10px}
+  .inv-bank-detail{font-size:13px;color:#6D6E71;line-height:2}.inv-bank-detail strong{color:#111;font-weight:700}
+  .inv-status{display:inline-block;background:#FFF8E1;color:#F57F17;font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;padding:5px 12px;border-radius:99px;margin-top:12px}
+  .inv-free{background:#E8F5E9;border-radius:12px;padding:16px;margin-top:16px;font-size:13px;color:#2E7D32;text-align:center;line-height:1.6}
+  </style></head><body>${content}</body></html>`);
+  w.document.close();
+  setTimeout(()=>{w.focus();w.print();},600);
 }
 
-function konfirmasiWA(invNo,program,harga,wa,waAdmin){
-  const msg=`Halo, saya ingin konfirmasi pembayaran:\n\n*Invoice:* ${invNo}\n*Program:* ${program}\n*Nominal:* Rp ${harga.toLocaleString('id-ID')}\n\nTerlampir bukti transfer saya.`;
-  window.open(`https://wa.me/${waAdmin}?text=${encodeURIComponent(msg)}`,'_blank');
+function konfirmasiWA(invNo,programEnc,harga,waAdmin){
+  const program=decodeURIComponent(programEnc);
+  const msg=`Halo Admin UMKM Penggerak 👋\n\nSaya ingin konfirmasi pembayaran:\n\n📋 *Invoice:* ${invNo}\n📚 *Program:* ${program}\n💰 *Nominal:* Rp ${Number(harga).toLocaleString('id-ID')}\n\nTerlampir bukti transfer saya. Mohon dikonfirmasi. Terima kasih!`;
+  window.open('https://wa.me/'+waAdmin+'?text='+encodeURIComponent(msg),'_blank');
 }
 
-// ── MENTORS ──
+/* ── MENTORS ── */
 async function loadMentors(){
   try{
     const {data}=await db.from('mentors').select('*').eq('aktif',true).order('urutan');
@@ -769,19 +801,19 @@ async function loadMentors(){
         <div class="ment-av" style="background:${m.warna_avatar}">${m.emoji}</div>
         <span class="ment-spec">${m.spesialisasi}</span>
         <div class="ment-name">${m.nama}</div>
-        <div class="ment-role">${m.peran}</div>
+        <div class="ment-role">${m.peran||''}</div>
         <div class="ment-stats">
           <div><div class="ms-val">⭐ ${m.rating}</div><div class="ms-lbl">Rating</div></div>
           <div style="width:1px;background:rgba(255,255,255,.08)"></div>
           <div><div class="ms-val">${m.peserta>=1000?(m.peserta/1000).toFixed(1)+'K':m.peserta}</div><div class="ms-lbl">Peserta</div></div>
         </div>
-        <button class="ment-btn">Lihat Profil</button>
+        <button class="ment-btn" onclick="navScroll('programs')">Lihat Program</button>
       </div>`).join('');
     anim('.ment-card');
-  }catch(e){}
+  }catch(e){console.error('loadMentors:',e)}
 }
 
-// ── ALUMNI ──
+/* ── ALUMNI ── */
 async function loadAlumni(){
   try{
     const {data}=await db.from('alumni').select('*').eq('aktif',true).order('created_at');
@@ -789,26 +821,26 @@ async function loadAlumni(){
     document.getElementById('alumni-grid').innerHTML=data.map(a=>`
       <div class="alumni-card" style="opacity:0;transform:translateY(24px);transition:all .5s">
         <div class="alumni-head">
-          <div class="alumni-av" style="background:${a.warna_bg}">${a.foto_emoji}</div>
+          <div class="alumni-av" style="background:${a.warna_bg||'#EFF6FF'}">${a.foto_emoji||'🧑‍💼'}</div>
           <div>
             <div class="alumni-name">${a.nama}</div>
-            <div class="alumni-usaha">${a.usaha}</div>
-            <div class="alumni-kota">📍 ${a.kota}</div>
+            <div class="alumni-usaha">${a.usaha||''}</div>
+            <div class="alumni-kota">📍 ${a.kota||''}</div>
           </div>
         </div>
-        <p class="alumni-pencapaian">"${a.pencapaian}"</p>
+        <p class="alumni-pencapaian">"${a.pencapaian||''}"</p>
         <div class="alumni-omzet">
-          <div class="omzet-item"><div class="omzet-label">Sebelum</div><div class="omzet-val">${a.omzet_sebelum}</div></div>
+          <div class="omzet-item"><div class="omzet-label">Sebelum</div><div class="omzet-val">${a.omzet_sebelum||'-'}</div></div>
           <div class="omzet-arrow">→</div>
-          <div class="omzet-item"><div class="omzet-label">Sesudah</div><div class="omzet-val" style="color:var(--red)">${a.omzet_sesudah}</div></div>
+          <div class="omzet-item"><div class="omzet-label">Sesudah</div><div class="omzet-val" style="color:var(--red)">${a.omzet_sesudah||'-'}</div></div>
         </div>
-        <div class="alumni-program">📚 ${a.program_diikuti}</div>
+        <div class="alumni-program">📚 ${a.program_diikuti||''}</div>
       </div>`).join('');
     anim('.alumni-card');
-  }catch(e){}
+  }catch(e){console.error('loadAlumni:',e)}
 }
 
-// ── TESTIMONIALS ──
+/* ── TESTIMONIALS ── */
 async function loadTestimonials(){
   try{
     const {data}=await db.from('testimonials').select('*').eq('aktif',true).order('created_at');
@@ -816,75 +848,107 @@ async function loadTestimonials(){
     document.getElementById('testi-grid').innerHTML=data.map(t=>`
       <div class="testi-card ${t.featured?'featured':''}" style="opacity:0;transform:translateY(24px);transition:all .5s">
         <div class="quote-mark">"</div>
-        <div class="testi-stars">${'★'.repeat(t.bintang||5)}</div>
+        <div class="testi-stars">${'★'.repeat(Math.min(t.bintang||5,5))}</div>
         <p class="testi-text">"${t.isi}"</p>
         <div class="testi-author">
-          <div class="testi-av">${t.emoji}</div>
-          <div><div class="testi-name" style="${t.featured?'color:#fff':''}">${t.nama}</div><div class="testi-role">${t.peran}</div></div>
+          <div class="testi-av">${t.emoji||'😊'}</div>
+          <div>
+            <div class="testi-name">${t.nama}</div>
+            <div class="testi-role">${t.peran||''}</div>
+          </div>
         </div>
       </div>`).join('');
     anim('.testi-card');
-  }catch(e){}
+  }catch(e){console.error('loadTestimonials:',e)}
 }
 
-// ── BLOG ──
+/* ── BLOG ── */
 async function loadBlog(){
   try{
     const {data}=await db.from('blog').select('*').eq('aktif',true).order('created_at',{ascending:false});
     if(!data?.length)return;
-    document.getElementById('blog-grid').innerHTML=data.map(b=>`
-      <div class="blog-card" style="opacity:0;transform:translateY(24px);transition:all .5s" onclick='openBlog(${JSON.stringify(b)})'>
-        <div class="blog-thumb">${b.thumbnail}</div>
+    document.getElementById('blog-grid').innerHTML=data.map((b,i)=>`
+      <div class="blog-card" style="opacity:0;transform:translateY(24px);transition:all .5s" data-blog="${i}">
+        <div class="blog-thumb">${b.thumbnail||'📰'}</div>
         <div class="blog-body">
-          <div class="blog-cat">${b.kategori}</div>
+          <div class="blog-cat">${b.kategori||''}</div>
           <div class="blog-title">${b.judul}</div>
           <div class="blog-sum">${(b.ringkasan||'').substring(0,100)}...</div>
           <div class="blog-meta">
-            <span class="blog-author">✍️ ${b.penulis}</span>
+            <span class="blog-author">✍️ ${b.penulis||''}</span>
             <span class="blog-read">Baca →</span>
           </div>
         </div>
       </div>`).join('');
+    // Attach click handlers after render
+    data.forEach((b,i)=>{
+      document.querySelector(`[data-blog="${i}"]`)?.addEventListener('click',()=>openBlog(b));
+    });
     anim('.blog-card');
-  }catch(e){}
+  }catch(e){console.error('loadBlog:',e)}
 }
 
 function openBlog(b){
+  const tgl=b.created_at?new Date(b.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}):'-';
   document.getElementById('modal-blog-content').innerHTML=`
     <div class="modal-head">
-      <div class="modal-title">Artikel</div>
-      <button class="modal-close" onclick="closeModal('modal-blog')">✕</button>
+      <div class="modal-title">${b.thumbnail||'📰'} Artikel</div>
+      <button class="modal-close" onclick="closeOverlay('overlay-blog')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="blog-modal-cat">${b.kategori}</div>
+      <div class="blog-modal-cat">${b.kategori||''}</div>
       <div class="blog-modal-title">${b.judul}</div>
       <div class="blog-modal-meta">
-        <span>✍️ ${b.penulis}</span>
-        <span>📅 ${new Date(b.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</span>
+        <span>✍️ ${b.penulis||''}</span>
+        <span>📅 ${tgl}</span>
       </div>
-      <div class="blog-modal-content">${b.konten||b.ringkasan||''}</div>
+      <div class="blog-modal-content">${b.konten||b.ringkasan||'Konten belum tersedia.'}</div>
     </div>`;
-  showModal('modal-blog');
+  openOverlay('overlay-blog');
 }
 
-// ── MODAL HELPERS ──
-function showModal(id){document.getElementById(id).classList.add('show');document.body.style.overflow='hidden'}
-function closeModal(id){document.getElementById(id).classList.remove('show');document.body.style.overflow=''}
-document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('show'),document.body.style.overflow=''}));
+/* ── MODALS ── */
+function openOverlay(id){
+  document.getElementById(id).classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeOverlay(id){
+  document.getElementById(id).classList.remove('show');
+  document.body.style.overflow='';
+}
+function initModalClose(){
+  document.querySelectorAll('.modal-overlay').forEach(el=>{
+    el.addEventListener('click',function(e){
+      if(e.target===this)closeOverlay(this.id);
+    });
+  });
+}
 
-// ── HELPERS ──
-function scrollTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
+/* ── HELPERS ── */
+function navScroll(id){
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+}
 function anim(sel){
   const obs=new IntersectionObserver(entries=>{
-    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>{e.target.style.opacity='1';e.target.style.transform='translateY(0)'},i*100);obs.unobserve(e.target)}});
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        setTimeout(()=>{
+          e.target.style.opacity='1';
+          e.target.style.transform='translateY(0)';
+        },i*100);
+        obs.unobserve(e.target);
+      }
+    });
   },{threshold:.1});
   document.querySelectorAll(sel).forEach(el=>obs.observe(el));
 }
 function showToast(msg,type){
   const t=document.getElementById('toast');
   document.getElementById('t-msg').textContent=msg;
+  document.getElementById('t-ico').textContent=type==='ok'?'✓':'✕';
   t.className=type;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove('show'),3500);
 }
 
 init();
