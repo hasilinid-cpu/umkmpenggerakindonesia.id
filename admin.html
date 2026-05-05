@@ -402,44 +402,32 @@ tbody tr:hover td{background:#F8FAFC}
 /* ══════════════════════════════════
    MEDIA UPLOAD
 ══════════════════════════════════ */
-.upload-zone{
-  border:2px dashed var(--border);border-radius:14px;
-  padding:40px;text-align:center;cursor:pointer;
-  transition:all .2s;background:#F8FAFC;
-}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--red);background:#FFF0F0}
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:40px;text-align:center;cursor:pointer;transition:all .25s;background:#F8FAFC;user-select:none}
+.upload-zone:hover{border-color:var(--red);background:#FFF5F5}
+.upload-zone.drag{border-color:var(--red);background:#FFF0F0;transform:scale(1.01);box-shadow:0 0 0 4px rgba(227,6,19,.1)}
 .upload-zone input[type=file]{display:none}
-.uz-icon{font-size:44px;margin-bottom:12px;display:block}
+.uz-icon{font-size:48px;margin-bottom:12px;display:block}
 .uz-title{font-family:var(--head);font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
 .uz-sub{font-size:12px;color:var(--muted)}
-.progress-bar{height:6px;background:var(--border);border-radius:99px;margin-top:14px;overflow:hidden;display:none}
-.progress-fill{height:100%;background:var(--red);border-radius:99px;transition:width .3s}
-.upload-status{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
-.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;padding:20px}
-.media-card{
-  background:#F8FAFC;border:1px solid var(--border);border-radius:12px;
-  overflow:hidden;position:relative;cursor:pointer;transition:all .2s;
-}
-.media-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
-.media-thumb{
-  height:90px;display:flex;align-items:center;justify-content:center;
-  font-size:32px;background:#EEF2FF;overflow:hidden;
-}
-.media-thumb img,.media-thumb video{width:100%;height:100%;object-fit:cover}
-.media-info{padding:8px 10px}
-.media-name{font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
-.media-type{font-size:10px;color:var(--muted)}
-.media-del{
-  position:absolute;top:6px;right:6px;
-  background:rgba(0,0,0,.55);color:#fff;border:none;
-  border-radius:6px;width:24px;height:24px;font-size:12px;
-  display:none;align-items:center;justify-content:center;cursor:pointer;
-}
-.media-card:hover .media-del{display:flex}
-.media-copy{
-  font-size:10px;color:var(--red);background:none;border:none;
-  cursor:pointer;font-family:'Inter',sans-serif;padding:2px 0;display:block;
-}
+.progress-bar{height:8px;background:var(--border);border-radius:99px;margin-top:16px;overflow:hidden;display:none}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--red),#FF6B6B);border-radius:99px;transition:width .3s}
+.upload-status{font-size:12px;color:var(--muted);margin-top:8px;min-height:20px;text-align:center}
+.media-tab-btn.active{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.media-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:all .22s}
+.media-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);border-color:#CBD5E1;transform:translateY(-3px)}
+.media-thumb{height:130px;display:flex;align-items:center;justify-content:center;background:#F1F5F9;overflow:hidden;position:relative}
+.media-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.media-thumb video{width:100%;height:100%;object-fit:cover;display:block}
+.media-type-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;border-radius:6px;font-family:var(--head);text-transform:uppercase;letter-spacing:.05em}
+.media-info{padding:10px 12px 12px}
+.media-name{font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);margin-bottom:2px}
+.media-size{font-size:10px;color:var(--muted);margin-bottom:8px}
+.media-actions{display:flex;gap:6px}
+.media-copy-btn{flex:1;background:#EFF6FF;color:#1D4ED8;border:none;border-radius:7px;padding:6px 4px;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--head);transition:background .2s;text-align:center}
+.media-copy-btn:hover{background:#DBEAFE}
+.media-del-btn{background:#FEF2F2;color:#DC2626;border:none;border-radius:7px;padding:6px 10px;font-size:12px;cursor:pointer;transition:background .2s;flex-shrink:0}
+.media-del-btn:hover{background:#FEE2E2}
 
 /* ══════════════════════════════════
    TOAST
@@ -754,38 +742,58 @@ tbody tr:hover td{background:#F8FAFC}
 
       <!-- ── MEDIA ── -->
       <div class="page" id="page-media">
+        <!-- Upload Zone -->
         <div class="card" style="margin-bottom:20px">
-          <div class="card-header"><div class="card-title">📤 Upload Media</div></div>
+          <div class="card-header">
+            <div class="card-title">📤 Upload Foto & Video</div>
+            <div style="font-size:12px;color:var(--muted)">File akan tampil di section <b>Galeri</b> website</div>
+          </div>
           <div style="padding:20px">
-            <div class="upload-zone" id="drop-zone"
-              onclick="$('file-input').click()"
-              ondragover="ev.preventDefault();this.classList.add('drag')"
-              ondragleave="this.classList.remove('drag')"
-              ondrop="ev.preventDefault();this.classList.remove('drag');uploadFiles(ev.dataTransfer.files)">
-              <input type="file" id="file-input" multiple accept="image/*,video/*" onchange="uploadFiles(this.files)">
+            <div class="upload-zone" id="drop-zone">
+              <input type="file" id="file-input" multiple accept="image/*,video/*">
               <span class="uz-icon">📁</span>
-              <div class="uz-title">Klik atau drag & drop file di sini</div>
-              <div class="uz-sub">Mendukung: JPG, PNG, GIF, WebP, MP4, MOV • Maks 50MB/file</div>
-              <div class="progress-bar" id="prog-bar"><div class="progress-fill" id="prog-fill"></div></div>
+              <div class="uz-title">Klik atau Drag & Drop di sini</div>
+              <div class="uz-sub">Mendukung: JPG, PNG, WebP, GIF, MP4, MOV • Maks 50MB per file</div>
+              <div class="progress-bar" id="prog-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
               <div class="upload-status" id="up-status"></div>
             </div>
           </div>
         </div>
+
+        <!-- Tab Filter -->
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-red btn-sm media-tab-btn active" id="tab-all" onclick="switchMediaTab('all',this)">Semua</button>
+            <button class="btn btn-outline btn-sm media-tab-btn" id="tab-image" onclick="switchMediaTab('image',this)">🖼️ Foto</button>
+            <button class="btn btn-outline btn-sm media-tab-btn" id="tab-video" onclick="switchMediaTab('video',this)">🎬 Video</button>
+          </div>
+          <input class="search-input" placeholder="🔍 Cari nama file..." oninput="filterMedia(this.value)" style="max-width:200px">
+        </div>
+
+        <!-- Media Grid -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">📂 Library Media</div>
-            <div class="card-actions">
-              <input class="search-input" placeholder="🔍 Cari media..." oninput="filterMedia(this.value)">
-              <select class="filter-select" onchange="loadMedia(this.value)">
-                <option value="">Semua Tipe</option>
-                <option value="image">Gambar</option>
-                <option value="video">Video</option>
-              </select>
+            <div id="media-count" style="font-size:12px;color:var(--muted)">Memuat...</div>
+          </div>
+          <div style="padding:16px">
+            <div class="media-grid" id="media-grid">
+              <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted)">
+                <div style="font-size:40px;margin-bottom:12px">📂</div>
+                <div style="font-weight:600;margin-bottom:4px">Belum ada media</div>
+                <div style="font-size:12px">Upload foto atau video di atas untuk mulai</div>
+              </div>
             </div>
           </div>
-          <div class="media-grid" id="media-grid">
-            <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)">Memuat media...</div>
-          </div>
+        </div>
+
+        <!-- Info cara pakai -->
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:16px;margin-top:16px;font-size:13px;color:#1D4ED8">
+          <strong>💡 Cara menggunakan media di website:</strong><br>
+          1. Upload foto/video di atas<br>
+          2. Klik <b>Salin URL</b> pada media yang diinginkan<br>
+          3. Tempel URL tersebut ke kolom <b>URL Thumbnail</b> saat mengedit Program atau Artikel Blog<br>
+          4. Media juga otomatis tampil di section <b>Galeri</b> website
         </div>
       </div>
 
@@ -1162,68 +1170,118 @@ async function loadBlog(){
   :'<tr><td colspan="7" class="empty-td">Belum ada artikel.</td></tr>';
 }
 
-/* ─── MEDIA ─── */
-async function loadMedia(filter=''){
+/* ─── MEDIA UPLOAD ─── */
+let currentMediaFilter='';
+
+function switchMediaTab(filter,btn){
+  currentMediaFilter=filter==='all'?'':filter;
+  document.querySelectorAll('.media-tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  loadMedia(currentMediaFilter);
+}
+
+async function loadMedia(filter){
+  if(filter===undefined)filter=currentMediaFilter;
+  currentMediaFilter=filter||'';
   let q=db.from('media').select('*').eq('aktif',true).order('created_at',{ascending:false});
-  if(filter)q=q.eq('tipe',filter);
-  const {data}=await q;
+  if(currentMediaFilter)q=q.eq('tipe',currentMediaFilter);
+  const {data,error}=await q;
+  if(error){toast('Gagal memuat media: '+error.message,'err');return;}
+  const items=data||[];
+  $('media-count').textContent=items.length+' file';
   const grid=$('media-grid');
-  if(!data?.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)">Belum ada media. Upload file di atas.</div>';return;}
-  grid.innerHTML=data.map(m=>`
-    <div class="media-card">
+  if(!items.length){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted)">
+      <div style="font-size:40px;margin-bottom:12px">📂</div>
+      <div style="font-weight:600;margin-bottom:4px">Belum ada media${currentMediaFilter?' bertipe '+currentMediaFilter:''}</div>
+      <div style="font-size:12px">Upload foto atau video di atas</div>
+    </div>`;
+    return;
+  }
+  grid.innerHTML=items.map(m=>`
+    <div class="media-card" id="mc-${m.id}">
       <div class="media-thumb">
-        ${m.tipe==='video'?`<video src="${m.url}" muted></video>`:`<img src="${m.url}" alt="${esc(m.nama)}" loading="lazy">`}
-        <button class="media-del" onclick='delMedia("${m.id}","${m.storage_path||''}")'>✕</button>
+        ${m.tipe==='video'
+          ?`<video src="${m.url}" muted playsinline preload="metadata"></video>`
+          :`<img src="${m.url}" alt="${esc(m.nama)}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=font-size:40px>🖼️</span>'">`
+        }
+        <span class="media-type-badge">${m.tipe==='video'?'🎬 Video':'🖼️ Foto'}</span>
       </div>
       <div class="media-info">
         <div class="media-name" title="${esc(m.nama)}">${esc(m.nama)}</div>
-        <div class="media-type">${m.tipe||'file'}${m.ukuran?' · '+fmtBytes(m.ukuran):''}</div>
-        <button class="media-copy" onclick="copyURL('${m.url}')">📋 Salin URL</button>
+        <div class="media-size">${m.ukuran?fmtBytes(m.ukuran):'—'}</div>
+        <div class="media-actions">
+          <button class="media-copy-btn" onclick="copyURL('${m.url}')">📋 Salin URL</button>
+          <button class="media-del-btn" onclick="delMedia('${m.id}','${m.storage_path||''}')">🗑️</button>
+        </div>
       </div>
     </div>`).join('');
 }
 
 function filterMedia(q){
   document.querySelectorAll('.media-card').forEach(c=>{
-    const n=c.querySelector('.media-name')?.textContent.toLowerCase()||'';
-    c.style.display=n.includes(q.toLowerCase())?'':'none';
+    const nm=c.querySelector('.media-name')?.textContent.toLowerCase()||'';
+    c.style.display=nm.includes(q.toLowerCase())?'':'none';
   });
 }
 
 async function uploadFiles(files){
-  if(!files?.length)return;
+  if(!files||!files.length)return;
   const bar=$('prog-bar'),fill=$('prog-fill'),st=$('up-status');
-  bar.style.display='block';
-  let done=0;
+  bar.style.display='block';fill.style.width='0%';
+  let done=0,failed=0;
   for(const f of files){
-    if(f.size>50*1024*1024){toast(f.name+' terlalu besar (maks 50MB)','err');continue;}
-    st.textContent='Mengunggah '+f.name+'...';
+    if(f.size>50*1024*1024){
+      toast(f.name+' terlalu besar (maks 50MB)','err');failed++;continue;
+    }
+    if(!f.type.startsWith('image/')&&!f.type.startsWith('video/')){
+      toast(f.name+' bukan gambar/video','err');failed++;continue;
+    }
+    st.textContent='📤 Mengunggah: '+f.name;
     const ext=f.name.split('.').pop().toLowerCase();
-    const path=`${Date.now()}-${Math.random().toString(36).slice(2,7)}.${ext}`;
-    const tipe=f.type.startsWith('video')?'video':'image';
+    const safeName=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path=`uploads/${Date.now()}-${Math.random().toString(36).slice(2,7)}-${safeName}`;
+    const tipe=f.type.startsWith('video/')?'video':'image';
     const {error:ue}=await db.storage.from('media').upload(path,f,{cacheControl:'3600',upsert:false});
-    if(ue){toast('Upload gagal: '+ue.message,'err');continue;}
+    if(ue){toast('❌ '+f.name+': '+ue.message,'err');failed++;
+      fill.style.width=`${((done+failed)/files.length)*100}%`;continue;}
     const {data:{publicUrl}}=db.storage.from('media').getPublicUrl(path);
-    await db.from('media').insert([{nama:f.name,tipe,url:publicUrl,storage_path:path,ukuran:f.size}]);
-    done++;fill.style.width=`${(done/files.length)*100}%`;
+    const {error:ie}=await db.from('media').insert([{
+      nama:f.name,tipe,url:publicUrl,storage_path:path,ukuran:f.size
+    }]);
+    if(ie){toast('❌ DB error: '+ie.message,'err');failed++;}
+    else done++;
+    fill.style.width=`${((done+failed)/files.length)*100}%`;
   }
-  bar.style.display='none';fill.style.width='0%';
-  st.textContent=done?`${done} file berhasil diupload!`:'';
-  if(done){toast(`${done} file diupload ✓`,'ok');loadMedia();}
+  setTimeout(()=>{bar.style.display='none';fill.style.width='0%';},800);
+  st.textContent=done>0?`✅ ${done} file berhasil diupload${failed>0?`, ${failed} gagal`:''}!`
+    :`❌ Semua file gagal diupload.`;
+  if(done>0){toast(`✅ ${done} file diupload!`,'ok');loadMedia();}
 }
 
 async function delMedia(id,path){
-  if(!confirm('Hapus file ini?'))return;
-  if(path)await db.storage.from('media').remove([path]);
+  if(!confirm('Hapus file ini? URL yang sudah digunakan akan rusak.'))return;
+  if(path){await db.storage.from('media').remove([path]);}
   await db.from('media').update({aktif:false}).eq('id',id);
-  toast('File dihapus','ok');loadMedia();
+  const card=document.getElementById('mc-'+id);
+  if(card){card.style.opacity='0';card.style.transform='scale(.9)';setTimeout(()=>card.remove(),200);}
+  toast('File dihapus','ok');
+  const count=document.querySelectorAll('.media-card').length;
+  $('media-count').textContent=count+' file';
 }
 
 function copyURL(url){
-  navigator.clipboard.writeText(url).then(()=>toast('URL disalin ✓','ok'));
+  navigator.clipboard.writeText(url).then(()=>toast('✅ URL disalin! Tempel di kolom thumbnail.','ok'))
+  .catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=url;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    toast('✅ URL disalin!','ok');
+  });
 }
 
 function fmtBytes(b){
+  if(!b)return'—';
   return b>1048576?(b/1048576).toFixed(1)+' MB':b>1024?(b/1024).toFixed(0)+' KB':b+' B';
 }
 
@@ -1522,14 +1580,28 @@ function filterTbl(id,q){
   });
 }
 
-/* ─── DRAG DROP FIX ─── */
+/* ─── DRAG DROP & FILE INPUT INIT ─── */
 document.addEventListener('DOMContentLoaded',()=>{
   const dz=$('drop-zone');
-  if(!dz)return;
-  dz.addEventListener('dragover',ev=>{ev.preventDefault();dz.classList.add('drag');});
-  dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
-  dz.addEventListener('drop',ev=>{ev.preventDefault();dz.classList.remove('drag');uploadFiles(ev.dataTransfer.files);});
-  dz.addEventListener('click',()=>$('file-input').click());
+  const fi=$('file-input');
+  if(!dz||!fi)return;
+
+  // Click to open file picker
+  dz.addEventListener('click',()=>fi.click());
+
+  // File selected via picker
+  fi.addEventListener('change',()=>{if(fi.files?.length)uploadFiles(fi.files);});
+
+  // Drag events
+  dz.addEventListener('dragenter',e=>{e.preventDefault();dz.classList.add('drag');});
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+  dz.addEventListener('dragleave',e=>{
+    if(!dz.contains(e.relatedTarget))dz.classList.remove('drag');
+  });
+  dz.addEventListener('drop',e=>{
+    e.preventDefault();dz.classList.remove('drag');
+    if(e.dataTransfer?.files?.length)uploadFiles(e.dataTransfer.files);
+  });
 });
 
 /* ─── START ─── */

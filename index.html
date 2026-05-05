@@ -341,6 +341,7 @@ footer{background:var(--black);padding:64px 60px 28px}
     <a href="#programs">Akademi</a>
     <a href="#mentors">Mentor</a>
     <a href="#alumni">Alumni</a>
+    <a href="#galeri">Galeri</a>
     <a href="#blog">Artikel</a>
     <a href="#testimonials">Testimoni</a>
   </div>
@@ -497,6 +498,22 @@ footer{background:var(--black);padding:64px 60px 28px}
   </div>
 </section>
 
+<!-- GALERI MEDIA -->
+<section style="background:var(--black)" id="galeri">
+  <div class="sec-row">
+    <div>
+      <div class="stag"><div class="stag-bar"></div><span class="stag-txt" style="color:rgba(255,255,255,.5)">Dokumentasi</span></div>
+      <h2 class="title" style="color:#fff">Galeri <span class="red">Kegiatan</span></h2>
+      <p class="title-sub" style="color:rgba(255,255,255,.45)">Momen dan dokumentasi kegiatan UMKM Penggerak Indonesia.</p>
+    </div>
+  </div>
+  <div id="galeri-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px">
+    <div style="height:180px;background:rgba(255,255,255,.06)" class="skel"></div>
+    <div style="height:180px;background:rgba(255,255,255,.06)" class="skel"></div>
+    <div style="height:180px;background:rgba(255,255,255,.06)" class="skel"></div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-top">
@@ -531,7 +548,7 @@ let PROGRAMS=[];
 /* ── INIT ── */
 async function init(){
   await loadSettings();
-  await Promise.all([loadPrograms(),loadMentors(),loadAlumni(),loadTestimonials(),loadBlog()]);
+  await Promise.all([loadPrograms(),loadMentors(),loadAlumni(),loadTestimonials(),loadBlog(),loadGaleri()]);
   initCounters();
   initModalClose();
 }
@@ -949,6 +966,51 @@ function showToast(msg,type){
   t.className=type;t.classList.add('show');
   clearTimeout(t._t);
   t._t=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+/* ── GALERI ── */
+async function loadGaleri(){
+  try{
+    const {data}=await db.from('media').select('*').eq('aktif',true).order('created_at',{ascending:false}).limit(12);
+    const grid=document.getElementById('galeri-grid');
+    if(!data?.length){
+      grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:rgba(255,255,255,.3)">
+        <div style="font-size:40px;margin-bottom:12px">📸</div>
+        <div>Belum ada foto atau video yang diupload.</div>
+      </div>`;
+      return;
+    }
+    grid.innerHTML=data.map(m=>`
+      <div style="border-radius:14px;overflow:hidden;background:#1E293B;cursor:pointer;transition:transform .25s;aspect-ratio:16/10;position:relative"
+        onmouseover="this.style.transform='scale(1.02)'"
+        onmouseout="this.style.transform='scale(1)'"
+        onclick="openMediaLightbox('${m.url}','${m.tipe}','${esc(m.nama)}')">
+        ${m.tipe==='video'
+          ?`<video src="${m.url}" muted loop playsinline style="width:100%;height:100%;object-fit:cover"></video>
+             <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.5);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px">▶</div>`
+          :`<img src="${m.url}" alt="${esc(m.nama)}" style="width:100%;height:100%;object-fit:cover;display:block"
+              onerror="this.parentElement.style.display='none'">`
+        }
+      </div>`).join('');
+  }catch(e){console.error('loadGaleri:',e);}
+}
+
+/* ── LIGHTBOX ── */
+function openMediaLightbox(url,tipe,nama){
+  const lb=document.createElement('div');
+  lb.id='lightbox';
+  lb.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;flex-direction:column;gap:12px';
+  lb.innerHTML=`
+    <div style="position:relative;max-width:90vw;max-height:80vh">
+      ${tipe==='video'
+        ?`<video src="${url}" controls autoplay style="max-width:90vw;max-height:80vh;border-radius:12px"></video>`
+        :`<img src="${url}" alt="${nama}" style="max-width:90vw;max-height:80vh;object-fit:contain;border-radius:12px;display:block">`
+      }
+    </div>
+    <div style="color:rgba(255,255,255,.6);font-size:13px;font-family:var(--body)">${nama}</div>
+    <button onclick="document.getElementById('lightbox').remove()" style="position:fixed;top:20px;right:20px;background:rgba(255,255,255,.15);border:none;border-radius:50%;width:40px;height:40px;font-size:20px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>`;
+  lb.addEventListener('click',e=>{if(e.target===lb)lb.remove();});
+  document.body.appendChild(lb);
 }
 
 init();
