@@ -317,6 +317,49 @@ footer{background:var(--black);padding:64px 60px 28px}
 </head>
 <body>
 
+<!-- ── FLOATING UPLOAD BUTTON ── -->
+<button id="fab-upload" onclick="toggleUploadPanel()"
+  style="position:fixed;bottom:28px;right:28px;z-index:500;
+         width:56px;height:56px;border-radius:50%;
+         background:var(--red);color:#fff;border:none;
+         font-size:22px;cursor:pointer;
+         box-shadow:0 8px 24px rgba(227,6,19,.4);
+         transition:all .25s;display:flex;align-items:center;justify-content:center;"
+  title="Upload Foto / Video"
+  onmouseover="this.style.transform='scale(1.1)'"
+  onmouseout="this.style.transform='scale(1)'">📸</button>
+
+<!-- ── UPLOAD PANEL ── -->
+<div id="upload-panel"
+  style="position:fixed;bottom:96px;right:28px;z-index:500;
+         width:320px;background:#fff;border-radius:20px;
+         box-shadow:0 20px 60px rgba(0,0,0,.2);
+         border:1px solid var(--border);
+         transform:scale(.9) translateY(10px);opacity:0;
+         pointer-events:none;transition:all .25s;overflow:hidden;">
+  <div style="background:var(--red);padding:16px 20px;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-family:var(--head);font-weight:800;font-size:14px;color:#fff">Upload Media</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px">Foto atau video untuk galeri website</div>
+    </div>
+    <button onclick="toggleUploadPanel()" style="background:rgba(255,255,255,.2);border:none;border-radius:50%;width:28px;height:28px;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+  </div>
+  <div style="padding:16px">
+    <div id="panel-drop-zone"
+      style="border:2px dashed var(--border);border-radius:12px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;background:#F8FAFC">
+      <input type="file" id="panel-file-input" multiple accept="image/*,video/*" style="display:none">
+      <div style="font-size:32px;margin-bottom:8px">📁</div>
+      <div style="font-family:var(--head);font-size:13px;font-weight:700;color:var(--black);margin-bottom:3px">Klik atau drop file di sini</div>
+      <div style="font-size:11px;color:var(--gray)">JPG, PNG, MP4, dll • Maks 50MB</div>
+    </div>
+    <div id="panel-prog-bar" style="height:6px;background:var(--border);border-radius:99px;margin-top:12px;overflow:hidden;display:none">
+      <div id="panel-prog-fill" style="height:100%;background:var(--red);border-radius:99px;width:0%;transition:width .3s"></div>
+    </div>
+    <div id="panel-status" style="font-size:12px;color:var(--gray);margin-top:8px;text-align:center;min-height:16px"></div>
+    <div id="panel-preview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"></div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast"><span id="t-ico">✓</span><span id="t-msg"></span></div>
 
@@ -971,49 +1014,164 @@ function showToast(msg,type){
 /* ── GALERI ── */
 async function loadGaleri(){
   try{
-    const {data}=await db.from('media').select('*').eq('aktif',true).order('created_at',{ascending:false}).limit(12);
+    const {data,error}=await db.from('media').select('*').eq('aktif',true).order('created_at',{ascending:false}).limit(18);
     const grid=document.getElementById('galeri-grid');
+    if(error)throw error;
     if(!data?.length){
       grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:rgba(255,255,255,.3)">
         <div style="font-size:40px;margin-bottom:12px">📸</div>
-        <div>Belum ada foto atau video yang diupload.</div>
+        <div style="font-family:var(--head);font-size:14px;font-weight:600">Belum ada foto atau video.</div>
+        <div style="font-size:12px;margin-top:6px">Upload di Admin Panel → Media Upload</div>
       </div>`;
       return;
     }
-    grid.innerHTML=data.map(m=>`
-      <div style="border-radius:14px;overflow:hidden;background:#1E293B;cursor:pointer;transition:transform .25s;aspect-ratio:16/10;position:relative"
-        onmouseover="this.style.transform='scale(1.02)'"
-        onmouseout="this.style.transform='scale(1)'"
-        onclick="openMediaLightbox('${m.url}','${m.tipe}','${esc(m.nama)}')">
+    // Store data globally for lightbox access
+    window._GALERI = data;
+    grid.innerHTML=data.map((m,i)=>`
+      <div class="galeri-item" data-idx="${i}"
+        style="border-radius:14px;overflow:hidden;background:#1E293B;cursor:pointer;
+               transition:transform .25s,box-shadow .25s;aspect-ratio:16/10;position:relative;">
         ${m.tipe==='video'
-          ?`<video src="${m.url}" muted loop playsinline style="width:100%;height:100%;object-fit:cover"></video>
-             <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.5);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px">▶</div>`
-          :`<img src="${m.url}" alt="${esc(m.nama)}" style="width:100%;height:100%;object-fit:cover;display:block"
-              onerror="this.parentElement.style.display='none'">`
+          ?`<video src="${m.url}" muted loop playsinline preload="metadata"
+               style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"></video>
+             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+               <div style="background:rgba(0,0,0,.55);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:20px">▶️</div>
+             </div>`
+          :`<img src="${m.url}" alt="media"
+               style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"
+               loading="lazy"
+               onerror="this.closest('.galeri-item').style.display='none'">`
         }
       </div>`).join('');
-  }catch(e){console.error('loadGaleri:',e);}
+    // Attach click handlers via JS — no inline onclick
+    document.querySelectorAll('.galeri-item').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{el.style.transform='scale(1.03)';el.style.boxShadow='0 12px 32px rgba(0,0,0,.4)';});
+      el.addEventListener('mouseleave',()=>{el.style.transform='scale(1)';el.style.boxShadow='none';});
+      el.addEventListener('click',()=>{
+        const idx=parseInt(el.dataset.idx);
+        const m=window._GALERI?.[idx];
+        if(m)openLightbox(m.url,m.tipe,m.nama||'');
+      });
+    });
+  }catch(e){
+    console.error('loadGaleri error:',e);
+    document.getElementById('galeri-grid').innerHTML=
+      `<div style="grid-column:1/-1;text-align:center;padding:48px;color:rgba(255,255,255,.3)">Gagal memuat galeri.</div>`;
+  }
 }
 
 /* ── LIGHTBOX ── */
-function openMediaLightbox(url,tipe,nama){
+function openLightbox(url,tipe,nama){
+  // Remove existing lightbox
+  document.getElementById('lb-overlay')?.remove();
   const lb=document.createElement('div');
-  lb.id='lightbox';
-  lb.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;flex-direction:column;gap:12px';
+  lb.id='lb-overlay';
+  lb.style.cssText=`
+    position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9999;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;gap:14px;padding:20px;cursor:zoom-out;
+    animation:lbIn .2s ease;
+  `;
+  const style=document.createElement('style');
+  style.textContent='@keyframes lbIn{from{opacity:0}to{opacity:1}}';
+  document.head.appendChild(style);
+  const media=tipe==='video'
+    ?`<video src="${url}" controls autoplay style="max-width:min(92vw,960px);max-height:75vh;border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,.5)"></video>`
+    :`<img src="${url}" alt="${nama}" style="max-width:min(92vw,960px);max-height:75vh;object-fit:contain;border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,.5);display:block">`;
   lb.innerHTML=`
-    <div style="position:relative;max-width:90vw;max-height:80vh">
-      ${tipe==='video'
-        ?`<video src="${url}" controls autoplay style="max-width:90vw;max-height:80vh;border-radius:12px"></video>`
-        :`<img src="${url}" alt="${nama}" style="max-width:90vw;max-height:80vh;object-fit:contain;border-radius:12px;display:block">`
-      }
-    </div>
-    <div style="color:rgba(255,255,255,.6);font-size:13px;font-family:var(--body)">${nama}</div>
-    <button onclick="document.getElementById('lightbox').remove()" style="position:fixed;top:20px;right:20px;background:rgba(255,255,255,.15);border:none;border-radius:50%;width:40px;height:40px;font-size:20px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>`;
+    <div style="position:relative">${media}</div>
+    ${nama?`<div style="color:rgba(255,255,255,.5);font-size:13px;font-family:var(--body);text-align:center;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nama}</div>`:''}
+    <button id="lb-close" style="position:fixed;top:16px;right:16px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.2);border-radius:50%;width:42px;height:42px;font-size:18px;color:#fff;cursor:pointer;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;transition:background .2s">✕</button>`;
   lb.addEventListener('click',e=>{if(e.target===lb)lb.remove();});
+  lb.querySelector('#lb-close')?.addEventListener('click',()=>lb.remove());
   document.body.appendChild(lb);
+  // ESC to close
+  const escHandler=e=>{if(e.key==='Escape'){lb.remove();document.removeEventListener('keydown',escHandler);}};
+  document.addEventListener('keydown',escHandler);
+}
+
+/* ── FLOATING UPLOAD PANEL ── */
+let panelOpen=false;
+
+function toggleUploadPanel(){
+  panelOpen=!panelOpen;
+  const panel=document.getElementById('upload-panel');
+  const fab=document.getElementById('fab-upload');
+  if(panelOpen){
+    panel.style.opacity='1';
+    panel.style.transform='scale(1) translateY(0)';
+    panel.style.pointerEvents='all';
+    fab.textContent='✕';
+  } else {
+    panel.style.opacity='0';
+    panel.style.transform='scale(.9) translateY(10px)';
+    panel.style.pointerEvents='none';
+    fab.textContent='📸';
+  }
+}
+
+function initUploadPanel(){
+  const dz=document.getElementById('panel-drop-zone');
+  const fi=document.getElementById('panel-file-input');
+  if(!dz||!fi)return;
+  dz.addEventListener('click',()=>fi.click());
+  fi.addEventListener('change',()=>{if(fi.files?.length)panelUpload(fi.files);});
+  dz.addEventListener('dragenter',e=>{e.preventDefault();dz.style.borderColor='var(--red)';dz.style.background='#FFF0F0';});
+  dz.addEventListener('dragover',e=>{e.preventDefault();});
+  dz.addEventListener('dragleave',()=>{dz.style.borderColor='var(--border)';dz.style.background='#F8FAFC';});
+  dz.addEventListener('drop',e=>{
+    e.preventDefault();dz.style.borderColor='var(--border)';dz.style.background='#F8FAFC';
+    if(e.dataTransfer?.files?.length)panelUpload(e.dataTransfer.files);
+  });
+}
+
+async function panelUpload(files){
+  const bar=document.getElementById('panel-prog-bar');
+  const fill=document.getElementById('panel-prog-fill');
+  const status=document.getElementById('panel-status');
+  const preview=document.getElementById('panel-preview');
+  bar.style.display='block';fill.style.width='0%';
+  preview.innerHTML='';
+  let done=0,failed=0;
+  for(const f of files){
+    if(f.size>50*1024*1024){showToast('❌ '+f.name+' terlalu besar (maks 50MB)','err');failed++;continue;}
+    if(!f.type.startsWith('image/')&&!f.type.startsWith('video/')){
+      showToast('❌ Format tidak didukung: '+f.name,'err');failed++;continue;
+    }
+    status.textContent='📤 Mengunggah: '+f.name;
+    const safeName=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path=`uploads/${Date.now()}-${Math.random().toString(36).slice(2,6)}-${safeName}`;
+    const tipe=f.type.startsWith('video/')?'video':'image';
+    const {error:ue}=await db.storage.from('media').upload(path,f,{cacheControl:'3600',upsert:false});
+    if(ue){showToast('❌ Upload gagal: '+ue.message,'err');failed++;continue;}
+    const {data:{publicUrl}}=db.storage.from('media').getPublicUrl(path);
+    const {error:ie}=await db.from('media').insert([{nama:f.name,tipe,url:publicUrl,storage_path:path,ukuran:f.size}]);
+    if(!ie){
+      done++;
+      // Show preview thumbnail
+      const thumb=document.createElement('div');
+      thumb.style.cssText='width:64px;height:64px;border-radius:10px;overflow:hidden;border:2px solid #E30613;flex-shrink:0';
+      if(tipe==='image'){
+        thumb.innerHTML=`<img src="${publicUrl}" style="width:100%;height:100%;object-fit:cover">`;
+      } else {
+        thumb.innerHTML=`<div style="width:100%;height:100%;background:#1E293B;display:flex;align-items:center;justify-content:center;font-size:24px">🎬</div>`;
+      }
+      preview.appendChild(thumb);
+    }
+    fill.style.width=`${((done+failed)/files.length)*100}%`;
+  }
+  status.textContent=done>0?`✅ ${done} file berhasil diupload!${failed>0?' ('+failed+' gagal)':''}`:`❌ Upload gagal.`;
+  if(done>0){
+    showToast(`✅ ${done} file diupload & muncul di galeri!`,'ok');
+    // Reload galeri after short delay
+    setTimeout(()=>loadGaleri(),1500);
+  }
+  setTimeout(()=>{bar.style.display='none';fill.style.width='0%';},2000);
 }
 
 init();
+// Init upload panel after DOM
+document.addEventListener('DOMContentLoaded',initUploadPanel);
 </script>
 </body>
 </html>
