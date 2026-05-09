@@ -72,18 +72,6 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 .hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;justify-content:center}
 .htag{font-size:11px;font-weight:500;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:5px 12px}
 
-/* HERO MEDIA STRIP */
-.hero-media-strip{background:var(--blk);padding:0 60px 32px;overflow-x:auto}
-.hero-media-strip::-webkit-scrollbar{height:4px}
-.hero-media-strip::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:2px}
-.hms-inner{display:flex;gap:12px;min-width:max-content}
-.hms-item{width:160px;height:100px;border-radius:12px;overflow:hidden;flex-shrink:0;cursor:pointer;transition:transform .2s;position:relative;background:#1E293B}
-.hms-item:hover{transform:scale(1.05)}
-.hms-item img,.hms-item video{width:100%;height:100%;object-fit:cover}
-.hms-upload{width:160px;height:100px;border-radius:12px;flex-shrink:0;border:2px dashed rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.04)}
-.hms-upload:hover{border-color:var(--red);background:rgba(227,6,19,.1)}
-.hms-upload span{font-size:22px;margin-bottom:4px}
-.hms-upload p{font-family:var(--H);font-size:10px;font-weight:700;color:rgba(255,255,255,.5)}
 
 /* TRUST */
 .trust{background:var(--bg2);padding:16px 60px;display:flex;align-items:center;gap:40px;border-bottom:1px solid var(--border);overflow:hidden}
@@ -113,11 +101,6 @@ h2.title .red{color:var(--red)}
 .see-all{font-family:var(--H);font-size:12px;font-weight:700;color:var(--red);text-decoration:none;border:1.5px solid var(--red);padding:8px 16px;border-radius:8px;transition:all .2s}
 .see-all:hover{background:var(--red);color:#fff}
 
-/* UPLOAD BUTTON */
-.up-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--H);font-size:11px;font-weight:700;background:rgba(227,6,19,.08);color:var(--red);border:1.5px dashed var(--red);border-radius:8px;padding:7px 14px;cursor:pointer;transition:all .2s;white-space:nowrap;user-select:none}
-.up-btn:hover{background:var(--red);color:#fff;border-style:solid;transform:translateY(-1px)}
-.up-btn.on-dark{background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.25)}
-.up-btn.on-dark:hover{background:var(--red);color:#fff;border-color:var(--red)}
 
 /* MEDIA PREVIEW STRIP per section */
 .media-strip{display:flex;gap:10px;overflow-x:auto;margin-top:20px;padding-bottom:8px}
@@ -213,10 +196,6 @@ h2.title .red{color:var(--red)}
 .galeri-item img,.galeri-item video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .galeri-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .galeri-play div{background:rgba(0,0,0,.55);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.galeri-upload-tile{border-radius:14px;overflow:hidden;cursor:pointer;transition:all .25s;aspect-ratio:16/10;position:relative;background:rgba(255,255,255,.04);border:2px dashed rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.galeri-upload-tile:hover{border-color:var(--red);background:rgba(227,6,19,.08)}
-.galeri-upload-tile span{font-size:32px}
-.galeri-upload-tile p{font-family:var(--H);font-size:11px;font-weight:700;color:rgba(255,255,255,.4)}
 
 /* TESTIMONIALS */
 .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -338,29 +317,6 @@ footer{background:var(--blk);padding:64px 60px 28px}
 .blog-modal-content strong{color:var(--blk);font-weight:600}
 
 /* UPLOAD MODAL */
-#um-ov{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:800;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
-#um-ov.show{opacity:1;pointer-events:all}
-#um-box{background:#fff;border-radius:24px;width:100%;max-width:440px;box-shadow:0 32px 80px rgba(0,0,0,.35);transform:translateY(18px) scale(.97);transition:all .25s;overflow:hidden}
-#um-ov.show #um-box{transform:translateY(0) scale(1)}
-.um-hd{background:var(--red);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.um-hd-t{font-family:var(--H);font-size:15px;font-weight:800;color:#fff}
-.um-hd-s{font-size:11px;color:rgba(255,255,255,.75);margin-top:3px}
-.um-x{background:rgba(255,255,255,.2);border:none;border-radius:50%;width:32px;height:32px;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
-.um-x:hover{background:rgba(255,255,255,.35)}
-.um-bd{padding:22px}
-.um-dz{border:2px dashed #E5E5E5;border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;transition:all .22s;background:#F8FAFC}
-.um-dz:hover,.um-dz.drag{border-color:var(--red);background:#FFF5F5;border-style:solid}
-.um-dz input{display:none}
-.um-dz-ico{font-size:38px;display:block;margin-bottom:10px}
-.um-dz-t{font-family:var(--H);font-size:13px;font-weight:700;color:var(--blk);margin-bottom:3px}
-.um-dz-s{font-size:11px;color:var(--gray)}
-.um-bar{height:7px;background:#E5E5E5;border-radius:99px;margin-top:14px;overflow:hidden;display:none}
-.um-fill{height:100%;background:linear-gradient(90deg,var(--red),#FF6B6B);border-radius:99px;width:0%;transition:width .3s}
-.um-stat{font-size:12px;color:var(--gray);margin-top:8px;text-align:center;min-height:18px}
-.um-prev{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.um-pv-item{width:68px;height:68px;border-radius:10px;overflow:hidden;border:2px solid var(--red);flex-shrink:0;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:28px}
-.um-pv-item img,.um-pv-item video{width:100%;height:100%;object-fit:cover}
-.um-tip{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:10px 14px;font-size:11px;color:#065F46;margin-top:14px;line-height:1.6}
 
 /* LIGHTBOX */
 #lb{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:20px;animation:lbIn .2s ease}
@@ -379,7 +335,7 @@ footer{background:var(--blk);padding:64px 60px 28px}
 @keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* RESPONSIVE */
-@media(max-width:1024px){nav,section,.trust,.counter-sec,footer,.hero-media-strip{padding-left:28px;padding-right:28px}}
+@media(max-width:1024px){nav,section,.trust,.counter-sec,footer{padding-left:28px;padding-right:28px}}
 @media(max-width:900px){
   .hero{grid-template-columns:1fr}.hero-right{display:none}.hero-left{padding:48px 28px}
   .prog-grid,.alumni-grid,.blog-grid,.testi-grid{grid-template-columns:1fr 1fr}
@@ -397,11 +353,6 @@ footer{background:var(--blk);padding:64px 60px 28px}
 </head>
 <body>
 
-<!-- UPLOAD MODAL -->
-<div id="um-ov" onclick="if(event.target===this)closeUM()">
-  <div id="um-box">
-    <div class="um-hd">
-      <div><div class="um-hd-t" id="um-title">Upload Media</div><div class="um-hd-s" id="um-sub">Foto atau video</div></div>
       <button class="um-x" onclick="closeUM()">✕</button>
     </div>
     <div class="um-bd">
@@ -481,12 +432,6 @@ footer{background:var(--blk);padding:64px 60px 28px}
   </div>
 </div>
 
-<!-- HERO MEDIA STRIP -->
-<div class="hero-media-strip">
-  <div class="hms-inner" id="hms-inner">
-    <div class="hms-upload" onclick="openUM('hero','Upload Media Hero','Foto atau video untuk banner utama')">
-      <span>📸</span><p>Upload Media</p>
-    </div>
   </div>
 </div>
 
@@ -518,20 +463,13 @@ footer{background:var(--blk);padding:64px 60px 28px}
       <h2 class="title">Program <span class="red">Unggulan</span></h2>
       <p class="title-sub">Pilih program sesuai kebutuhan — klik Daftar untuk mulai perjalanan Anda.</p>
     </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <button class="up-btn" onclick="openUM('programs','Upload Media Program','Thumbnail, foto, atau video materi program')">📸 Upload Media</button>
-      <a href="#" class="see-all">Lihat Semua →</a>
+    <a href="#" class="see-all">Lihat Semua →</a>
     </div>
   </div>
   <div class="prog-grid" id="prog-grid">
     <div style="height:280px" class="skel"></div>
     <div style="height:280px" class="skel"></div>
     <div style="height:280px" class="skel"></div>
-  </div>
-  <!-- Media strip programs -->
-  <div id="ms-programs" style="margin-top:24px;display:none">
-    <div style="font-family:var(--H);font-size:11px;font-weight:700;color:var(--gray);margin-bottom:10px;text-transform:uppercase;letter-spacing:.1em">📂 Media Program</div>
-    <div class="media-strip" id="msi-programs"></div>
   </div>
 </section>
 
@@ -556,7 +494,7 @@ footer{background:var(--blk);padding:64px 60px 28px}
       <h2 class="title" style="color:#fff">Mentor <span class="red">Profesional</span></h2>
       <p class="title-sub" style="color:rgba(255,255,255,.5)">Belajar langsung dari praktisi dan pakar bisnis berpengalaman.</p>
     </div>
-    <button class="up-btn on-dark" onclick="openUM('mentors','Upload Foto Mentor','Foto profil atau video perkenalan mentor')">📸 Upload Foto</button>
+    
   </div>
   <div class="ment-grid" id="ment-grid">
     <div style="height:260px;background:rgba(255,255,255,.06)" class="skel"></div>
@@ -578,16 +516,12 @@ footer{background:var(--blk);padding:64px 60px 28px}
       <h2 class="title">Kisah Sukses <span class="red">Alumni Kami</span></h2>
       <p class="title-sub">Bukti nyata transformasi UMKM yang sudah bergabung bersama kami.</p>
     </div>
-    <button class="up-btn" onclick="openUM('alumni','Upload Media Alumni','Foto atau video kisah sukses alumni')">📸 Upload Media</button>
+    
   </div>
   <div class="alumni-grid" id="alumni-grid">
     <div style="height:260px" class="skel"></div>
     <div style="height:260px" class="skel"></div>
     <div style="height:260px" class="skel"></div>
-  </div>
-  <div id="ms-alumni" style="margin-top:24px;display:none">
-    <div style="font-family:var(--H);font-size:11px;font-weight:700;color:var(--gray);margin-bottom:10px;text-transform:uppercase;letter-spacing:.1em">📂 Media Alumni</div>
-    <div class="media-strip" id="msi-alumni"></div>
   </div>
 </section>
 
@@ -598,7 +532,7 @@ footer{background:var(--blk);padding:64px 60px 28px}
       <div class="stag"><div class="stag-bar"></div><span class="stag-txt">Cerita Sukses</span></div>
       <h2 class="title">Mereka Sudah Merasakan <span class="red">Manfaatnya</span></h2>
     </div>
-    <button class="up-btn" onclick="openUM('testimonials','Upload Media Testimoni','Foto atau video testimoni pelanggan')">📸 Upload Media</button>
+    
   </div>
   <div class="testi-grid" id="testi-grid">
     <div style="height:200px" class="skel"></div>
@@ -619,7 +553,7 @@ footer{background:var(--blk);padding:64px 60px 28px}
       <h2 class="title" style="color:#fff">Galeri <span class="red">Kegiatan</span></h2>
       <p class="title-sub" style="color:rgba(255,255,255,.45)">Foto dan video kegiatan UMKM Penggerak Indonesia.</p>
     </div>
-    <button class="up-btn on-dark" onclick="openUM('galeri','Upload Galeri','Foto atau video kegiatan dan dokumentasi')">📸 Upload Foto/Video</button>
+    
   </div>
   <div class="galeri-grid" id="galeri-grid">
     <div style="height:180px;background:rgba(255,255,255,.06)" class="skel"></div>
@@ -637,7 +571,7 @@ footer{background:var(--blk);padding:64px 60px 28px}
       <h2 class="title">Edukasi <span class="red">UMKM</span></h2>
       <p class="title-sub">Artikel praktis dan tips bisnis dari para mentor dan pakar kami.</p>
     </div>
-    <button class="up-btn" onclick="openUM('blog','Upload Media Artikel','Foto atau video untuk konten artikel blog')">📸 Upload Media</button>
+    
   </div>
   <div class="blog-grid" id="blog-grid">
     <div style="height:300px" class="skel"></div>
@@ -678,21 +612,17 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const {createClient}=supabase;
 const db=createClient(SB_URL,SB_KEY);
 
-let SETTINGS={}, PROGRAMS=[], CUR_SECTION='galeri';
+let SETTINGS={}, PROGRAMS=[];
 
 /* ── INIT ── */
 async function init(){
   await loadSettings();
   await Promise.all([
     loadPrograms(),loadMentors(),loadAlumni(),
-    loadTestimonials(),loadBlog(),loadGaleri(),
-    loadSectionMedia('hero'),loadSectionMedia('programs'),
-    loadSectionMedia('mentors'),loadSectionMedia('alumni'),
-    loadSectionMedia('testimonials'),loadSectionMedia('blog')
+    loadTestimonials(),loadBlog(),loadGaleri()
   ]);
   initCounters();
   initModalClose();
-  initUploadModal();
 }
 
 /* ── HELPERS ── */
@@ -743,48 +673,7 @@ function initCounters(){
   document.querySelectorAll('.c-val').forEach(el=>obs.observe(el));
 }
 
-/* ── SECTION MEDIA (strips per section) ── */
-async function loadSectionMedia(section){
-  try{
-    const {data}=await db.from('media').select('*').eq('aktif',true).eq('section',section).order('created_at',{ascending:false}).limit(10);
-    if(section==='hero'){renderHeroStrip(data||[]);return;}
-    if(section==='galeri'){renderGaleri(data||[]);return;}
-    const wrap=$('ms-'+section);
-    const strip=$('msi-'+section);
-    if(!wrap||!strip)return;
-    if(!data?.length){wrap.style.display='none';return;}
-    wrap.style.display='block';
-    const isDark=section==='mentors';
-    strip.innerHTML=data.map((m,i)=>`
-      <div class="ms-item${isDark?' dark-bg':''}" data-url="${m.url}" data-tipe="${m.tipe}" data-nama="${m.nama||''}" data-sec-idx="${i}">
-        ${m.tipe==='video'
-          ?`<video src="${m.url}" muted preload="metadata" style="width:100%;height:100%;object-fit:cover"></video>`
-          :`<img src="${m.url}" alt="${m.nama||''}" loading="lazy" onerror="this.closest('.ms-item').style.display='none'">`
-        }
-      </div>`).join('');
-    strip.querySelectorAll('.ms-item').forEach(el=>{
-      el.addEventListener('click',()=>openLB(el.dataset.url,el.dataset.tipe,el.dataset.nama));
-    });
-  }catch(e){}
-}
 
-function renderHeroStrip(items){
-  const inner=$('hms-inner');
-  if(!inner)return;
-  // Keep upload tile
-  const uploadTile=inner.querySelector('.hms-upload');
-  inner.innerHTML='';
-  if(uploadTile)inner.appendChild(uploadTile);
-  items.forEach((m,i)=>{
-    const div=document.createElement('div');
-    div.className='hms-item';
-    div.innerHTML=m.tipe==='video'
-      ?`<video src="${m.url}" muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover"></video>`
-      :`<img src="${m.url}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.closest('.hms-item').style.display='none'">`;
-    div.addEventListener('click',()=>openLB(m.url,m.tipe,m.nama||''));
-    inner.insertBefore(div,uploadTile);
-  });
-}
 
 /* ── PROGRAMS ── */
 async function loadPrograms(){
@@ -1080,18 +969,13 @@ async function renderGaleri(items){
   const grid=$('galeri-grid');
   if(!items.length){
     grid.innerHTML=`
-      <div class="galeri-upload-tile" onclick="openUM('galeri','Upload Galeri','Foto atau video kegiatan')">
-        <span>📸</span><p>Upload Media Pertama</p>
-      </div>
       <div style="grid-column:2/-1;display:flex;align-items:center;justify-content:center;padding:40px;color:rgba(255,255,255,.3)">
         <div style="text-align:center"><div style="font-size:40px;margin-bottom:12px">🏞️</div><div style="font-family:var(--H);font-size:14px;font-weight:600">Belum ada foto atau video.</div><div style="font-size:12px;margin-top:6px;opacity:.7">Klik tombol Upload di atas untuk menambahkan.</div></div>
       </div>`;
     return;
   }
   window._GALERI=items;
-  grid.innerHTML=`<div class="galeri-upload-tile" onclick="openUM('galeri','Upload Galeri','Foto atau video kegiatan')">
-    <span>📸</span><p>Upload Media</p>
-  </div>`+items.map((m,i)=>`
+  grid.innerHTML=items.map((m,i)=>`
     <div class="galeri-item" data-gi="${i}">
       ${m.tipe==='video'
         ?`<video src="${m.url}" muted loop playsinline preload="metadata" style="pointer-events:none"></video>
@@ -1197,81 +1081,7 @@ function initModalClose(){
   });
 }
 
-/* ── UPLOAD MODAL ── */
-let CUR_SECTION='galeri';
 
-function openUM(section,title,sub){
-  CUR_SECTION=section;
-  $('um-title').textContent=title||'Upload Media';
-  $('um-sub').textContent=sub||'Foto atau video';
-  $('um-stat').textContent='';
-  $('um-prev').innerHTML='';
-  $('um-bar').style.display='none';
-  $('um-fill').style.width='0%';
-  $('um-fi').value='';
-  $('um-ov').classList.add('show');
-  document.body.style.overflow='hidden';
-}
-
-function closeUM(){
-  $('um-ov').classList.remove('show');
-  document.body.style.overflow='';
-}
-
-function initUploadModal(){
-  const dz=$('um-dz'),fi=$('um-fi');
-  if(!dz||!fi)return;
-  dz.addEventListener('click',()=>fi.click());
-  fi.addEventListener('change',()=>{if(fi.files?.length)doUpload(fi.files);});
-  dz.addEventListener('dragenter',e=>{e.preventDefault();dz.classList.add('drag');});
-  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
-  dz.addEventListener('dragleave',e=>{if(!dz.contains(e.relatedTarget))dz.classList.remove('drag');});
-  dz.addEventListener('drop',e=>{
-    e.preventDefault();dz.classList.remove('drag');
-    if(e.dataTransfer?.files?.length)doUpload(e.dataTransfer.files);
-  });
-  $('um-ov').addEventListener('click',e=>{if(e.target===$('um-ov'))closeUM();});
-}
-
-async function doUpload(files){
-  const bar=$('um-bar'),fill=$('um-fill'),stat=$('um-stat'),prev=$('um-prev');
-  bar.style.display='block';fill.style.width='0%';
-  let done=0,failed=0;
-  for(const f of files){
-    if(f.size>50*1024*1024){showToast('❌ '+f.name+' terlalu besar (maks 50MB)','err');failed++;continue;}
-    if(!f.type.startsWith('image/')&&!f.type.startsWith('video/')){showToast('❌ Format tidak didukung','err');failed++;continue;}
-    stat.textContent='📤 Mengunggah: '+f.name+'…';
-    const safeName=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-    const path=`uploads/${CUR_SECTION}/${Date.now()}-${Math.random().toString(36).slice(2,6)}-${safeName}`;
-    const tipe=f.type.startsWith('video/')?'video':'image';
-    const {error:ue}=await db.storage.from('media').upload(path,f,{cacheControl:'3600',upsert:false});
-    if(ue){showToast('❌ Upload gagal: '+ue.message,'err');failed++;fill.style.width=`${((done+failed)/files.length)*100}%`;continue;}
-    const {data:{publicUrl}}=db.storage.from('media').getPublicUrl(path);
-    const {error:ie}=await db.from('media').insert([{nama:f.name,tipe,url:publicUrl,storage_path:path,ukuran:f.size,section:CUR_SECTION}]);
-    if(!ie){
-      done++;
-      const pv=document.createElement('div');
-      pv.className='um-pv-item';
-      pv.innerHTML=tipe==='video'?'🎬':`<img src="${publicUrl}" alt="${f.name}">`;
-      prev.appendChild(pv);
-    }
-    fill.style.width=`${((done+failed)/files.length)*100}%`;
-  }
-  stat.textContent=done>0?`✅ ${done} file berhasil!${failed?' ('+failed+' gagal)':''}`:`❌ Upload gagal.`;
-  if(done>0){
-    showToast(`✅ ${done} file diupload!`,'ok');
-    // Reload section yang relevan
-    setTimeout(async()=>{
-      if(CUR_SECTION==='galeri')await loadGaleri();
-      else await loadSectionMedia(CUR_SECTION);
-      if(CUR_SECTION==='hero'){}
-    },800);
-  }
-  setTimeout(()=>{bar.style.display='none';fill.style.width='0%';},2500);
-}
-
-init();
-document.addEventListener('DOMContentLoaded',initUploadModal);
 </script>
 </body>
 </html>
