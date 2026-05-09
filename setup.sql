@@ -176,3 +176,45 @@ ON CONFLICT (key) DO NOTHING;
 
 -- Selesai
 SELECT 'SETUP SELESAI! Semua tabel, kolom, policy, dan data awal sudah siap.' AS hasil;
+
+-- ============================================================
+-- PATCH v5 — Tambah kolom section di tabel media
+-- Aman diulang
+-- ============================================================
+ALTER TABLE media ADD COLUMN IF NOT EXISTS section TEXT DEFAULT 'galeri';
+ALTER TABLE media ADD COLUMN IF NOT EXISTS foto_url TEXT;
+
+-- Update policy media agar public bisa read semua (bukan hanya aktif)
+DROP POLICY IF EXISTS "media_public_read" ON media;
+DROP POLICY IF EXISTS "pub_sel_media"     ON media;
+DROP POLICY IF EXISTS "pub_read_media"    ON media;
+CREATE POLICY "media_pub_read" ON media FOR SELECT USING (true);
+
+-- Index untuk query cepat per section
+CREATE INDEX IF NOT EXISTS idx_media_section ON media(section);
+CREATE INDEX IF NOT EXISTS idx_media_aktif   ON media(aktif);
+
+-- Tambah kolom foto_url ke mentors & testimonials jika belum ada
+ALTER TABLE mentors      ADD COLUMN IF NOT EXISTS foto_url TEXT;
+ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS foto_url TEXT;
+ALTER TABLE alumni       ADD COLUMN IF NOT EXISTS foto_url TEXT;
+ALTER TABLE blog         ADD COLUMN IF NOT EXISTS thumbnail_url TEXT;
+
+-- Storage: pastikan bucket public & policy benar
+INSERT INTO storage.buckets (id,name,public,file_size_limit)
+VALUES ('media','media',true,52428800)
+ON CONFLICT (id) DO UPDATE SET public=true, file_size_limit=52428800;
+
+DO $$ DECLARE r RECORD;
+BEGIN
+  FOR r IN SELECT policyname FROM pg_policies
+    WHERE tablename='objects' AND schemaname='storage'
+  LOOP EXECUTE 'DROP POLICY IF EXISTS "'||r.policyname||'" ON storage.objects'; END LOOP;
+END $$;
+
+CREATE POLICY "storage_pub_read"   ON storage.objects FOR SELECT USING (bucket_id='media');
+CREATE POLICY "storage_pub_insert" ON storage.objects FOR INSERT WITH CHECK (bucket_id='media');
+CREATE POLICY "storage_auth_all"   ON storage.objects FOR ALL
+  USING (bucket_id='media' AND auth.role()='authenticated');
+
+SELECT 'Patch v5 selesai!' AS status;

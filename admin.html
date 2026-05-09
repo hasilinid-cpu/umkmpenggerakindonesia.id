@@ -4,971 +4,588 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Admin Panel — UMKM Penggerak Indonesia</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
-body{font-family:'Inter',sans-serif;background:#0F172A;color:#1E293B}
-
-/* ── CSS VARIABLES ── */
+html,body{height:100%}
+body{font-family:'Inter',sans-serif;background:#F1F5F9;color:#1E293B;overflow:hidden}
 :root{
-  --sidebar-w:240px;
-  --topbar-h:56px;
-  --red:#E30613;
-  --red-d:#B8000F;
-  --bg:#F1F5F9;
-  --white:#FFFFFF;
-  --border:#E2E8F0;
-  --text:#1E293B;
-  --muted:#64748B;
-  --head:'Poppins',sans-serif;
+  --red:#E30613;--redd:#B8000F;--blk:#0F172A;
+  --bg:#F1F5F9;--wh:#fff;--bd:#E2E8F0;--mu:#64748B;
+  --H:'Poppins',sans-serif;--sw:240px;--th:56px;
 }
 
-/* ══════════════════════════════════
-   LOGIN PAGE
-══════════════════════════════════ */
-#login-page{
-  position:fixed;inset:0;
-  background:linear-gradient(135deg,#0F172A 0%,#1E1B4B 50%,#0F172A 100%);
-  display:flex;align-items:center;justify-content:center;
-  z-index:9999;
-}
-.login-box{
-  background:#fff;border-radius:24px;padding:48px 40px;
-  width:100%;max-width:400px;
-  box-shadow:0 32px 80px rgba(0,0,0,.4);
-  animation:fadeUp .4s ease;
-}
+/* LOGIN */
+#login{position:fixed;inset:0;background:linear-gradient(135deg,#0F172A,#1E1B4B 50%,#0F172A);display:flex;align-items:center;justify-content:center;z-index:9999}
+.lbox{background:#fff;border-radius:24px;padding:48px 40px;width:100%;max-width:400px;box-shadow:0 32px 80px rgba(0,0,0,.4);animation:fadeUp .4s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.login-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:32px}
-.login-mark{
-  width:48px;height:48px;background:var(--red);border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--head);font-weight:900;font-size:16px;color:#fff;
-}
-.login-brand{font-family:var(--head);font-size:15px;font-weight:800;color:var(--text)}
-.login-brand span{display:block;font-size:9px;font-weight:600;color:var(--red);letter-spacing:.2em;text-transform:uppercase}
-.login-title{font-family:var(--head);font-size:22px;font-weight:800;color:var(--text);text-align:center;margin-bottom:6px}
-.login-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
-.lf{margin-bottom:14px}
-.lf label{display:block;font-family:var(--head);font-size:11px;font-weight:700;color:var(--text);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
-.lf input{
-  width:100%;padding:12px 16px;
-  border:2px solid var(--border);border-radius:10px;
-  font-family:'Inter',sans-serif;font-size:14px;color:var(--text);
-  background:#F8FAFC;outline:none;transition:all .2s;
-}
-.lf input:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 3px rgba(227,6,19,.1)}
-.login-btn{
-  width:100%;padding:13px;margin-top:8px;
-  background:var(--red);color:#fff;border:none;border-radius:10px;
-  font-family:var(--head);font-size:14px;font-weight:700;
-  cursor:pointer;transition:all .2s;
-}
-.login-btn:hover{background:var(--red-d);transform:translateY(-1px);box-shadow:0 6px 20px rgba(227,6,19,.35)}
-.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
-.login-err{
-  font-size:12px;color:#DC2626;text-align:center;margin-top:10px;
-  padding:10px;background:#FEF2F2;border-radius:8px;display:none;
-}
-.login-hint{font-size:11px;color:#94A3B8;text-align:center;margin-top:16px;line-height:1.5}
+.llogo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:32px}
+.lmark{width:48px;height:48px;background:var(--red);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--H);font-weight:900;font-size:16px;color:#fff}
+.lbrand{font-family:var(--H);font-size:15px;font-weight:800;color:var(--blk)}
+.lbrand span{display:block;font-size:9px;font-weight:600;color:var(--red);letter-spacing:.2em;text-transform:uppercase}
+.lh1{font-family:var(--H);font-size:22px;font-weight:800;text-align:center;margin-bottom:6px}
+.lsub{font-size:13px;color:var(--mu);text-align:center;margin-bottom:28px}
+.lfi{margin-bottom:14px}
+.lfi label{display:block;font-family:var(--H);font-size:11px;font-weight:700;color:var(--blk);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.lfi input{width:100%;padding:12px 16px;border:2px solid var(--bd);border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:all .2s;background:#F8FAFC}
+.lfi input:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 3px rgba(227,6,19,.1)}
+.lbtn{width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:10px;font-family:var(--H);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
+.lbtn:hover{background:var(--redd);transform:translateY(-1px);box-shadow:0 6px 20px rgba(227,6,19,.35)}
+.lbtn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+.lerr{font-size:12px;color:#DC2626;text-align:center;margin-top:10px;padding:10px;background:#FEF2F2;border-radius:8px;display:none}
+.lhint{font-size:11px;color:#94A3B8;text-align:center;margin-top:16px;line-height:1.5}
 
-/* ══════════════════════════════════
-   ADMIN APP SHELL
-══════════════════════════════════ */
-#admin-app{
-  display:none;
-  position:fixed;inset:0;
-  flex-direction:row;
-  background:var(--bg);
-}
+/* APP */
+#app{display:none;position:fixed;inset:0;flex-direction:row}
 
-/* ══════════════════════════════════
-   SIDEBAR
-══════════════════════════════════ */
-.sidebar{
-  width:var(--sidebar-w);
-  height:100vh;
-  background:#0F172A;
-  display:flex;flex-direction:column;
-  flex-shrink:0;
-  overflow:hidden;
-  transition:transform .3s;
-  z-index:100;
-}
-.sidebar-logo{
-  padding:20px 16px;
-  border-bottom:1px solid rgba(255,255,255,.07);
-  display:flex;align-items:center;gap:10px;
-  flex-shrink:0;
-}
-.sl-mark{
-  width:36px;height:36px;background:var(--red);border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--head);font-weight:900;font-size:12px;color:#fff;
-  flex-shrink:0;
-}
-.sl-name{font-family:var(--head);font-size:12px;font-weight:800;color:#fff;line-height:1.2}
-.sl-sub{font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.12em}
-.sidebar-nav{flex:1;padding:12px 10px;overflow-y:auto}
-.sidebar-nav::-webkit-scrollbar{width:4px}
-.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
-.nav-section{
-  font-family:var(--head);font-size:9px;font-weight:700;
-  color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.14em;
-  padding:14px 8px 6px;
-}
-.nav-item{
-  display:flex;align-items:center;gap:10px;
-  padding:9px 10px;border-radius:10px;
-  color:rgba(255,255,255,.45);
-  font-size:13px;font-weight:500;
-  cursor:pointer;transition:all .18s;
-  margin-bottom:2px;
-  border:none;background:none;width:100%;text-align:left;
-  font-family:'Inter',sans-serif;
-}
-.nav-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9)}
-.nav-item.active{background:var(--red);color:#fff}
-.nav-item .ni-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
-.nav-item .ni-badge{
-  margin-left:auto;background:var(--red);color:#fff;
-  font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;
-  display:none;
-}
-.nav-item.active .ni-badge{background:rgba(255,255,255,.25)}
-.sidebar-footer{
-  padding:12px 10px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0;
-}
-.user-card{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;background:rgba(255,255,255,.05);border-radius:10px;
-}
-.user-av{
-  width:32px;height:32px;border-radius:50%;background:var(--red);
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
-}
-.user-email{font-size:11px;color:rgba(255,255,255,.45);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.logout-btn{
-  font-size:10px;color:rgba(255,255,255,.3);
-  background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;
-  padding:4px 6px;border-radius:6px;transition:all .2s;
-}
-.logout-btn:hover{color:#fff;background:rgba(255,255,255,.1)}
+/* SIDEBAR */
+.sb{width:var(--sw);height:100vh;background:var(--blk);display:flex;flex-direction:column;flex-shrink:0;z-index:100;transition:transform .3s}
+.sb-logo{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.sb-mark{width:36px;height:36px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--H);font-weight:900;font-size:12px;color:#fff;flex-shrink:0}
+.sb-nm{font-family:var(--H);font-size:12px;font-weight:800;color:#fff;line-height:1.2}
+.sb-sm{font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.12em}
+.sb-nav{flex:1;padding:10px;overflow-y:auto}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.sb-sec{font-family:var(--H);font-size:9px;font-weight:700;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:.14em;padding:14px 8px 6px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;color:rgba(255,255,255,.45);font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left;font-family:'Inter',sans-serif}
+.sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9)}
+.sb-item.on{background:var(--red);color:#fff}
+.sb-ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sb-badge{margin-left:auto;background:rgba(255,255,255,.9);color:var(--red);font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;display:none;font-family:var(--H)}
+.sb-item.on .sb-badge{background:rgba(255,255,255,.25);color:#fff}
+.sb-ft{padding:12px 10px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.uc{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,255,255,.05);border-radius:10px}
+.uc-av{width:32px;height:32px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.uc-em{font-size:11px;color:rgba(255,255,255,.45);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.uc-out{font-size:10px;color:rgba(255,255,255,.3);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:4px 6px;border-radius:6px;transition:all .2s}
+.uc-out:hover{color:#fff;background:rgba(255,255,255,.1)}
 
-/* ══════════════════════════════════
-   MAIN CONTENT AREA
-══════════════════════════════════ */
-.main-area{
-  flex:1;min-width:0;
-  display:flex;flex-direction:column;
-  height:100vh;overflow:hidden;
-}
+/* MAIN */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden}
 
 /* TOPBAR */
-.topbar{
-  height:var(--topbar-h);background:#fff;
-  border-bottom:1px solid var(--border);
-  padding:0 24px;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-shrink:0;
-  box-shadow:0 1px 3px rgba(0,0,0,.05);
-}
-.topbar-left{display:flex;align-items:center;gap:14px}
-.menu-toggle{
-  display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text);
-  padding:4px;border-radius:6px;
-}
-.page-title{font-family:var(--head);font-size:16px;font-weight:800;color:var(--text)}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.topbar-date{font-size:12px;color:var(--muted);white-space:nowrap}
-.view-site{
-  font-family:var(--head);font-size:11px;font-weight:700;
-  color:var(--red);background:#FFF0F0;border:1.5px solid #FFCDD2;
-  border-radius:8px;padding:6px 14px;text-decoration:none;
-  transition:all .2s;white-space:nowrap;
-}
-.view-site:hover{background:var(--red);color:#fff}
+.topbar{height:var(--th);background:var(--wh);border-bottom:1px solid var(--bd);padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.tb-left{display:flex;align-items:center;gap:14px}
+.hamburger{display:none;background:none;border:none;font-size:20px;cursor:pointer;color:var(--blk);padding:4px 6px;border-radius:6px}
+.tb-title{font-family:var(--H);font-size:16px;font-weight:800;color:var(--blk)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-date{font-size:12px;color:var(--mu);white-space:nowrap}
+.tb-link{font-family:var(--H);font-size:11px;font-weight:700;color:var(--red);background:#FFF0F0;border:1.5px solid #FFCDD2;border-radius:8px;padding:6px 14px;text-decoration:none;transition:all .2s;white-space:nowrap}
+.tb-link:hover{background:var(--red);color:#fff}
 
-/* CONTENT SCROLL AREA */
-.content-area{flex:1;overflow-y:auto;padding:24px}
-.content-area::-webkit-scrollbar{width:6px}
-.content-area::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px}
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:24px}
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px}
 
-/* ══════════════════════════════════
-   PAGES
-══════════════════════════════════ */
-.page{display:none}
-.page.active{display:block}
+/* PAGES */
+.pg{display:none}.pg.on{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ══════════════════════════════════
-   STAT CARDS
-══════════════════════════════════ */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-.stat-card{
-  background:#fff;border-radius:16px;padding:20px;
-  border:1px solid var(--border);
-  display:flex;align-items:center;gap:16px;
-  transition:box-shadow .2s;
-}
-.stat-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
-.stat-icon{
-  width:48px;height:48px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;flex-shrink:0;
-}
-.stat-info{}
-.stat-val{font-family:var(--head);font-size:28px;font-weight:900;color:var(--text);line-height:1}
-.stat-lbl{font-size:12px;color:var(--muted);margin-top:3px}
+/* STAT CARDS */
+.sc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.sc{background:var(--wh);border-radius:16px;padding:20px;border:1px solid var(--bd);display:flex;align-items:center;gap:16px;transition:box-shadow .2s}
+.sc:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.sc-ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sc-val{font-family:var(--H);font-size:28px;font-weight:900;color:var(--blk);line-height:1}
+.sc-lbl{font-size:12px;color:var(--mu);margin-top:3px}
 
-/* ══════════════════════════════════
-   CARD / TABLE
-══════════════════════════════════ */
-.card{
-  background:#fff;border-radius:16px;border:1px solid var(--border);
-  overflow:hidden;margin-bottom:20px;
-}
-.card-header{
-  padding:16px 20px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;flex-wrap:wrap;
-}
-.card-title{font-family:var(--head);font-size:14px;font-weight:800;color:var(--text)}
-.card-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.search-input{
-  padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;
-  font-size:12px;font-family:'Inter',sans-serif;outline:none;
-  background:#F8FAFC;color:var(--text);min-width:180px;
-  transition:border-color .2s;
-}
-.search-input:focus{border-color:var(--red)}
-.filter-select{
-  padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;
-  font-size:12px;font-family:'Inter',sans-serif;outline:none;
-  background:#F8FAFC;color:var(--text);
-}
-.table-wrap{overflow-x:auto}
+/* CARD */
+.card{background:var(--wh);border-radius:16px;border:1px solid var(--bd);overflow:hidden;margin-bottom:20px}
+.card-hd{padding:14px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-title{font-family:var(--H);font-size:13px;font-weight:800;color:var(--blk)}
+.card-acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.search{padding:7px 12px;border:1.5px solid var(--bd);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;outline:none;background:#F8FAFC;color:var(--blk);min-width:160px;transition:border-color .2s}
+.search:focus{border-color:var(--red)}
+.fsel{padding:7px 10px;border:1.5px solid var(--bd);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;outline:none;background:#F8FAFC;color:var(--blk)}
+
+/* TABLE */
+.tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
 thead tr{background:#F8FAFC}
-th{
-  font-family:var(--head);font-size:10px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.07em;
-  padding:10px 16px;text-align:left;
-  border-bottom:1px solid var(--border);white-space:nowrap;
-}
-td{
-  font-size:13px;padding:12px 16px;
-  border-bottom:1px solid #F1F5F9;
-  color:var(--text);vertical-align:middle;
-}
+th{font-family:var(--H);font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.07em;padding:10px 16px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{font-size:12px;padding:11px 16px;border-bottom:1px solid #F1F5F9;color:var(--blk);vertical-align:middle}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#F8FAFC}
-.td-actions{display:flex;gap:6px;flex-wrap:wrap}
-.empty-td{text-align:center!important;padding:48px!important;color:var(--muted);font-size:13px}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.etd{text-align:center!important;padding:48px!important;color:var(--mu);font-size:13px}
 
-/* ══════════════════════════════════
-   BUTTONS
-══════════════════════════════════ */
-.btn{
-  font-family:var(--head);font-weight:700;font-size:12px;
-  border:none;border-radius:8px;padding:8px 14px;
-  cursor:pointer;transition:all .18s;
-  display:inline-flex;align-items:center;gap:5px;
-  white-space:nowrap;
-}
-.btn-red{background:var(--red);color:#fff}
-.btn-red:hover{background:var(--red-d);transform:translateY(-1px)}
-.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted)}
-.btn-outline:hover{border-color:var(--text);color:var(--text)}
-.btn-green{background:#ECFDF5;color:#065F46}
-.btn-green:hover{background:#D1FAE5}
-.btn-blue{background:#EFF6FF;color:#1D4ED8}
-.btn-blue:hover{background:#DBEAFE}
-.btn-yellow{background:#FFFBEB;color:#92400E}
-.btn-yellow:hover{background:#FEF3C7}
-.btn-danger{background:#FEF2F2;color:#DC2626}
-.btn-danger:hover{background:#FEE2E2}
+/* BUTTONS */
+.btn{font-family:var(--H);font-weight:700;font-size:12px;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn-r{background:var(--red);color:#fff}.btn-r:hover{background:var(--redd);transform:translateY(-1px)}
+.btn-o{background:transparent;border:1.5px solid var(--bd);color:var(--mu)}.btn-o:hover{border-color:var(--blk);color:var(--blk)}
+.btn-g{background:#ECFDF5;color:#065F46}.btn-g:hover{background:#D1FAE5}
+.btn-b{background:#EFF6FF;color:#1D4ED8}.btn-b:hover{background:#DBEAFE}
+.btn-y{background:#FFFBEB;color:#92400E}.btn-y:hover{background:#FEF3C7}
+.btn-d{background:#FEF2F2;color:#DC2626}.btn-d:hover{background:#FEE2E2}
 .btn-sm{padding:5px 10px;font-size:11px}
-.btn-block{width:100%;justify-content:center;padding:12px}
+.btn-blk{width:100%;justify-content:center;padding:12px}
 
-/* ══════════════════════════════════
-   BADGES
-══════════════════════════════════ */
-.badge{
-  font-size:10px;font-weight:700;padding:3px 9px;
-  border-radius:99px;white-space:nowrap;display:inline-block;
-  font-family:var(--head);
-}
-.badge-green{background:#ECFDF5;color:#065F46}
-.badge-yellow{background:#FFFBEB;color:#92400E}
-.badge-blue{background:#EFF6FF;color:#1D4ED8}
-.badge-red{background:#FEF2F2;color:#DC2626}
-.badge-gray{background:#F1F5F9;color:#64748B}
-.badge-pending{background:#FFF8E1;color:#F57F17}
-.badge-konfirmasi{background:#EFF6FF;color:#1D4ED8}
-.badge-lunas{background:#ECFDF5;color:#065F46}
-.badge-batal{background:#FEF2F2;color:#DC2626}
+/* BADGES */
+.bdg{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap;display:inline-block;font-family:var(--H)}
+.bdg-g{background:#ECFDF5;color:#065F46}
+.bdg-y{background:#FFFBEB;color:#92400E}
+.bdg-b{background:#EFF6FF;color:#1D4ED8}
+.bdg-r{background:#FEF2F2;color:#DC2626}
+.bdg-gr{background:#F1F5F9;color:#475569}
+.bdg-pend{background:#FFF8E1;color:#F57F17}
+.bdg-konfirmasi{background:#EFF6FF;color:#1D4ED8}
+.bdg-lunas{background:#ECFDF5;color:#065F46}
+.bdg-batal{background:#FEF2F2;color:#DC2626}
 
-/* ══════════════════════════════════
-   SETTINGS GRID
-══════════════════════════════════ */
-.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.settings-card{background:#fff;border-radius:16px;border:1px solid var(--border);padding:24px}
-.settings-card h3{
-  font-family:var(--head);font-size:13px;font-weight:800;color:var(--text);
-  margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border);
-}
-
-/* ══════════════════════════════════
-   FORM INPUTS
-══════════════════════════════════ */
+/* FORM */
 .fi{margin-bottom:14px}
-.fi label{
-  display:block;font-family:var(--head);font-size:11px;font-weight:700;
-  color:var(--text);margin-bottom:5px;
-}
-.fi input,.fi select,.fi textarea{
-  width:100%;padding:10px 14px;
-  border:1.5px solid var(--border);border-radius:9px;
-  font-family:'Inter',sans-serif;font-size:13px;color:var(--text);
-  background:#F8FAFC;outline:none;transition:all .2s;
-}
-.fi input:focus,.fi select:focus,.fi textarea:focus{
-  border-color:var(--red);background:#fff;
-  box-shadow:0 0 0 3px rgba(227,6,19,.08);
-}
+.fi label{display:block;font-family:var(--H);font-size:11px;font-weight:700;color:var(--blk);margin-bottom:5px}
+.fi input,.fi select,.fi textarea{width:100%;padding:10px 14px;border:1.5px solid var(--bd);border-radius:9px;font-family:'Inter',sans-serif;font-size:13px;color:var(--blk);background:#F8FAFC;outline:none;transition:all .2s}
+.fi input:focus,.fi select:focus,.fi textarea:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 3px rgba(227,6,19,.08)}
 .fi textarea{resize:vertical;min-height:90px}
-.fi-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fi-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tgl{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.tgl input{opacity:0;position:absolute;width:0;height:0}
+.tgl-tr{width:40px;height:22px;background:#CBD5E1;border-radius:99px;position:relative;transition:background .2s;flex-shrink:0}
+.tgl input:checked~.tgl-tr{background:var(--red)}
+.tgl-th{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.tgl input:checked~.tgl-tr .tgl-th{transform:translateX(18px)}
+.tgl-lbl{font-size:12px;color:var(--mu)}
 
-/* ══════════════════════════════════
-   TOGGLE SWITCH
-══════════════════════════════════ */
-.toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
-.toggle input{opacity:0;position:absolute;width:0;height:0}
-.toggle-track{
-  width:40px;height:22px;background:#CBD5E1;border-radius:99px;
-  position:relative;transition:background .2s;flex-shrink:0;
-}
-.toggle input:checked ~ .toggle-track{background:var(--red)}
-.toggle-thumb{
-  position:absolute;top:3px;left:3px;
-  width:16px;height:16px;background:#fff;border-radius:50%;
-  transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2);
-}
-.toggle input:checked ~ .toggle-track .toggle-thumb{transform:translateX(18px)}
-.toggle-label{font-size:12px;color:var(--muted)}
+/* MODAL */
+.mov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.mov.on{opacity:1;pointer-events:all}
+.mbox{background:var(--wh);border-radius:20px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.25);transform:scale(.97) translateY(10px);transition:all .25s}
+.mov.on .mbox{transform:scale(1) translateY(0)}
+.mbox.lg{max-width:720px}
+.mhd{padding:18px 24px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--wh);z-index:1}
+.mtt{font-family:var(--H);font-size:15px;font-weight:800;color:var(--blk)}
+.mx{background:none;border:none;font-size:18px;cursor:pointer;color:var(--mu);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.mx:hover{background:var(--bg)}
+.mbd{padding:24px}
+.mft{display:flex;gap:10px;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--bd);margin-top:8px}
 
-/* ══════════════════════════════════
-   MODAL
-══════════════════════════════════ */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.6);
-  z-index:500;display:flex;align-items:center;justify-content:center;
-  padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;
-}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal-box{
-  background:#fff;border-radius:20px;width:100%;max-width:560px;
-  max-height:90vh;overflow-y:auto;
-  box-shadow:0 32px 80px rgba(0,0,0,.3);
-  transform:scale(.97) translateY(10px);transition:transform .25s;
-}
-.modal-overlay.open .modal-box{transform:scale(1) translateY(0)}
-.modal-box.modal-lg{max-width:720px}
-.modal-head{
-  padding:18px 24px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;background:#fff;z-index:1;
-}
-.modal-title{font-family:var(--head);font-size:15px;font-weight:800;color:var(--text)}
-.modal-close{
-  background:none;border:none;font-size:20px;cursor:pointer;
-  color:var(--muted);width:32px;height:32px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;transition:background .2s;
-}
-.modal-close:hover{background:#F1F5F9}
-.modal-body{padding:24px}
-.modal-footer{
-  display:flex;gap:10px;justify-content:flex-end;
-  padding-top:14px;border-top:1px solid var(--border);margin-top:8px;
-}
+/* MEDIA */
+.upload-zone{border:2px dashed var(--bd);border-radius:14px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .25s;background:#F8FAFC;user-select:none}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--red);background:#FFF5F5;border-style:solid}
+.upload-zone input{display:none}
+.uz-ico{font-size:44px;margin-bottom:12px;display:block}
+.uz-t{font-family:var(--H);font-size:14px;font-weight:700;color:var(--blk);margin-bottom:4px}
+.uz-s{font-size:12px;color:var(--mu)}
+.ubar{height:8px;background:var(--bd);border-radius:99px;margin-top:14px;overflow:hidden;display:none}
+.ufill{height:100%;background:linear-gradient(90deg,var(--red),#FF6B6B);border-radius:99px;width:0%;transition:width .3s}
+.ustat{font-size:12px;color:var(--mu);margin-top:8px;text-align:center;min-height:20px}
+.media-tab{display:flex;gap:8px;padding:16px 20px;border-bottom:1px solid var(--bd);flex-wrap:wrap;align-items:center;justify-content:space-between}
+.mtab-btn{font-family:var(--H);font-size:11px;font-weight:700;border:1.5px solid var(--bd);background:transparent;color:var(--mu);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .2s}
+.mtab-btn.on{background:var(--red);color:#fff;border-color:var(--red)}
+.mtab-btn:hover:not(.on){border-color:var(--blk);color:var(--blk)}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;padding:16px}
+.mc{background:var(--wh);border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .22s}
+.mc:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);border-color:#CBD5E1;transform:translateY(-3px)}
+.mc-thumb{height:120px;background:#F1F5F9;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.mc-thumb img,.mc-thumb video{width:100%;height:100%;object-fit:cover;display:block}
+.mc-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;border-radius:6px;font-family:var(--H);text-transform:uppercase;letter-spacing:.05em}
+.mc-section-badge{position:absolute;top:8px;right:8px;background:rgba(227,6,19,.85);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;border-radius:6px;font-family:var(--H)}
+.mc-info{padding:10px 12px}
+.mc-name{font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--blk);margin-bottom:2px}
+.mc-size{font-size:10px;color:var(--mu);margin-bottom:8px}
+.mc-acts{display:flex;gap:6px}
+.mc-copy{flex:1;background:#EFF6FF;color:#1D4ED8;border:none;border-radius:7px;padding:6px 4px;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--H);transition:background .2s;text-align:center}
+.mc-copy:hover{background:#DBEAFE}
+.mc-del{background:#FEF2F2;color:#DC2626;border:none;border-radius:7px;padding:6px 10px;font-size:12px;cursor:pointer;transition:background .2s;flex-shrink:0}
+.mc-del:hover{background:#FEE2E2}
 
-/* ══════════════════════════════════
-   MEDIA UPLOAD
-══════════════════════════════════ */
-.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:40px;text-align:center;cursor:pointer;transition:all .25s;background:#F8FAFC;user-select:none}
-.upload-zone:hover{border-color:var(--red);background:#FFF5F5}
-.upload-zone.drag{border-color:var(--red);background:#FFF0F0;transform:scale(1.01);box-shadow:0 0 0 4px rgba(227,6,19,.1)}
-.upload-zone input[type=file]{display:none}
-.uz-icon{font-size:48px;margin-bottom:12px;display:block}
-.uz-title{font-family:var(--head);font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
-.uz-sub{font-size:12px;color:var(--muted)}
-.progress-bar{height:8px;background:var(--border);border-radius:99px;margin-top:16px;overflow:hidden;display:none}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--red),#FF6B6B);border-radius:99px;transition:width .3s}
-.upload-status{font-size:12px;color:var(--muted);margin-top:8px;min-height:20px;text-align:center}
-.media-tab-btn.active{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
-.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
-.media-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:all .22s}
-.media-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);border-color:#CBD5E1;transform:translateY(-3px)}
-.media-thumb{height:130px;display:flex;align-items:center;justify-content:center;background:#F1F5F9;overflow:hidden;position:relative}
-.media-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.media-thumb video{width:100%;height:100%;object-fit:cover;display:block}
-.media-type-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;border-radius:6px;font-family:var(--head);text-transform:uppercase;letter-spacing:.05em}
-.media-info{padding:10px 12px 12px}
-.media-name{font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);margin-bottom:2px}
-.media-size{font-size:10px;color:var(--muted);margin-bottom:8px}
-.media-actions{display:flex;gap:6px}
-.media-copy-btn{flex:1;background:#EFF6FF;color:#1D4ED8;border:none;border-radius:7px;padding:6px 4px;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--head);transition:background .2s;text-align:center}
-.media-copy-btn:hover{background:#DBEAFE}
-.media-del-btn{background:#FEF2F2;color:#DC2626;border:none;border-radius:7px;padding:6px 10px;font-size:12px;cursor:pointer;transition:background .2s;flex-shrink:0}
-.media-del-btn:hover{background:#FEE2E2}
+/* SETTINGS */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.scard{background:var(--wh);border:1px solid var(--bd);border-radius:16px;padding:24px}
+.scard h3{font-family:var(--H);font-size:13px;font-weight:800;color:var(--blk);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
 
-/* ══════════════════════════════════
-   TOAST
-══════════════════════════════════ */
-#toast{
-  position:fixed;bottom:24px;right:24px;z-index:9999;
-  padding:12px 20px;border-radius:12px;
-  font-size:13px;font-weight:600;font-family:'Inter',sans-serif;
-  box-shadow:0 8px 24px rgba(0,0,0,.2);
-  transform:translateY(70px);opacity:0;
-  transition:all .3s;pointer-events:none;
-  display:flex;align-items:center;gap:8px;max-width:320px;
-}
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;z-index:9999;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(60px);opacity:0;transition:all .3s;pointer-events:none;display:flex;align-items:center;gap:8px;max-width:320px}
 #toast.show{transform:translateY(0);opacity:1}
-.toast-ok{background:#065F46;color:#fff}
-.toast-err{background:#991B1B;color:#fff}
-.toast-info{background:#1E293B;color:#fff}
+.t-ok{background:#065F46;color:#fff}
+.t-err{background:#991B1B;color:#fff}
+.t-info{background:var(--blk);color:#fff}
 
-/* ══════════════════════════════════
-   MOBILE OVERLAY
-══════════════════════════════════ */
-.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
-.sb-overlay.show{display:block}
-
-/* ══════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════ */
+/* MOBILE */
+.sb-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+.sb-ov.on{display:block}
 @media(max-width:900px){
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .settings-grid{grid-template-columns:1fr}
-  .fi-row{grid-template-columns:1fr}
+  .sc-grid{grid-template-columns:1fr 1fr}
+  .sg{grid-template-columns:1fr}
+  .fi-2{grid-template-columns:1fr}
 }
 @media(max-width:768px){
-  .sidebar{
-    position:fixed;top:0;left:0;height:100vh;
-    transform:translateX(-100%);z-index:200;
-    transition:transform .3s;
-  }
-  .sidebar.open{transform:translateX(0)}
-  .menu-toggle{display:flex!important}
-  .main-area{width:100%}
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .topbar-date{display:none}
-  .content-area{padding:16px}
+  .sb{position:fixed;top:0;left:0;height:100vh;transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .hamburger{display:flex!important}
+  .main{width:100%}
+  .tb-date{display:none}
+  .content{padding:16px}
+  .sc-grid{grid-template-columns:1fr 1fr}
+  .media-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
 }
 @media(max-width:480px){
-  .stats-grid{grid-template-columns:1fr}
-  .login-box{padding:32px 24px}
+  .sc-grid{grid-template-columns:1fr}
+  .lbox{padding:32px 24px}
 }
 </style>
 </head>
 <body>
-
 <div id="toast"></div>
 
-<!-- ════════════════════════
-     LOGIN PAGE
-════════════════════════ -->
-<div id="login-page">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="login-mark">UP</div>
-      <div class="login-brand">
-        UMKM Penggerak
-        <span>Admin Panel</span>
-      </div>
+<!-- LOGIN -->
+<div id="login">
+  <div class="lbox">
+    <div class="llogo">
+      <div class="lmark">UP</div>
+      <div class="lbrand">UMKM Penggerak<span>Admin Panel</span></div>
     </div>
-    <div class="login-title">Selamat Datang 👋</div>
-    <div class="login-sub">Masuk untuk mengelola konten website</div>
-    <div class="lf"><label>Email</label><input type="email" id="li-email" placeholder="admin@umkm.id" autofocus></div>
-    <div class="lf"><label>Password</label><input type="password" id="li-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <div class="login-err" id="li-err">Email atau password salah.</div>
-    <button class="login-btn" id="li-btn" onclick="doLogin()">Masuk ke Admin Panel →</button>
-    <p class="login-hint">Belum punya akun? Buat di Supabase → Authentication → Users</p>
+    <div class="lh1">Selamat Datang 👋</div>
+    <div class="lsub">Masuk untuk mengelola konten website</div>
+    <div class="lfi"><label>Email</label><input type="email" id="li-em" placeholder="admin@umkm.id" autofocus></div>
+    <div class="lfi"><label>Password</label><input type="password" id="li-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="lerr" id="li-err"></div>
+    <button class="lbtn" id="li-btn" onclick="doLogin()">Masuk ke Admin Panel →</button>
+    <p class="lhint">Buat akun: Supabase → Authentication → Users</p>
   </div>
 </div>
 
-<!-- ════════════════════════
-     ADMIN APP
-════════════════════════ -->
-<div id="admin-app">
-
-  <!-- Sidebar overlay (mobile) -->
-  <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="sl-mark">UP</div>
-      <div>
-        <div class="sl-name">UMKM Penggerak</div>
-        <div class="sl-sub">Admin Panel</div>
-      </div>
+<!-- APP -->
+<div id="app">
+  <div class="sb-ov" id="sb-ov" onclick="closeSB()"></div>
+  <aside class="sb" id="sb">
+    <div class="sb-logo">
+      <div class="sb-mark">UP</div>
+      <div><div class="sb-nm">UMKM Penggerak</div><div class="sb-sm">Admin Panel</div></div>
     </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-section">Utama</div>
-      <button class="nav-item active" onclick="showPage('dashboard',this)">
-        <span class="ni-icon">📊</span> Dashboard
-        <span class="ni-badge" id="pending-badge"></span>
-      </button>
-      <button class="nav-item" onclick="showPage('orders',this)">
-        <span class="ni-icon">🧾</span> Pesanan
-        <span class="ni-badge" id="orders-badge"></span>
-      </button>
-
-      <div class="nav-section">Kelola Konten</div>
-      <button class="nav-item" onclick="showPage('programs',this)">
-        <span class="ni-icon">🎓</span> Program
-      </button>
-      <button class="nav-item" onclick="showPage('mentors',this)">
-        <span class="ni-icon">👨‍💼</span> Mentor
-      </button>
-      <button class="nav-item" onclick="showPage('alumni',this)">
-        <span class="ni-icon">🏆</span> Alumni
-      </button>
-      <button class="nav-item" onclick="showPage('testimonials',this)">
-        <span class="ni-icon">💬</span> Testimoni
-      </button>
-      <button class="nav-item" onclick="showPage('blog',this)">
-        <span class="ni-icon">📝</span> Blog / Artikel
-      </button>
-
-      <div class="nav-section">Aset & Data</div>
-      <button class="nav-item" onclick="showPage('media',this)">
-        <span class="ni-icon">🖼️</span> Media Upload
-      </button>
-      <button class="nav-item" onclick="showPage('pendaftar',this)">
-        <span class="ni-icon">👥</span> Pendaftar
-      </button>
-      <button class="nav-item" onclick="showPage('settings',this)">
-        <span class="ni-icon">⚙️</span> Pengaturan
-      </button>
-
-      <div class="nav-section">Website</div>
-      <button class="nav-item" onclick="window.open('index.html','_blank')">
-        <span class="ni-icon">🌐</span> Lihat Website
-      </button>
+    <nav class="sb-nav">
+      <div class="sb-sec">Utama</div>
+      <button class="sb-item on" onclick="P('dashboard',this)"><span class="sb-ico">📊</span>Dashboard<span class="sb-badge" id="b-pend"></span></button>
+      <button class="sb-item" onclick="P('orders',this)"><span class="sb-ico">🧾</span>Pesanan<span class="sb-badge" id="b-ord"></span></button>
+      <div class="sb-sec">Konten Website</div>
+      <button class="sb-item" onclick="P('programs',this)"><span class="sb-ico">🎓</span>Program</button>
+      <button class="sb-item" onclick="P('mentors',this)"><span class="sb-ico">👨‍💼</span>Mentor</button>
+      <button class="sb-item" onclick="P('alumni',this)"><span class="sb-ico">🏆</span>Alumni</button>
+      <button class="sb-item" onclick="P('testimonials',this)"><span class="sb-ico">💬</span>Testimoni</button>
+      <button class="sb-item" onclick="P('blog',this)"><span class="sb-ico">📝</span>Blog & Artikel</button>
+      <div class="sb-sec">Media & Data</div>
+      <button class="sb-item" onclick="P('media',this)"><span class="sb-ico">🖼️</span>Media Library</button>
+      <button class="sb-item" onclick="P('pendaftar',this)"><span class="sb-ico">👥</span>Pendaftar</button>
+      <button class="sb-item" onclick="P('settings',this)"><span class="sb-ico">⚙️</span>Pengaturan</button>
+      <div class="sb-sec">Lainnya</div>
+      <button class="sb-item" onclick="window.open('index.html','_blank')"><span class="sb-ico">🌐</span>Lihat Website</button>
     </nav>
-
-    <div class="sidebar-footer">
-      <div class="user-card">
-        <div class="user-av" id="user-av">A</div>
-        <div class="user-email" id="user-email">admin</div>
-        <button class="logout-btn" onclick="doLogout()">Keluar</button>
+    <div class="sb-ft">
+      <div class="uc">
+        <div class="uc-av" id="uc-av">A</div>
+        <div class="uc-em" id="uc-em">admin</div>
+        <button class="uc-out" onclick="doLogout()">Keluar</button>
       </div>
     </div>
   </aside>
 
-  <!-- MAIN AREA -->
-  <div class="main-area">
-
-    <!-- TOPBAR -->
+  <div class="main">
     <div class="topbar">
-      <div class="topbar-left">
-        <button class="menu-toggle" id="menu-toggle" onclick="openSidebar()">☰</button>
-        <div class="page-title" id="page-title">Dashboard</div>
+      <div class="tb-left">
+        <button class="hamburger" onclick="openSB()">☰</button>
+        <div class="tb-title" id="pg-title">Dashboard</div>
       </div>
-      <div class="topbar-right">
-        <span class="topbar-date" id="topbar-date"></span>
-        <a href="index.html" target="_blank" class="view-site">🌐 Lihat Website</a>
+      <div class="tb-right">
+        <span class="tb-date" id="tb-dt"></span>
+        <a href="index.html" target="_blank" class="tb-link">🌐 Website</a>
       </div>
     </div>
 
-    <!-- SCROLLABLE CONTENT -->
-    <div class="content-area">
+    <div class="content">
 
-      <!-- ── DASHBOARD ── -->
-      <div class="page active" id="page-dashboard">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon" style="background:#EFF6FF">🎓</div>
-            <div class="stat-info"><div class="stat-val" id="ds-prog">—</div><div class="stat-lbl">Total Program</div></div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:#FFF0F0">🧾</div>
-            <div class="stat-info"><div class="stat-val" id="ds-ord">—</div><div class="stat-lbl">Total Pesanan</div></div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:#ECFDF5">💰</div>
-            <div class="stat-info"><div class="stat-val" id="ds-lunas">—</div><div class="stat-lbl">Pesanan Lunas</div></div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon" style="background:#FFFBEB">👥</div>
-            <div class="stat-info"><div class="stat-val" id="ds-pend">—</div><div class="stat-lbl">Pendaftar</div></div>
-          </div>
+      <!-- DASHBOARD -->
+      <div class="pg on" id="pg-dashboard">
+        <div class="sc-grid">
+          <div class="sc"><div class="sc-ico" style="background:#EFF6FF">🎓</div><div><div class="sc-val" id="ds-prog">—</div><div class="sc-lbl">Program</div></div></div>
+          <div class="sc"><div class="sc-ico" style="background:#FFF0F0">🧾</div><div><div class="sc-val" id="ds-ord">—</div><div class="sc-lbl">Total Pesanan</div></div></div>
+          <div class="sc"><div class="sc-ico" style="background:#ECFDF5">💰</div><div><div class="sc-val" id="ds-lunas">—</div><div class="sc-lbl">Pesanan Lunas</div></div></div>
+          <div class="sc"><div class="sc-ico" style="background:#FFFBEB">👥</div><div><div class="sc-val" id="ds-pend">—</div><div class="sc-lbl">Pendaftar</div></div></div>
         </div>
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">🆕 Pesanan Terbaru</div>
-            <button class="btn btn-outline btn-sm" onclick="showPage('orders',null)">Lihat Semua</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Invoice</th><th>Nama</th><th>Program</th><th>Harga</th><th>Status</th><th>Tgl</th><th>Aksi</th></tr></thead>
-              <tbody id="ds-tbl"><tr><td colspan="7" class="empty-td">Memuat...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="card-hd"><div class="card-title">🆕 Pesanan Terbaru</div><button class="btn btn-o btn-sm" onclick="P('orders',null)">Lihat Semua</button></div>
+          <div class="tw"><table><thead><tr><th>Invoice</th><th>Nama</th><th>Program</th><th>Harga</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead><tbody id="ds-tbl"><tr><td colspan="7" class="etd">Memuat...</td></tr></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── ORDERS ── -->
-      <div class="page" id="page-orders">
+      <!-- ORDERS -->
+      <div class="pg" id="pg-orders">
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">🧾 Semua Pesanan</div>
-            <div class="card-actions">
-              <select class="filter-select" id="ord-filter" onchange="loadOrders()">
+          <div class="card-hd">
+            <div class="card-title">🧾 Manajemen Pesanan</div>
+            <div class="card-acts">
+              <select class="fsel" id="ord-filter" onchange="loadOrders()">
                 <option value="">Semua Status</option>
                 <option value="pending">Pending</option>
                 <option value="konfirmasi">Konfirmasi</option>
                 <option value="lunas">Lunas</option>
                 <option value="batal">Batal</option>
               </select>
-              <button class="btn btn-green btn-sm" onclick="exportCSV(allOrders,'pesanan',['invoice_no','nama','email','whatsapp','program_judul','program_harga','status','created_at'])">⬇ Export</button>
+              <button class="btn btn-g btn-sm" onclick="exportOrders()">⬇ Export CSV</button>
             </div>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Invoice</th><th>Nama</th><th>Program</th><th>Harga</th><th>WA</th><th>Status</th><th>Tgl</th><th>Aksi</th></tr></thead>
-              <tbody id="tbl-orders"><tr><td colspan="8" class="empty-td">Memuat...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table><thead><tr><th>Invoice</th><th>Nama</th><th>Program</th><th>Harga</th><th>WhatsApp</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead><tbody id="tbl-orders"><tr><td colspan="8" class="etd">Memuat...</td></tr></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── PROGRAMS ── -->
-      <div class="page" id="page-programs">
+      <!-- PROGRAMS -->
+      <div class="pg" id="pg-programs">
         <div class="card">
-          <div class="card-header">
+          <div class="card-hd">
             <div class="card-title">🎓 Program Pelatihan</div>
-            <div class="card-actions">
-              <input class="search-input" placeholder="🔍 Cari..." oninput="filterTbl('tbl-programs',this.value)">
-              <button class="btn btn-red btn-sm" onclick="openForm('program',{})">+ Tambah</button>
+            <div class="card-acts">
+              <input class="search" placeholder="🔍 Cari program..." oninput="filterTbl('tbl-prog',this.value)">
+              <button class="btn btn-r btn-sm" onclick="openF('program',{})">+ Tambah Program</button>
             </div>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Program</th><th>Kategori</th><th>Tipe</th><th>Harga</th><th>Durasi</th><th>Peserta</th><th>Status</th><th>Aksi</th></tr></thead>
-              <tbody id="tbl-programs"><tr><td colspan="8" class="empty-td">Memuat...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table><thead><tr><th>Program</th><th>Kategori</th><th>Tipe</th><th>Harga</th><th>Durasi</th><th>Level</th><th>Peserta</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="tbl-prog"><tr><td colspan="9" class="etd">Memuat...</td></tr></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── MENTORS ── -->
-      <div class="page" id="page-mentors">
+      <!-- MENTORS -->
+      <div class="pg" id="pg-mentors">
         <div class="card">
-          <div class="card-header">
+          <div class="card-hd">
             <div class="card-title">👨‍💼 Mentor</div>
-            <button class="btn btn-red btn-sm" onclick="openForm('mentor',{})">+ Tambah</button>
+            <button class="btn btn-r btn-sm" onclick="openF('mentor',{})">+ Tambah Mentor</button>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Mentor</th><th>Peran</th><th>Spesialisasi</th><th>Rating</th><th>Peserta</th><th>Status</th><th>Aksi</th></tr></thead>
-              <tbody id="tbl-mentors"><tr><td colspan="7" class="empty-td">Memuat...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table><thead><tr><th>Mentor</th><th>Peran</th><th>Spesialisasi</th><th>Rating</th><th>Peserta</th><th>Foto URL</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="tbl-ment"><tr><td colspan="8" class="etd">Memuat...</td></tr></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── ALUMNI ── -->
-      <div class="page" id="page-alumni">
+      <!-- ALUMNI -->
+      <div class="pg" id="pg-alumni">
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">🏆 Galeri Alumni</div>
-            <button class="btn btn-red btn-sm" onclick="openForm('alumni',{})">+ Tambah</button>
+          <div class="card-hd">
+            <div class="card-title">🏆 Alumni</div>
+            <button class="btn btn-r btn-sm" onclick="openF('alumni',{})">+ Tambah Alumni</button>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Nama</th><th>Usaha</th><th>Kota</th><th>Omzet Sebelum</th><th>Omzet Sesudah</th><th>Program</th><th>Status</th><th>Aksi</th></tr></thead>
-              <tbody id="tbl-alumni"><tr><td colspan="8" class="empty-td">Memuat...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table><thead><tr><th>Nama</th><th>Usaha</th><th>Kota</th><th>Omzet Sebelum</th><th>Omzet Sesudah</th><th>Program</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="tbl-alum"><tr><td colspan="8" class="etd">Memuat...</td></tr></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── TESTIMONIALS ── -->
-      <div class="page" id="page-testimonials">
+      <!-- TESTIMONIALS -->
+      <div class="pg" id="pg-testimonials">
         <div class="card">
-          <div class="card-header">
+          <div class="card-hd">
             <div class="card-title">💬 Testimoni</div>
-            <button class="btn btn-red btn-sm" onclick="openForm('testimonial',{})">+ Tambah</button>
+            <button class="btn btn-r btn-sm" onclick="openF('testimonial',{})">+ Tambah</button>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Nama</th><th>Peran</th><th>Isi</th><th>⭐</th><th>Featured</th><th>Status</th><th>Aksi</th></tr></thead>
-              <tbody id="tbl-testimonials"><tr><td colspan="7" class="empty-td">Memuat...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table><thead><tr><th>Nama</th><th>Peran</th><th>Isi</th><th>⭐</th><th>Featured</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="tbl-test"><tr><td colspan="7" class="etd">Memuat...</td></tr></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── BLOG ── -->
-      <div class="page" id="page-blog">
+      <!-- BLOG -->
+      <div class="pg" id="pg-blog">
         <div class="card">
-          <div class="card-header">
+          <div class="card-hd">
             <div class="card-title">📝 Blog & Artikel</div>
-            <div class="card-actions">
-              <input class="search-input" placeholder="🔍 Cari artikel..." oninput="filterTbl('tbl-blog',this.value)">
-              <button class="btn btn-red btn-sm" onclick="openForm('blog',{})">+ Tulis Artikel</button>
+            <div class="card-acts">
+              <input class="search" placeholder="🔍 Cari artikel..." oninput="filterTbl('tbl-blog',this.value)">
+              <button class="btn btn-r btn-sm" onclick="openF('blog',{})">+ Tulis Artikel</button>
             </div>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Judul</th><th>Kategori</th><th>Penulis</th><th>Views</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
-              <tbody id="tbl-blog"><tr><td colspan="7" class="empty-td">Memuat...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table><thead><tr><th>Judul</th><th>Kategori</th><th>Penulis</th><th>Views</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead><tbody id="tbl-blog"><tr><td colspan="7" class="etd">Memuat...</td></tr></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── MEDIA ── -->
-      <div class="page" id="page-media">
-        <!-- Upload Zone -->
+      <!-- MEDIA -->
+      <div class="pg" id="pg-media">
         <div class="card" style="margin-bottom:20px">
-          <div class="card-header">
-            <div class="card-title">📤 Upload Foto & Video</div>
-            <div style="font-size:12px;color:var(--muted)">File akan tampil di section <b>Galeri</b> website</div>
-          </div>
+          <div class="card-hd"><div class="card-title">📤 Upload Foto & Video</div><div style="font-size:12px;color:var(--mu)">File tampil di galeri & section terkait website</div></div>
           <div style="padding:20px">
+            <div style="margin-bottom:14px">
+              <label style="font-family:var(--H);font-size:11px;font-weight:700;color:var(--blk);display:block;margin-bottom:6px">Upload ke Section:</label>
+              <select id="upload-section" class="fsel" style="min-width:200px">
+                <option value="galeri">🏞️ Galeri Utama</option>
+                <option value="hero">🏠 Hero / Banner</option>
+                <option value="programs">🎓 Akademi / Program</option>
+                <option value="mentors">👨‍💼 Mentor</option>
+                <option value="alumni">🏆 Alumni</option>
+                <option value="testimonials">💬 Testimoni</option>
+                <option value="blog">📝 Blog / Artikel</option>
+              </select>
+            </div>
             <div class="upload-zone" id="drop-zone">
               <input type="file" id="file-input" multiple accept="image/*,video/*">
-              <span class="uz-icon">📁</span>
-              <div class="uz-title">Klik atau Drag & Drop di sini</div>
-              <div class="uz-sub">Mendukung: JPG, PNG, WebP, GIF, MP4, MOV • Maks 50MB per file</div>
-              <div class="progress-bar" id="prog-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
-              <div class="upload-status" id="up-status"></div>
+              <span class="uz-ico">📁</span>
+              <div class="uz-t">Klik atau Drag & Drop File di Sini</div>
+              <div class="uz-s">JPG, PNG, WebP, GIF, MP4, MOV • Maks 50MB per file</div>
+              <div class="ubar" id="ubar"><div class="ufill" id="ufill"></div></div>
+              <div class="ustat" id="ustat"></div>
             </div>
           </div>
         </div>
 
-        <!-- Tab Filter -->
-        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center;justify-content:space-between">
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-red btn-sm media-tab-btn active" id="tab-all" onclick="switchMediaTab('all',this)">Semua</button>
-            <button class="btn btn-outline btn-sm media-tab-btn" id="tab-image" onclick="switchMediaTab('image',this)">🖼️ Foto</button>
-            <button class="btn btn-outline btn-sm media-tab-btn" id="tab-video" onclick="switchMediaTab('video',this)">🎬 Video</button>
-          </div>
-          <input class="search-input" placeholder="🔍 Cari nama file..." oninput="filterMedia(this.value)" style="max-width:200px">
-        </div>
-
-        <!-- Media Grid -->
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">📂 Library Media</div>
-            <div id="media-count" style="font-size:12px;color:var(--muted)">Memuat...</div>
-          </div>
-          <div style="padding:16px">
-            <div class="media-grid" id="media-grid">
-              <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted)">
-                <div style="font-size:40px;margin-bottom:12px">📂</div>
-                <div style="font-weight:600;margin-bottom:4px">Belum ada media</div>
-                <div style="font-size:12px">Upload foto atau video di atas untuk mulai</div>
-              </div>
+          <div class="media-tab" id="media-tabs">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="mtab-btn on" onclick="switchTab('',this)">Semua</button>
+              <button class="mtab-btn" onclick="switchTab('galeri',this)">🏞️ Galeri</button>
+              <button class="mtab-btn" onclick="switchTab('hero',this)">🏠 Hero</button>
+              <button class="mtab-btn" onclick="switchTab('programs',this)">🎓 Program</button>
+              <button class="mtab-btn" onclick="switchTab('mentors',this)">👨‍💼 Mentor</button>
+              <button class="mtab-btn" onclick="switchTab('alumni',this)">🏆 Alumni</button>
+              <button class="mtab-btn" onclick="switchTab('testimonials',this)">💬 Testimoni</button>
+              <button class="mtab-btn" onclick="switchTab('blog',this)">📝 Blog</button>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input class="search" placeholder="🔍 Cari media..." oninput="filterMedia(this.value)" style="max-width:180px">
+              <span id="media-count" style="font-size:12px;color:var(--mu)"></span>
             </div>
           </div>
+          <div class="media-grid" id="media-grid"><div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--mu)">Memuat media...</div></div>
         </div>
 
-        <!-- Info cara pakai -->
-        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:16px;margin-top:16px;font-size:13px;color:#1D4ED8">
-          <strong>💡 Cara menggunakan media di website:</strong><br>
-          1. Upload foto/video di atas<br>
-          2. Klik <b>Salin URL</b> pada media yang diinginkan<br>
-          3. Tempel URL tersebut ke kolom <b>URL Thumbnail</b> saat mengedit Program atau Artikel Blog<br>
-          4. Media juga otomatis tampil di section <b>Galeri</b> website
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:16px;font-size:13px;color:#1D4ED8;line-height:1.7">
+          <strong>💡 Cara pakai URL media di website:</strong><br>
+          1. Upload file di atas → pilih section yang tepat<br>
+          2. Klik <strong>📋 Salin URL</strong> pada media<br>
+          3. Tempel URL ke kolom <em>Thumbnail URL</em> saat edit Program, Alumni, atau Blog<br>
+          4. Media otomatis tampil di section yang dipilih di website
         </div>
       </div>
 
-      <!-- ── PENDAFTAR ── -->
-      <div class="page" id="page-pendaftar">
+      <!-- PENDAFTAR -->
+      <div class="pg" id="pg-pendaftar">
         <div class="card">
-          <div class="card-header">
+          <div class="card-hd">
             <div class="card-title">👥 Data Pendaftar</div>
-            <div class="card-actions">
-              <input class="search-input" placeholder="🔍 Cari..." oninput="filterTbl('tbl-pendaftar',this.value)">
-              <button class="btn btn-green btn-sm" onclick="exportPend()">⬇ Export CSV</button>
+            <div class="card-acts">
+              <input class="search" placeholder="🔍 Cari..." oninput="filterTbl('tbl-pend',this.value)">
+              <button class="btn btn-g btn-sm" onclick="exportPend()">⬇ Export CSV</button>
             </div>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Nama</th><th>Email</th><th>WhatsApp</th><th>Jenis Usaha</th><th>Kota</th><th>Tanggal</th></tr></thead>
-              <tbody id="tbl-pendaftar"><tr><td colspan="6" class="empty-td">Memuat...</td></tr></tbody>
-            </table>
-          </div>
+          <div class="tw"><table><thead><tr><th>Nama</th><th>Email</th><th>WhatsApp</th><th>Jenis Usaha</th><th>Kota</th><th>Tanggal</th></tr></thead><tbody id="tbl-pend"><tr><td colspan="6" class="etd">Memuat...</td></tr></tbody></table></div>
         </div>
       </div>
 
-      <!-- ── SETTINGS ── -->
-      <div class="page" id="page-settings">
-        <div class="settings-grid">
-          <div class="settings-card">
+      <!-- SETTINGS -->
+      <div class="pg" id="pg-settings">
+        <div class="sg">
+          <div class="scard">
             <h3>📊 Statistik Hero</h3>
             <div class="fi"><label>Member Aktif</label><input id="s-member" placeholder="10K+"></div>
             <div class="fi"><label>Total Program</label><input id="s-program" placeholder="250+"></div>
             <div class="fi"><label>Total Mentor</label><input id="s-mentor" placeholder="100+"></div>
             <div class="fi"><label>UMKM Terbantu</label><input id="s-umkm" placeholder="5K+"></div>
-            <button class="btn btn-red btn-block" onclick="saveSettings()">💾 Simpan Statistik</button>
+            <button class="btn btn-r btn-blk" onclick="saveSettings()">💾 Simpan</button>
           </div>
-          <div class="settings-card">
+          <div class="scard">
             <h3>🏦 Info Pembayaran</h3>
             <div class="fi"><label>Nama Bank</label><input id="s-bank" placeholder="BCA"></div>
             <div class="fi"><label>Nomor Rekening</label><input id="s-bankno" placeholder="1234567890"></div>
             <div class="fi"><label>Atas Nama</label><input id="s-banka" placeholder="UMKM Penggerak Indonesia"></div>
-            <div class="fi"><label>WhatsApp Admin (628xxx)</label><input id="s-wa" placeholder="628xxxxxxxxxx"></div>
-            <button class="btn btn-red btn-block" onclick="saveSettings()">💾 Simpan Info Bank</button>
+            <div class="fi"><label>WhatsApp Admin</label><input id="s-wa" placeholder="628xxxxxxxxxx"></div>
+            <button class="btn btn-r btn-blk" onclick="saveSettings()">💾 Simpan</button>
           </div>
-          <div class="settings-card">
+          <div class="scard">
             <h3>✏️ Teks Website</h3>
             <div class="fi"><label>Deskripsi Hero</label><textarea id="s-desc" rows="4"></textarea></div>
-            <div class="fi"><label>Email Admin</label><input id="s-email" placeholder="admin@umkmpenggerak.id"></div>
-            <button class="btn btn-red btn-block" onclick="saveSettings()">💾 Simpan Teks</button>
+            <div class="fi"><label>Email Admin</label><input id="s-email" placeholder="admin@umkm.id"></div>
+            <button class="btn btn-r btn-blk" onclick="saveSettings()">💾 Simpan</button>
           </div>
-          <div class="settings-card">
+          <div class="scard">
             <h3>🔑 Ubah Password</h3>
             <div class="fi"><label>Password Baru</label><input type="password" id="s-pw1" placeholder="••••••••"></div>
-            <div class="fi"><label>Konfirmasi Password</label><input type="password" id="s-pw2" placeholder="••••••••"></div>
-            <button class="btn btn-red btn-block" onclick="changePass()">🔑 Ubah Password</button>
+            <div class="fi"><label>Konfirmasi</label><input type="password" id="s-pw2" placeholder="••••••••"></div>
+            <button class="btn btn-r btn-blk" onclick="changePass()">🔑 Ubah Password</button>
           </div>
         </div>
       </div>
 
-    </div><!-- /content-area -->
-  </div><!-- /main-area -->
-</div><!-- /admin-app -->
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal-box" id="modal-box">
-    <div class="modal-head">
-      <div class="modal-title" id="modal-title">Form</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
+<div class="mov" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="mbox" id="mbox">
+    <div class="mhd"><div class="mtt" id="m-title">Form</div><button class="mx" onclick="closeModal()">✕</button></div>
+    <div class="mbd" id="m-body"></div>
   </div>
 </div>
 
 <script>
-/* ─── SUPABASE ─── */
+/* ── SUPABASE ── */
 const SB_URL='https://rupdpwzlfkvleazohgzp.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1cGRwd3psZmt2bGVhem9oZ3pwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NjQ1NTUsImV4cCI6MjA5MzI0MDU1NX0.BR93T03eHnTX7bi_hqinuS16zBcuWTJyRbViiFKDGNk';
 const {createClient}=supabase;
 const db=createClient(SB_URL,SB_KEY);
+let USER=null,allOrders=[],allPend=[],curMediaTab='';
 
-let USER=null, allOrders=[], allPend=[];
-
-/* ─── HELPERS ─── */
+/* ── HELPERS ── */
 const $=id=>document.getElementById(id);
 const val=id=>($( id)?.value||'').trim();
-const esc=s=>(s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-const fmt=d=>d?new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}):'-';
 const num=id=>parseInt($(id)?.value)||0;
 const chk=id=>$(id)?.checked!==false;
+const esc=s=>(s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const fmt=d=>d?new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}):'-';
+const fmtBytes=b=>b>1048576?(b/1048576).toFixed(1)+' MB':b>1024?(b/1024).toFixed(0)+' KB':b+' B';
 
 function toast(msg,type='info'){
-  const t=$('toast');
-  t.textContent=msg;
-  t.className=`show toast-${type}`;
-  clearTimeout(t._t);
-  t._t=setTimeout(()=>t.classList.remove('show'),3000);
+  const t=$('toast');t.textContent=msg;
+  t.className=type==='ok'?'t-ok show':type==='err'?'t-err show':'t-info show';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);
 }
 
-/* ─── AUTH ─── */
+/* ── AUTH ── */
 async function doLogin(){
-  const em=val('li-email'),pw=val('li-pass');
-  const btn=$('li-btn'),err=$('li-err');
+  const em=val('li-em'),pw=val('li-pw'),btn=$('li-btn'),err=$('li-err');
   if(!em||!pw){err.textContent='Isi email dan password.';err.style.display='block';return;}
   btn.textContent='Memverifikasi...';btn.disabled=true;err.style.display='none';
   const {data,error}=await db.auth.signInWithPassword({email:em,password:pw});
-  if(error){
-    err.textContent='Email atau password salah.';err.style.display='block';
-    btn.textContent='Masuk ke Admin Panel →';btn.disabled=false;
-  } else {
-    USER=data.user;
-    mountAdmin();
-  }
+  if(error){err.textContent='Email atau password salah.';err.style.display='block';btn.textContent='Masuk ke Admin Panel →';btn.disabled=false;}
+  else{USER=data.user;mountApp();}
 }
-
-async function doLogout(){
-  await db.auth.signOut();
-  $('admin-app').style.display='none';
-  $('login-page').style.display='flex';
-  USER=null;
-}
-
-async function checkSession(){
+async function doLogout(){await db.auth.signOut();$('app').style.display='none';$('login').style.display='flex';USER=null;}
+async function checkAuth(){
   const {data}=await db.auth.getSession();
-  if(data?.session?.user){USER=data.session.user;mountAdmin();}
-  else $('login-page').style.display='flex';
+  if(data?.session?.user){USER=data.session.user;mountApp();}
+  else $('login').style.display='flex';
 }
-
-function mountAdmin(){
-  $('login-page').style.display='none';
-  const app=$('admin-app');
-  app.style.display='flex';
-  app.style.flexDirection='row';
+function mountApp(){
+  $('login').style.display='none';
+  const app=$('app');app.style.display='flex';app.style.flexDirection='row';
   const em=USER?.email||'admin';
-  $('user-email').textContent=em;
-  $('user-av').textContent=em[0].toUpperCase();
-  $('topbar-date').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  $('uc-em').textContent=em;$('uc-av').textContent=em[0].toUpperCase();
+  $('tb-dt').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   loadAll();
 }
-
 async function changePass(){
   const p1=val('s-pw1'),p2=val('s-pw2');
   if(!p1||p1!==p2){toast('Password tidak cocok!','err');return;}
   const {error}=await db.auth.updateUser({password:p1});
   if(error){toast('Gagal: '+error.message,'err');}
-  else{toast('Password berhasil diubah ✓','ok');$('s-pw1').value='';$('s-pw2').value='';}
+  else{toast('Password diubah ✓','ok');$('s-pw1').value='';$('s-pw2').value='';}
 }
 
-/* ─── NAVIGATION ─── */
-const PAGE_TITLES={
-  dashboard:'Dashboard',orders:'Manajemen Pesanan',
-  programs:'Program Pelatihan',mentors:'Mentor',
-  alumni:'Galeri Alumni',testimonials:'Testimoni',
-  blog:'Blog & Artikel',media:'Media Upload',
-  pendaftar:'Data Pendaftar',settings:'Pengaturan'
-};
-
-function showPage(name,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  $('page-'+name).classList.add('active');
-  if(btn)btn.classList.add('active');
-  $('page-title').textContent=PAGE_TITLES[name]||name;
-  closeSidebar();
+/* ── NAVIGATION ── */
+const TITLES={dashboard:'Dashboard',orders:'Manajemen Pesanan',programs:'Program Pelatihan',mentors:'Mentor',alumni:'Galeri Alumni',testimonials:'Testimoni',blog:'Blog & Artikel',media:'Media Library',pendaftar:'Data Pendaftar',settings:'Pengaturan'};
+function P(name,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('on'));
+  $('pg-'+name).classList.add('on');
+  if(btn)btn.classList.add('on');
+  $('pg-title').textContent=TITLES[name]||name;
+  closeSB();
 }
+function openSB(){$('sb').classList.add('open');$('sb-ov').classList.add('on');}
+function closeSB(){$('sb').classList.remove('open');$('sb-ov').classList.remove('on');}
 
-function openSidebar(){$('sidebar').classList.add('open');$('sb-overlay').classList.add('show');}
-function closeSidebar(){$('sidebar').classList.remove('open');$('sb-overlay').classList.remove('show');}
-
-/* ─── LOAD ALL ─── */
+/* ── LOAD ALL ── */
 function loadAll(){
-  loadDashboard();loadOrders();loadPrograms();loadMentors();
+  loadDash();loadOrders();loadPrograms();loadMentors();
   loadAlumni();loadTestimonials();loadBlog();loadMedia();
   loadPendaftar();loadSettings();
 }
 
-/* ─── DASHBOARD ─── */
-async function loadDashboard(){
+/* ── DASHBOARD ── */
+async function loadDash(){
   const [a,b,c,d]=await Promise.all([
     db.from('programs').select('*',{count:'exact',head:true}),
     db.from('orders').select('*',{count:'exact',head:true}),
@@ -979,363 +596,311 @@ async function loadDashboard(){
   $('ds-ord').textContent=b.count??0;
   $('ds-lunas').textContent=c.count??0;
   $('ds-pend').textContent=d.count??0;
-
   const {count:pCount}=await db.from('orders').select('*',{count:'exact',head:true}).eq('status','pending');
   if(pCount>0){
-    $('pending-badge').textContent=pCount;$('pending-badge').style.display='inline';
-    $('orders-badge').textContent=pCount;$('orders-badge').style.display='inline';
+    $('b-pend').textContent=pCount;$('b-pend').style.display='inline';
+    $('b-ord').textContent=pCount;$('b-ord').style.display='inline';
   }
-
   const {data}=await db.from('orders').select('*').order('created_at',{ascending:false}).limit(8);
-  $('ds-tbl').innerHTML=(data||[]).length?data.map(r=>`
-    <tr>
-      <td style="font-size:11px;font-weight:700">${r.invoice_no}</td>
-      <td><b>${r.nama}</b></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.program_judul}</td>
-      <td>${r.program_harga>0?'Rp '+r.program_harga.toLocaleString('id-ID'):'GRATIS'}</td>
-      <td><span class="badge badge-${r.status}">${r.status.toUpperCase()}</span></td>
-      <td>${fmt(r.created_at)}</td>
-      <td><button class="btn btn-outline btn-sm" onclick='showOrderDetail("${r.id}")'>Detail</button></td>
-    </tr>`).join('')
-  :'<tr><td colspan="7" class="empty-td">Belum ada pesanan.</td></tr>';
+  $('ds-tbl').innerHTML=(data||[]).length?data.map(r=>`<tr>
+    <td><b style="font-size:11px">${r.invoice_no}</b></td>
+    <td><b>${esc(r.nama)}</b></td>
+    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.program_judul)}</td>
+    <td>${r.program_harga>0?'Rp '+r.program_harga.toLocaleString('id-ID'):'GRATIS'}</td>
+    <td><span class="bdg bdg-${r.status}">${r.status.toUpperCase()}</span></td>
+    <td>${fmt(r.created_at)}</td>
+    <td><button class="btn btn-o btn-sm" onclick="showOrder('${r.id}')">Detail</button></td>
+  </tr>`).join(''):'<tr><td colspan="7" class="etd">Belum ada pesanan.</td></tr>';
 }
 
-/* ─── ORDERS ─── */
+/* ── ORDERS ── */
 async function loadOrders(){
   const f=$('ord-filter')?.value||'';
   let q=db.from('orders').select('*').order('created_at',{ascending:false});
   if(f)q=q.eq('status',f);
   const {data}=await q;
   allOrders=data||[];
-  $('tbl-orders').innerHTML=allOrders.length?allOrders.map(r=>`
-    <tr>
-      <td style="font-size:11px;font-weight:700">${r.invoice_no}</td>
-      <td><b>${r.nama}</b></td>
-      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.program_judul}</td>
-      <td>${r.program_harga>0?'Rp '+r.program_harga.toLocaleString('id-ID'):'GRATIS'}</td>
-      <td><a href="https://wa.me/${r.whatsapp}" target="_blank" style="color:var(--red);font-weight:600">${r.whatsapp}</a></td>
-      <td><span class="badge badge-${r.status}">${r.status.toUpperCase()}</span></td>
-      <td>${fmt(r.created_at)}</td>
-      <td>
-        <div class="td-actions">
-          <button class="btn btn-outline btn-sm" onclick='showOrderDetail("${r.id}")'>Detail</button>
-          ${r.status==='pending'?`<button class="btn btn-blue btn-sm" onclick='updateOrder("${r.id}","konfirmasi")'>✓ Konfirmasi</button>`:''}
-          ${r.status==='konfirmasi'?`<button class="btn btn-green btn-sm" onclick='updateOrder("${r.id}","lunas")'>✓ Lunas</button>`:''}
-          ${r.status!=='lunas'&&r.status!=='batal'?`<button class="btn btn-danger btn-sm" onclick='updateOrder("${r.id}","batal")'>Batal</button>`:''}
-        </div>
-      </td>
-    </tr>`).join('')
-  :'<tr><td colspan="8" class="empty-td">Tidak ada pesanan.</td></tr>';
+  $('tbl-orders').innerHTML=allOrders.length?allOrders.map(r=>`<tr>
+    <td><b style="font-size:11px">${r.invoice_no}</b></td>
+    <td><b>${esc(r.nama)}</b></td>
+    <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.program_judul)}</td>
+    <td>${r.program_harga>0?'Rp '+r.program_harga.toLocaleString('id-ID'):'GRATIS'}</td>
+    <td><a href="https://wa.me/${r.whatsapp}" target="_blank" style="color:var(--red);font-weight:600">${r.whatsapp}</a></td>
+    <td><span class="bdg bdg-${r.status}">${r.status.toUpperCase()}</span></td>
+    <td>${fmt(r.created_at)}</td>
+    <td><div class="acts">
+      <button class="btn btn-o btn-sm" onclick="showOrder('${r.id}')">Detail</button>
+      ${r.status==='pending'?`<button class="btn btn-b btn-sm" onclick="updOrd('${r.id}','konfirmasi')">✓ Konfirmasi</button>`:''}
+      ${r.status==='konfirmasi'?`<button class="btn btn-g btn-sm" onclick="updOrd('${r.id}','lunas')">✓ Lunas</button>`:''}
+      ${r.status!=='lunas'&&r.status!=='batal'?`<button class="btn btn-d btn-sm" onclick="updOrd('${r.id}','batal')">Batal</button>`:''}
+    </div></td>
+  </tr>`).join(''):'<tr><td colspan="8" class="etd">Tidak ada pesanan.</td></tr>';
 }
 
-async function showOrderDetail(id){
+async function showOrder(id){
   const {data:r}=await db.from('orders').select('*').eq('id',id).single();
   if(!r)return;
-  $('modal-box').classList.remove('modal-lg');
-  $('modal-title').textContent='Detail Pesanan';
-  $('modal-body').innerHTML=`
+  $('mbox').classList.remove('lg');
+  $('m-title').textContent='Detail Pesanan';
+  $('m-body').innerHTML=`
     <div style="background:#F8FAFC;border-radius:12px;padding:18px;margin-bottom:14px">
-      <div style="font-family:var(--head);font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Info Pesanan</div>
+      <div style="font-family:var(--H);font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Info Pesanan</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px">
-        <div><span style="color:var(--muted)">Invoice: </span><b>${r.invoice_no}</b></div>
-        <div><span style="color:var(--muted)">Status: </span><span class="badge badge-${r.status}">${r.status.toUpperCase()}</span></div>
-        <div><span style="color:var(--muted)">Program: </span><b>${r.program_judul}</b></div>
-        <div><span style="color:var(--muted)">Harga: </span><b>${r.program_harga>0?'Rp '+r.program_harga.toLocaleString('id-ID'):'GRATIS'}</b></div>
-        <div><span style="color:var(--muted)">Tanggal: </span>${fmt(r.created_at)}</div>
-        ${r.confirmed_at?`<div><span style="color:var(--muted)">Dikonfirmasi: </span>${fmt(r.confirmed_at)}</div>`:''}
+        <div><span style="color:var(--mu)">Invoice: </span><b>${r.invoice_no}</b></div>
+        <div><span style="color:var(--mu)">Status: </span><span class="bdg bdg-${r.status}">${r.status.toUpperCase()}</span></div>
+        <div><span style="color:var(--mu)">Program: </span><b>${esc(r.program_judul)}</b></div>
+        <div><span style="color:var(--mu)">Harga: </span><b>${r.program_harga>0?'Rp '+r.program_harga.toLocaleString('id-ID'):'GRATIS'}</b></div>
+        <div><span style="color:var(--mu)">Tanggal: </span>${fmt(r.created_at)}</div>
+        ${r.confirmed_at?`<div><span style="color:var(--mu)">Dikonfirmasi: </span>${fmt(r.confirmed_at)}</div>`:''}
       </div>
     </div>
     <div style="background:#F8FAFC;border-radius:12px;padding:18px;margin-bottom:14px">
-      <div style="font-family:var(--head);font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Data Peserta</div>
+      <div style="font-family:var(--H);font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Data Peserta</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px">
-        <div><span style="color:var(--muted)">Nama: </span><b>${r.nama}</b></div>
-        <div><span style="color:var(--muted)">Email: </span>${r.email}</div>
-        <div><span style="color:var(--muted)">WhatsApp: </span><a href="https://wa.me/${r.whatsapp}" target="_blank" style="color:var(--red);font-weight:600">${r.whatsapp}</a></div>
-        <div><span style="color:var(--muted)">Kota: </span>${r.kota||'-'}</div>
-        <div><span style="color:var(--muted)">Usaha: </span>${r.jenis_usaha||'-'}</div>
+        <div><span style="color:var(--mu)">Nama: </span><b>${esc(r.nama)}</b></div>
+        <div><span style="color:var(--mu)">Email: </span>${esc(r.email)}</div>
+        <div><span style="color:var(--mu)">WA: </span><a href="https://wa.me/${r.whatsapp}" target="_blank" style="color:var(--red);font-weight:600">${r.whatsapp}</a></div>
+        <div><span style="color:var(--mu)">Kota: </span>${esc(r.kota||'-')}</div>
+        <div><span style="color:var(--mu)">Usaha: </span>${esc(r.jenis_usaha||'-')}</div>
       </div>
     </div>
-    <div class="fi"><label>Catatan Admin</label><textarea id="ord-note" rows="2">${r.catatan||''}</textarea></div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal()">Tutup</button>
-      ${r.status==='pending'?`<button class="btn btn-blue" onclick='updateOrder("${r.id}","konfirmasi")'>✓ Konfirmasi</button>`:''}
-      ${r.status==='konfirmasi'?`<button class="btn btn-green" onclick='updateOrder("${r.id}","lunas")'>✓ Tandai Lunas</button>`:''}
-      <button class="btn btn-red" onclick='saveNote("${r.id}")'>💾 Simpan</button>
+    <div class="fi"><label>Catatan Admin</label><textarea id="ord-note" rows="2">${esc(r.catatan||'')}</textarea></div>
+    <div class="mft">
+      <button class="btn btn-o" onclick="closeModal()">Tutup</button>
+      ${r.status==='pending'?`<button class="btn btn-b" onclick="updOrd('${r.id}','konfirmasi')">✓ Konfirmasi</button>`:''}
+      ${r.status==='konfirmasi'?`<button class="btn btn-g" onclick="updOrd('${r.id}','lunas')">✓ Tandai Lunas</button>`:''}
+      <button class="btn btn-r" id="note-btn">💾 Simpan Catatan</button>
     </div>`;
+  $('note-btn').addEventListener('click',async()=>{
+    await db.from('orders').update({catatan:val('ord-note')}).eq('id',id);
+    toast('Catatan disimpan ✓','ok');
+  });
   openModal();
 }
 
-async function updateOrder(id,status){
-  const {error}=await db.from('orders').update({
-    status,confirmed_at:status==='lunas'?new Date().toISOString():null
-  }).eq('id',id);
+async function updOrd(id,status){
+  const {error}=await db.from('orders').update({status,confirmed_at:status==='lunas'?new Date().toISOString():null}).eq('id',id);
   if(error){toast('Gagal: '+error.message,'err');return;}
-  toast('Status diperbarui ✓','ok');closeModal();loadOrders();loadDashboard();
+  toast('Status diperbarui ✓','ok');closeModal();loadOrders();loadDash();
 }
 
-async function saveNote(id){
-  await db.from('orders').update({catatan:val('ord-note')}).eq('id',id);
-  toast('Catatan disimpan ✓','ok');
+function exportOrders(){
+  if(!allOrders.length){toast('Tidak ada data','err');return;}
+  dlCSV([['Invoice','Nama','Email','WA','Program','Harga','Status','Tanggal'],
+    ...allOrders.map(r=>[r.invoice_no,r.nama,r.email,r.whatsapp,r.program_judul,r.program_harga>0?r.program_harga:'GRATIS',r.status,fmt(r.created_at)])],'pesanan');
 }
 
-/* ─── PROGRAMS ─── */
+/* ── PROGRAMS ── */
 async function loadPrograms(){
   const {data}=await db.from('programs').select('*').order('urutan');
-  $('tbl-programs').innerHTML=(data||[]).length?data.map(r=>`
-    <tr>
-      <td><b>${esc(r.emoji+' '+r.judul)}</b></td>
-      <td><span class="badge badge-blue">${r.kategori||'-'}</span></td>
-      <td><span class="badge ${r.tipe==='Gratis'?'badge-green':'badge-yellow'}">${r.tipe}</span></td>
-      <td>${r.harga>0?'Rp '+r.harga.toLocaleString('id-ID'):'GRATIS'}</td>
-      <td>${r.durasi||'-'}</td><td>${r.peserta||0}</td>
-      <td><span class="badge ${r.aktif?'badge-green':'badge-red'}">${r.aktif?'Aktif':'Nonaktif'}</span></td>
-      <td><div class="td-actions">
-        <button class="btn btn-outline btn-sm" onclick='editRow("program","${r.id}")'>✏️</button>
-        <button class="btn btn-danger btn-sm" onclick='delRow("programs","${r.id}",loadPrograms)'>🗑️</button>
-      </div></td>
-    </tr>`).join('')
-  :'<tr><td colspan="8" class="empty-td">Belum ada program.</td></tr>';
+  $('tbl-prog').innerHTML=(data||[]).length?data.map(r=>`<tr>
+    <td><b>${esc((r.emoji||'')+(r.judul||''))}</b></td>
+    <td><span class="bdg bdg-b">${esc(r.kategori||'-')}</span></td>
+    <td><span class="bdg ${r.tipe==='Gratis'?'bdg-g':'bdg-y'}">${r.tipe}</span></td>
+    <td>${r.harga>0?'Rp '+r.harga.toLocaleString('id-ID'):'GRATIS'}</td>
+    <td>${r.durasi||'-'}</td><td>${r.level||'-'}</td><td>${r.peserta||0}</td>
+    <td><span class="bdg ${r.aktif?'bdg-g':'bdg-r'}">${r.aktif?'Aktif':'Nonaktif'}</span></td>
+    <td><div class="acts">
+      <button class="btn btn-o btn-sm" onclick="editRow('program','${r.id}')">✏️</button>
+      <button class="btn btn-d btn-sm" onclick="delRow('programs','${r.id}',loadPrograms)">🗑️</button>
+    </div></td>
+  </tr>`).join(''):'<tr><td colspan="9" class="etd">Belum ada program.</td></tr>';
 }
 
-/* ─── MENTORS ─── */
+/* ── MENTORS ── */
 async function loadMentors(){
   const {data}=await db.from('mentors').select('*').order('urutan');
-  $('tbl-mentors').innerHTML=(data||[]).length?data.map(r=>`
-    <tr>
-      <td><b>${esc(r.emoji+' '+r.nama)}</b></td>
-      <td>${r.peran||'-'}</td><td>${r.spesialisasi||'-'}</td>
-      <td>⭐ ${r.rating}</td><td>${r.peserta||0}</td>
-      <td><span class="badge ${r.aktif?'badge-green':'badge-red'}">${r.aktif?'Aktif':'Nonaktif'}</span></td>
-      <td><div class="td-actions">
-        <button class="btn btn-outline btn-sm" onclick='editRow("mentor","${r.id}")'>✏️</button>
-        <button class="btn btn-danger btn-sm" onclick='delRow("mentors","${r.id}",loadMentors)'>🗑️</button>
-      </div></td>
-    </tr>`).join('')
-  :'<tr><td colspan="7" class="empty-td">Belum ada mentor.</td></tr>';
+  $('tbl-ment').innerHTML=(data||[]).length?data.map(r=>`<tr>
+    <td><b>${esc((r.emoji||'')+(r.nama||''))}</b></td>
+    <td>${esc(r.peran||'-')}</td><td>${esc(r.spesialisasi||'-')}</td>
+    <td>⭐ ${r.rating}</td><td>${r.peserta||0}</td>
+    <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+      ${r.foto_url?`<a href="${r.foto_url}" target="_blank" style="color:var(--red);font-size:11px">Lihat foto</a>`:'<span style="color:var(--mu);font-size:11px">Belum ada</span>'}
+    </td>
+    <td><span class="bdg ${r.aktif?'bdg-g':'bdg-r'}">${r.aktif?'Aktif':'Nonaktif'}</span></td>
+    <td><div class="acts">
+      <button class="btn btn-o btn-sm" onclick="editRow('mentor','${r.id}')">✏️</button>
+      <button class="btn btn-d btn-sm" onclick="delRow('mentors','${r.id}',loadMentors)">🗑️</button>
+    </div></td>
+  </tr>`).join(''):'<tr><td colspan="8" class="etd">Belum ada mentor.</td></tr>';
 }
 
-/* ─── ALUMNI ─── */
+/* ── ALUMNI ── */
 async function loadAlumni(){
   const {data}=await db.from('alumni').select('*').order('created_at',{ascending:false});
-  $('tbl-alumni').innerHTML=(data||[]).length?data.map(r=>`
-    <tr>
-      <td><b>${esc(r.foto_emoji+' '+r.nama)}</b></td>
-      <td>${r.usaha||'-'}</td><td>${r.kota||'-'}</td>
-      <td style="color:var(--muted)">${r.omzet_sebelum||'-'}</td>
-      <td style="color:#065F46;font-weight:700">${r.omzet_sesudah||'-'}</td>
-      <td>${r.program_diikuti||'-'}</td>
-      <td><span class="badge ${r.aktif?'badge-green':'badge-red'}">${r.aktif?'Aktif':'Nonaktif'}</span></td>
-      <td><div class="td-actions">
-        <button class="btn btn-outline btn-sm" onclick='editRow("alumni","${r.id}")'>✏️</button>
-        <button class="btn btn-danger btn-sm" onclick='delRow("alumni","${r.id}",loadAlumni)'>🗑️</button>
-      </div></td>
-    </tr>`).join('')
-  :'<tr><td colspan="8" class="empty-td">Belum ada alumni.</td></tr>';
+  $('tbl-alum').innerHTML=(data||[]).length?data.map(r=>`<tr>
+    <td><b>${esc((r.foto_emoji||'')+(r.nama||''))}</b></td>
+    <td>${esc(r.usaha||'-')}</td><td>${esc(r.kota||'-')}</td>
+    <td style="color:var(--mu)">${esc(r.omzet_sebelum||'-')}</td>
+    <td style="color:#065F46;font-weight:700">${esc(r.omzet_sesudah||'-')}</td>
+    <td>${esc(r.program_diikuti||'-')}</td>
+    <td><span class="bdg ${r.aktif?'bdg-g':'bdg-r'}">${r.aktif?'Aktif':'Nonaktif'}</span></td>
+    <td><div class="acts">
+      <button class="btn btn-o btn-sm" onclick="editRow('alumni','${r.id}')">✏️</button>
+      <button class="btn btn-d btn-sm" onclick="delRow('alumni','${r.id}',loadAlumni)">🗑️</button>
+    </div></td>
+  </tr>`).join(''):'<tr><td colspan="8" class="etd">Belum ada alumni.</td></tr>';
 }
 
-/* ─── TESTIMONIALS ─── */
+/* ── TESTIMONIALS ── */
 async function loadTestimonials(){
   const {data}=await db.from('testimonials').select('*').order('created_at',{ascending:false});
-  $('tbl-testimonials').innerHTML=(data||[]).length?data.map(r=>`
-    <tr>
-      <td><b>${esc(r.emoji+' '+r.nama)}</b></td>
-      <td>${r.peran||'-'}</td>
-      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.isi)}</td>
-      <td>${'★'.repeat(r.bintang||5)}</td>
-      <td><span class="badge ${r.featured?'badge-red':'badge-gray'}">${r.featured?'Featured':'Biasa'}</span></td>
-      <td><span class="badge ${r.aktif?'badge-green':'badge-red'}">${r.aktif?'Aktif':'Nonaktif'}</span></td>
-      <td><div class="td-actions">
-        <button class="btn btn-outline btn-sm" onclick='editRow("testimonial","${r.id}")'>✏️</button>
-        <button class="btn btn-danger btn-sm" onclick='delRow("testimonials","${r.id}",loadTestimonials)'>🗑️</button>
-      </div></td>
-    </tr>`).join('')
-  :'<tr><td colspan="7" class="empty-td">Belum ada testimoni.</td></tr>';
+  $('tbl-test').innerHTML=(data||[]).length?data.map(r=>`<tr>
+    <td><b>${esc((r.emoji||'')+(r.nama||''))}</b></td>
+    <td>${esc(r.peran||'-')}</td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.isi||'')}</td>
+    <td>${'★'.repeat(Math.min(r.bintang||5,5))}</td>
+    <td><span class="bdg ${r.featured?'bdg-r':'bdg-gr'}">${r.featured?'Featured':'Biasa'}</span></td>
+    <td><span class="bdg ${r.aktif?'bdg-g':'bdg-r'}">${r.aktif?'Aktif':'Nonaktif'}</span></td>
+    <td><div class="acts">
+      <button class="btn btn-o btn-sm" onclick="editRow('testimonial','${r.id}')">✏️</button>
+      <button class="btn btn-d btn-sm" onclick="delRow('testimonials','${r.id}',loadTestimonials)">🗑️</button>
+    </div></td>
+  </tr>`).join(''):'<tr><td colspan="7" class="etd">Belum ada testimoni.</td></tr>';
 }
 
-/* ─── BLOG ─── */
+/* ── BLOG ── */
 async function loadBlog(){
   const {data}=await db.from('blog').select('*').order('created_at',{ascending:false});
-  $('tbl-blog').innerHTML=(data||[]).length?data.map(r=>`
-    <tr>
-      <td><b>${esc(r.thumbnail+' '+r.judul)}</b></td>
-      <td><span class="badge badge-blue">${r.kategori}</span></td>
-      <td>${r.penulis}</td><td>${r.views||0}</td>
-      <td><span class="badge ${r.aktif?'badge-green':'badge-gray'}">${r.aktif?'Aktif':'Draft'}</span></td>
-      <td>${fmt(r.created_at)}</td>
-      <td><div class="td-actions">
-        <button class="btn btn-outline btn-sm" onclick='editRow("blog","${r.id}")'>✏️</button>
-        <button class="btn btn-danger btn-sm" onclick='delRow("blog","${r.id}",loadBlog)'>🗑️</button>
-      </div></td>
-    </tr>`).join('')
-  :'<tr><td colspan="7" class="empty-td">Belum ada artikel.</td></tr>';
+  $('tbl-blog').innerHTML=(data||[]).length?data.map(r=>`<tr>
+    <td><b>${esc((r.thumbnail||'')+(r.judul||''))}</b></td>
+    <td><span class="bdg bdg-b">${esc(r.kategori||'-')}</span></td>
+    <td>${esc(r.penulis||'-')}</td><td>${r.views||0}</td>
+    <td><span class="bdg ${r.aktif?'bdg-g':'bdg-gr'}">${r.aktif?'Aktif':'Draft'}</span></td>
+    <td>${fmt(r.created_at)}</td>
+    <td><div class="acts">
+      <button class="btn btn-o btn-sm" onclick="editRow('blog','${r.id}')">✏️</button>
+      <button class="btn btn-d btn-sm" onclick="delRow('blog','${r.id}',loadBlog)">🗑️</button>
+    </div></td>
+  </tr>`).join(''):'<tr><td colspan="7" class="etd">Belum ada artikel.</td></tr>';
 }
 
-/* ─── MEDIA UPLOAD ─── */
-let currentMediaFilter='';
-
-function switchMediaTab(filter,btn){
-  currentMediaFilter=filter==='all'?'':filter;
-  document.querySelectorAll('.media-tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  loadMedia(currentMediaFilter);
-}
-
-async function loadMedia(filter){
-  if(filter===undefined)filter=currentMediaFilter;
-  currentMediaFilter=filter||'';
+/* ── MEDIA ── */
+async function loadMedia(section){
+  if(section===undefined)section=curMediaTab;
+  curMediaTab=section||'';
   let q=db.from('media').select('*').eq('aktif',true).order('created_at',{ascending:false});
-  if(currentMediaFilter)q=q.eq('tipe',currentMediaFilter);
+  if(curMediaTab)q=q.eq('section',curMediaTab);
   const {data,error}=await q;
-  if(error){toast('Gagal memuat media: '+error.message,'err');return;}
+  if(error){toast('Gagal memuat media','err');return;}
   const items=data||[];
   $('media-count').textContent=items.length+' file';
   const grid=$('media-grid');
   if(!items.length){
-    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted)">
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--mu)">
       <div style="font-size:40px;margin-bottom:12px">📂</div>
-      <div style="font-weight:600;margin-bottom:4px">Belum ada media${currentMediaFilter?' bertipe '+currentMediaFilter:''}</div>
-      <div style="font-size:12px">Upload foto atau video di atas</div>
-    </div>`;
-    return;
+      <div style="font-weight:600;margin-bottom:4px">Belum ada media${curMediaTab?' di section '+curMediaTab:''}</div>
+      <div style="font-size:12px">Upload file di atas</div>
+    </div>`;return;
   }
   grid.innerHTML=items.map(m=>`
-    <div class="media-card" id="mc-${m.id}">
-      <div class="media-thumb">
+    <div class="mc" id="mc-${m.id}">
+      <div class="mc-thumb">
         ${m.tipe==='video'
-          ?`<video src="${m.url}" muted playsinline preload="metadata"></video>`
-          :`<img src="${m.url}" alt="${esc(m.nama)}" loading="lazy" onerror="this.parentElement.innerHTML='<span style=font-size:40px>🖼️</span>'">`
+          ?`<video src="${m.url}" muted preload="metadata"></video>`
+          :`<img src="${m.url}" alt="${esc(m.nama||'')}" loading="lazy" onerror="this.closest('.mc').style.display='none'">`
         }
-        <span class="media-type-badge">${m.tipe==='video'?'🎬 Video':'🖼️ Foto'}</span>
+        <span class="mc-badge">${m.tipe==='video'?'🎬 Video':'🖼️ Foto'}</span>
+        ${m.section?`<span class="mc-section-badge">${m.section}</span>`:''}
       </div>
-      <div class="media-info">
-        <div class="media-name" title="${esc(m.nama)}">${esc(m.nama)}</div>
-        <div class="media-size">${m.ukuran?fmtBytes(m.ukuran):'—'}</div>
-        <div class="media-actions">
-          <button class="media-copy-btn" onclick="copyURL('${m.url}')">📋 Salin URL</button>
-          <button class="media-del-btn" onclick="delMedia('${m.id}','${m.storage_path||''}')">🗑️</button>
+      <div class="mc-info">
+        <div class="mc-name" title="${esc(m.nama||'')}">${esc(m.nama||'untitled')}</div>
+        <div class="mc-size">${m.ukuran?fmtBytes(m.ukuran):'—'}</div>
+        <div class="mc-acts">
+          <button class="mc-copy" onclick="copyURL('${m.url}')">📋 Salin URL</button>
+          <button class="mc-del" onclick="delMedia('${m.id}','${esc(m.storage_path||'')}')">🗑️</button>
         </div>
       </div>
     </div>`).join('');
 }
 
+function switchTab(section,btn){
+  curMediaTab=section;
+  document.querySelectorAll('.mtab-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  loadMedia(section);
+}
+
 function filterMedia(q){
-  document.querySelectorAll('.media-card').forEach(c=>{
-    const nm=c.querySelector('.media-name')?.textContent.toLowerCase()||'';
-    c.style.display=nm.includes(q.toLowerCase())?'':'none';
+  document.querySelectorAll('.mc').forEach(c=>{
+    const n=c.querySelector('.mc-name')?.textContent.toLowerCase()||'';
+    c.style.display=n.includes(q.toLowerCase())?'':'none';
   });
 }
 
 async function uploadFiles(files){
-  if(!files||!files.length)return;
-  const bar=$('prog-bar'),fill=$('prog-fill'),st=$('up-status');
+  if(!files?.length)return;
+  const section=$('upload-section')?.value||'galeri';
+  const bar=$('ubar'),fill=$('ufill'),st=$('ustat');
   bar.style.display='block';fill.style.width='0%';
   let done=0,failed=0;
   for(const f of files){
-    if(f.size>50*1024*1024){
-      toast(f.name+' terlalu besar (maks 50MB)','err');failed++;continue;
-    }
-    if(!f.type.startsWith('image/')&&!f.type.startsWith('video/')){
-      toast(f.name+' bukan gambar/video','err');failed++;continue;
-    }
+    if(f.size>50*1024*1024){toast('❌ '+f.name+' terlalu besar (maks 50MB)','err');failed++;continue;}
+    if(!f.type.startsWith('image/')&&!f.type.startsWith('video/')){toast('❌ Format tidak didukung','err');failed++;continue;}
     st.textContent='📤 Mengunggah: '+f.name;
-    const ext=f.name.split('.').pop().toLowerCase();
     const safeName=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-    const path=`uploads/${Date.now()}-${Math.random().toString(36).slice(2,7)}-${safeName}`;
+    const path=`uploads/${section}/${Date.now()}-${Math.random().toString(36).slice(2,6)}-${safeName}`;
     const tipe=f.type.startsWith('video/')?'video':'image';
     const {error:ue}=await db.storage.from('media').upload(path,f,{cacheControl:'3600',upsert:false});
-    if(ue){toast('❌ '+f.name+': '+ue.message,'err');failed++;
-      fill.style.width=`${((done+failed)/files.length)*100}%`;continue;}
+    if(ue){toast('❌ Upload gagal: '+ue.message,'err');failed++;fill.style.width=`${((done+failed)/files.length)*100}%`;continue;}
     const {data:{publicUrl}}=db.storage.from('media').getPublicUrl(path);
-    const {error:ie}=await db.from('media').insert([{
-      nama:f.name,tipe,url:publicUrl,storage_path:path,ukuran:f.size
-    }]);
-    if(ie){toast('❌ DB error: '+ie.message,'err');failed++;}
-    else done++;
+    const {error:ie}=await db.from('media').insert([{nama:f.name,tipe,url:publicUrl,storage_path:path,ukuran:f.size,section}]);
+    if(!ie)done++;
     fill.style.width=`${((done+failed)/files.length)*100}%`;
   }
-  setTimeout(()=>{bar.style.display='none';fill.style.width='0%';},800);
-  st.textContent=done>0?`✅ ${done} file berhasil diupload${failed>0?`, ${failed} gagal`:''}!`
-    :`❌ Semua file gagal diupload.`;
-  if(done>0){toast(`✅ ${done} file diupload!`,'ok');loadMedia();}
+  st.textContent=done>0?`✅ ${done} file berhasil diupload ke section "${$('upload-section')?.value}"!${failed?' ('+failed+' gagal)':''}`:`❌ Upload gagal.`;
+  if(done>0){toast(`✅ ${done} file diupload!`,'ok');loadMedia(curMediaTab);}
+  setTimeout(()=>{bar.style.display='none';fill.style.width='0%';},2500);
 }
 
 async function delMedia(id,path){
-  if(!confirm('Hapus file ini? URL yang sudah digunakan akan rusak.'))return;
-  if(path){await db.storage.from('media').remove([path]);}
+  if(!confirm('Hapus file ini?'))return;
+  if(path)await db.storage.from('media').remove([path]);
   await db.from('media').update({aktif:false}).eq('id',id);
-  const card=document.getElementById('mc-'+id);
+  const card=$('mc-'+id);
   if(card){card.style.opacity='0';card.style.transform='scale(.9)';setTimeout(()=>card.remove(),200);}
-  toast('File dihapus','ok');
-  const count=document.querySelectorAll('.media-card').length;
-  $('media-count').textContent=count+' file';
+  toast('Dihapus ✓','ok');
+  const cnt=document.querySelectorAll('.mc').length;
+  $('media-count').textContent=cnt+' file';
 }
 
 function copyURL(url){
-  navigator.clipboard.writeText(url).then(()=>toast('✅ URL disalin! Tempel di kolom thumbnail.','ok'))
-  .catch(()=>{
-    const ta=document.createElement('textarea');
-    ta.value=url;document.body.appendChild(ta);ta.select();
-    document.execCommand('copy');document.body.removeChild(ta);
-    toast('✅ URL disalin!','ok');
-  });
+  navigator.clipboard.writeText(url)
+    .then(()=>toast('✅ URL disalin! Tempel di kolom Thumbnail URL.','ok'))
+    .catch(()=>{
+      const ta=document.createElement('textarea');ta.value=url;
+      document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+      toast('✅ URL disalin!','ok');
+    });
 }
 
-function fmtBytes(b){
-  if(!b)return'—';
-  return b>1048576?(b/1048576).toFixed(1)+' MB':b>1024?(b/1024).toFixed(0)+' KB':b+' B';
-}
-
-/* ─── PENDAFTAR ─── */
+/* ── PENDAFTAR ── */
 async function loadPendaftar(){
   const {data}=await db.from('pendaftar').select('*').order('created_at',{ascending:false});
   allPend=data||[];
-  $('tbl-pendaftar').innerHTML=allPend.length?allPend.map(r=>`
-    <tr>
-      <td><b>${esc(r.nama)}</b></td><td>${esc(r.email)}</td><td>${r.whatsapp}</td>
-      <td>${r.jenis_usaha||'-'}</td><td>${r.kota||'-'}</td><td>${fmt(r.created_at)}</td>
-    </tr>`).join('')
-  :'<tr><td colspan="6" class="empty-td">Belum ada pendaftar.</td></tr>';
+  $('tbl-pend').innerHTML=allPend.length?allPend.map(r=>`<tr>
+    <td><b>${esc(r.nama)}</b></td><td>${esc(r.email)}</td><td>${r.whatsapp}</td>
+    <td>${esc(r.jenis_usaha||'-')}</td><td>${esc(r.kota||'-')}</td><td>${fmt(r.created_at)}</td>
+  </tr>`).join(''):'<tr><td colspan="6" class="etd">Belum ada pendaftar.</td></tr>';
 }
 
 function exportPend(){
   if(!allPend.length){toast('Tidak ada data','err');return;}
-  const rows=allPend.map(r=>[r.nama,r.email,r.whatsapp,r.jenis_usaha||'',r.kota||'',fmt(r.created_at)]);
-  dlCSV([['Nama','Email','WhatsApp','Jenis Usaha','Kota','Tanggal'],...rows],'pendaftar');
+  dlCSV([['Nama','Email','WhatsApp','Jenis Usaha','Kota','Tanggal'],
+    ...allPend.map(r=>[r.nama,r.email,r.whatsapp,r.jenis_usaha||'',r.kota||'',fmt(r.created_at)])],'pendaftar');
 }
 
-function exportCSV(data,name,fields){
-  if(!data?.length){toast('Tidak ada data','err');return;}
-  const rows=data.map(r=>fields.map(f=>{
-    const v=r[f]||'';
-    return f==='program_harga'?(v>0?v:'GRATIS'):f.includes('_at')?fmt(v):v;
-  }));
-  dlCSV([fields,...rows],name);
-}
-
-function dlCSV(rows,name){
-  const csv=rows.map(r=>r.map(c=>`"${(c||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
-  a.download=`${name}-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-  toast('CSV didownload ✓','ok');
-}
-
-/* ─── SETTINGS ─── */
+/* ── SETTINGS ── */
 async function loadSettings(){
   const {data}=await db.from('site_settings').select('*');
   if(!data)return;
   const s=Object.fromEntries(data.map(r=>[r.key,r.value]));
-  const map={stat_member:'s-member',stat_program:'s-program',stat_mentor:'s-mentor',stat_umkm:'s-umkm',
-    hero_desc:'s-desc',whatsapp_admin:'s-wa',bank_name:'s-bank',bank_no:'s-bankno',
-    bank_atas_nama:'s-banka',email_admin:'s-email'};
+  const map={stat_member:'s-member',stat_program:'s-program',stat_mentor:'s-mentor',stat_umkm:'s-umkm',hero_desc:'s-desc',whatsapp_admin:'s-wa',bank_name:'s-bank',bank_no:'s-bankno',bank_atas_nama:'s-banka',email_admin:'s-email'};
   Object.entries(map).forEach(([k,id])=>{if(s[k]&&$(id))$(id).value=s[k];});
 }
 
 async function saveSettings(){
-  const map={stat_member:'s-member',stat_program:'s-program',stat_mentor:'s-mentor',stat_umkm:'s-umkm',
-    hero_desc:'s-desc',whatsapp_admin:'s-wa',bank_name:'s-bank',bank_no:'s-bankno',
-    bank_atas_nama:'s-banka',email_admin:'s-email'};
+  const map={stat_member:'s-member',stat_program:'s-program',stat_mentor:'s-mentor',stat_umkm:'s-umkm',hero_desc:'s-desc',whatsapp_admin:'s-wa',bank_name:'s-bank',bank_no:'s-bankno',bank_atas_nama:'s-banka',email_admin:'s-email'};
   for(const [key,id] of Object.entries(map)){
     if(!$(id))continue;
     await db.from('site_settings').upsert({key,value:$(id).value,updated_at:new Date().toISOString()});
@@ -1343,169 +908,160 @@ async function saveSettings(){
   toast('Pengaturan disimpan ✓','ok');
 }
 
-/* ─── FORMS ─── */
-async function editRow(type,id){
-  const tbl={program:'programs',mentor:'mentors',alumni:'alumni',testimonial:'testimonials',blog:'blog'}[type];
-  const {data}=await db.from(tbl).select('*').eq('id',id).single();
-  openForm(type,data||{});
-}
-
-async function delRow(tbl,id,reload){
-  if(!confirm('Hapus data ini? Tidak bisa dibatalkan.'))return;
-  const {error}=await db.from(tbl).delete().eq('id',id);
-  if(error){toast('Gagal hapus','err');return;}
-  toast('Dihapus ✓','ok');reload();loadDashboard();
-}
-
-function openForm(type,d){
+/* ── FORMS ── */
+function openF(type,d){
   const isEdit=!!d.id;
-  $('modal-box').classList.remove('modal-lg');
+  $('mbox').classList.remove('lg');
   let title='',html='';
 
   if(type==='program'){
     title=isEdit?'Edit Program':'Tambah Program';
     html=`
-      <div class="fi"><label>Judul Program *</label><input id="f-judul" value="${esc(d.judul||'')}"></div>
+      <div class="fi"><label>Judul Program *</label><input id="f-judul" value="${esc(d.judul||'')}" placeholder="Judul program"></div>
       <div class="fi"><label>Deskripsi Singkat</label><textarea id="f-desc" rows="2">${esc(d.deskripsi||'')}</textarea></div>
       <div class="fi"><label>Deskripsi Lengkap</label><textarea id="f-descl" rows="4">${esc(d.deskripsi_panjang||'')}</textarea></div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Kategori</label><input id="f-kat" value="${esc(d.kategori||'')}"></div>
-        <div class="fi"><label>Tipe</label>
-          <select id="f-tipe"><option ${d.tipe==='Gratis'?'selected':''}>Gratis</option><option ${d.tipe==='Premium'?'selected':''}>Premium</option></select>
-        </div>
+        <div class="fi"><label>Tipe</label><select id="f-tipe"><option ${d.tipe==='Gratis'?'selected':''}>Gratis</option><option ${d.tipe==='Premium'?'selected':''}>Premium</option></select></div>
       </div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Harga (0 = gratis)</label><input type="number" id="f-harga" value="${d.harga||0}"></div>
         <div class="fi"><label>Emoji</label><input id="f-emoji" value="${esc(d.emoji||'📚')}"></div>
       </div>
-      <div class="fi-row">
+      <div class="fi"><label>URL Thumbnail (dari Media Library)</label><input id="f-thumburl" value="${esc(d.thumbnail_url||'')}" placeholder="https://... (salin URL dari Media Library)"></div>
+      <div class="fi-2">
         <div class="fi"><label>Durasi</label><input id="f-dur" value="${esc(d.durasi||'Self-paced')}"></div>
-        <div class="fi"><label>Level</label>
-          <select id="f-level">
-            <option ${d.level==='Pemula'?'selected':''}>Pemula</option>
-            <option ${d.level==='Menengah'?'selected':''}>Menengah</option>
-            <option ${d.level==='Lanjutan'?'selected':''}>Lanjutan</option>
-          </select>
-        </div>
+        <div class="fi"><label>Level</label><select id="f-level"><option ${d.level==='Pemula'?'selected':''}>Pemula</option><option ${d.level==='Menengah'?'selected':''}>Menengah</option><option ${d.level==='Lanjutan'?'selected':''}>Lanjutan</option></select></div>
       </div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Nama Mentor</label><input id="f-mentor" value="${esc(d.mentor_nama||'')}"></div>
         <div class="fi"><label>Inisial Mentor</label><input id="f-inisial" value="${esc(d.mentor_inisial||'M')}" maxlength="2"></div>
       </div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Jumlah Peserta</label><input type="number" id="f-peserta" value="${d.peserta||0}"></div>
         <div class="fi"><label>Urutan Tampil</label><input type="number" id="f-urutan" value="${d.urutan||0}"></div>
       </div>
-      <div class="fi-row">
-        <div class="fi"><label>Warna Kategori (hex)</label><input id="f-warna" value="${esc(d.warna_cat||'#3B82F6')}"></div>
-        <div class="fi"><label>Warna BG (gradient/hex)</label><input id="f-warnabg" value="${esc(d.warna_bg||'linear-gradient(135deg,#EEF3FD,#DBEAFE)')}"></div>
+      <div class="fi-2">
+        <div class="fi"><label>Warna Kategori</label><input id="f-warna" value="${esc(d.warna_cat||'#3B82F6')}"></div>
+        <div class="fi"><label>Warna BG</label><input id="f-warnabg" value="${esc(d.warna_bg||'linear-gradient(135deg,#EEF3FD,#DBEAFE)')}"></div>
       </div>
-      <label class="toggle"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="toggle-track"><div class="toggle-thumb"></div></div><span class="toggle-label">Program Aktif & Tampil di Website</span></label>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal()">Batal</button>
-        <button class="btn btn-red" onclick="saveProg('${d.id||''}')">💾 Simpan</button>
-      </div>`;
+      <label class="tgl" style="margin-bottom:8px"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="tgl-tr"><div class="tgl-th"></div></div><span class="tgl-lbl">Program Aktif & Tampil</span></label>
+      <div class="mft"><button class="btn btn-o" onclick="closeModal()">Batal</button><button class="btn btn-r" id="save-btn">💾 Simpan</button></div>`;
   }
   else if(type==='mentor'){
     title=isEdit?'Edit Mentor':'Tambah Mentor';
     html=`
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Nama *</label><input id="f-nama" value="${esc(d.nama||'')}"></div>
         <div class="fi"><label>Emoji Avatar</label><input id="f-emoji" value="${esc(d.emoji||'👤')}"></div>
       </div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Peran / Jabatan</label><input id="f-peran" value="${esc(d.peran||'')}"></div>
         <div class="fi"><label>Spesialisasi</label><input id="f-spesialis" value="${esc(d.spesialisasi||'')}"></div>
       </div>
-      <div class="fi-row">
+      <div class="fi"><label>URL Foto (dari Media Library)</label><input id="f-fotourl" value="${esc(d.foto_url||'')}" placeholder="https://... (salin URL dari Media Library)"></div>
+      <div class="fi-2">
         <div class="fi"><label>Rating</label><input id="f-rating" value="${esc(d.rating||'4.9')}"></div>
         <div class="fi"><label>Jumlah Peserta</label><input type="number" id="f-peserta" value="${d.peserta||0}"></div>
       </div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Urutan Tampil</label><input type="number" id="f-urutan" value="${d.urutan||0}"></div>
-        <div class="fi"><label>Warna Avatar (gradient)</label><input id="f-warna" value="${esc(d.warna_avatar||'linear-gradient(135deg,#60A5FA,#2563EB)')}"></div>
+        <div class="fi"><label>Warna Avatar</label><input id="f-warna" value="${esc(d.warna_avatar||'linear-gradient(135deg,#60A5FA,#2563EB)')}"></div>
       </div>
-      <label class="toggle"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="toggle-track"><div class="toggle-thumb"></div></div><span class="toggle-label">Mentor Aktif</span></label>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal()">Batal</button>
-        <button class="btn btn-red" onclick="saveMentor('${d.id||''}')">💾 Simpan</button>
-      </div>`;
+      <label class="tgl"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="tgl-tr"><div class="tgl-th"></div></div><span class="tgl-lbl">Mentor Aktif</span></label>
+      <div class="mft"><button class="btn btn-o" onclick="closeModal()">Batal</button><button class="btn btn-r" id="save-btn">💾 Simpan</button></div>`;
   }
   else if(type==='alumni'){
     title=isEdit?'Edit Alumni':'Tambah Alumni';
     html=`
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Nama *</label><input id="f-nama" value="${esc(d.nama||'')}"></div>
         <div class="fi"><label>Emoji Foto</label><input id="f-emoji" value="${esc(d.foto_emoji||'🧑‍💼')}"></div>
       </div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Nama Usaha</label><input id="f-usaha" value="${esc(d.usaha||'')}"></div>
         <div class="fi"><label>Kota</label><input id="f-kota" value="${esc(d.kota||'')}"></div>
       </div>
+      <div class="fi"><label>URL Foto Cover (dari Media Library)</label><input id="f-fotourl" value="${esc(d.foto_url||'')}" placeholder="https://... (salin URL dari Media Library)"></div>
       <div class="fi"><label>Pencapaian</label><textarea id="f-capai" rows="2">${esc(d.pencapaian||'')}</textarea></div>
       <div class="fi"><label>Program yang Diikuti</label><input id="f-prog" value="${esc(d.program_diikuti||'')}"></div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Omzet Sebelum</label><input id="f-sblm" value="${esc(d.omzet_sebelum||'')}" placeholder="Rp 5 Juta/bln"></div>
         <div class="fi"><label>Omzet Sesudah</label><input id="f-ssdh" value="${esc(d.omzet_sesudah||'')}" placeholder="Rp 20 Juta/bln"></div>
       </div>
-      <label class="toggle"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="toggle-track"><div class="toggle-thumb"></div></div><span class="toggle-label">Aktif & Tampil</span></label>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal()">Batal</button>
-        <button class="btn btn-red" onclick="saveAlumni('${d.id||''}')">💾 Simpan</button>
-      </div>`;
+      <label class="tgl"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="tgl-tr"><div class="tgl-th"></div></div><span class="tgl-lbl">Aktif & Tampil</span></label>
+      <div class="mft"><button class="btn btn-o" onclick="closeModal()">Batal</button><button class="btn btn-r" id="save-btn">💾 Simpan</button></div>`;
   }
   else if(type==='testimonial'){
     title=isEdit?'Edit Testimoni':'Tambah Testimoni';
     html=`
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Nama *</label><input id="f-nama" value="${esc(d.nama||'')}"></div>
         <div class="fi"><label>Emoji</label><input id="f-emoji" value="${esc(d.emoji||'😊')}"></div>
       </div>
       <div class="fi"><label>Peran / Asal</label><input id="f-peran" value="${esc(d.peran||'')}" placeholder="Pemilik Warung, Jakarta"></div>
+      <div class="fi"><label>URL Foto (dari Media Library)</label><input id="f-fotourl" value="${esc(d.foto_url||'')}" placeholder="https://..."></div>
       <div class="fi"><label>Isi Testimoni *</label><textarea id="f-isi" rows="3">${esc(d.isi||'')}</textarea></div>
-      <div class="fi"><label>Bintang (1-5)</label><input type="number" id="f-bintang" min="1" max="5" value="${d.bintang||5}" style="max-width:120px"></div>
+      <div class="fi"><label>Bintang (1-5)</label><input type="number" id="f-bintang" min="1" max="5" value="${d.bintang||5}" style="max-width:100px"></div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:8px">
-        <label class="toggle"><input type="checkbox" id="f-feat" ${d.featured?'checked':''}><div class="toggle-track"><div class="toggle-thumb"></div></div><span class="toggle-label">Featured (background merah)</span></label>
-        <label class="toggle"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="toggle-track"><div class="toggle-thumb"></div></div><span class="toggle-label">Aktif</span></label>
+        <label class="tgl"><input type="checkbox" id="f-feat" ${d.featured?'checked':''}><div class="tgl-tr"><div class="tgl-th"></div></div><span class="tgl-lbl">Featured (background merah)</span></label>
+        <label class="tgl"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="tgl-tr"><div class="tgl-th"></div></div><span class="tgl-lbl">Aktif</span></label>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal()">Batal</button>
-        <button class="btn btn-red" onclick="saveTestimonial('${d.id||''}')">💾 Simpan</button>
-      </div>`;
+      <div class="mft"><button class="btn btn-o" onclick="closeModal()">Batal</button><button class="btn btn-r" id="save-btn">💾 Simpan</button></div>`;
   }
   else if(type==='blog'){
     title=isEdit?'Edit Artikel':'Tulis Artikel Baru';
-    $('modal-box').classList.add('modal-lg');
+    $('mbox').classList.add('lg');
     html=`
-      <div class="fi"><label>Judul Artikel *</label><input id="f-judul" value="${esc(d.judul||'')}" placeholder="Judul yang menarik perhatian"></div>
-      <div class="fi-row">
+      <div class="fi"><label>Judul Artikel *</label><input id="f-judul" value="${esc(d.judul||'')}" placeholder="Judul yang menarik"></div>
+      <div class="fi-2">
         <div class="fi"><label>Kategori</label><input id="f-kat" value="${esc(d.kategori||'Tips UMKM')}"></div>
         <div class="fi"><label>Penulis</label><input id="f-penulis" value="${esc(d.penulis||'Tim UMKM Penggerak')}"></div>
       </div>
-      <div class="fi-row">
+      <div class="fi-2">
         <div class="fi"><label>Emoji Thumbnail</label><input id="f-emoji" value="${esc(d.thumbnail||'📰')}"></div>
-        <div class="fi"><label>URL Gambar Cover (opsional)</label><input id="f-thumburl" value="${esc(d.thumbnail_url||'')}" placeholder="https://..."></div>
+        <div class="fi"><label>URL Gambar Cover (dari Media Library)</label><input id="f-thumburl" value="${esc(d.thumbnail_url||'')}" placeholder="https://..."></div>
       </div>
-      <div class="fi"><label>Ringkasan (tampil di card)</label><textarea id="f-ring" rows="2">${esc(d.ringkasan||'')}</textarea></div>
+      <div class="fi"><label>Ringkasan (tampil di card website)</label><textarea id="f-ring" rows="2">${esc(d.ringkasan||'')}</textarea></div>
       <div class="fi"><label>Konten Artikel (HTML diperbolehkan)</label><textarea id="f-konten" rows="12" style="font-family:monospace;font-size:12px">${esc(d.konten||'')}</textarea></div>
-      <label class="toggle"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="toggle-track"><div class="toggle-thumb"></div></div><span class="toggle-label">Publikasikan Artikel</span></label>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeModal()">Batal</button>
-        <button class="btn btn-red" onclick="saveBlog('${d.id||''}')">💾 Simpan & Publikasi</button>
-      </div>`;
+      <label class="tgl"><input type="checkbox" id="f-aktif" ${d.aktif!==false?'checked':''}><div class="tgl-tr"><div class="tgl-th"></div></div><span class="tgl-lbl">Publikasikan Artikel</span></label>
+      <div class="mft"><button class="btn btn-o" onclick="closeModal()">Batal</button><button class="btn btn-r" id="save-btn">💾 Simpan & Publikasi</button></div>`;
   }
 
-  $('modal-title').textContent=title;
-  $('modal-body').innerHTML=html;
+  $('m-title').textContent=title;
+  $('m-body').innerHTML=html;
+
+  // Attach save button
+  $('save-btn')?.addEventListener('click',()=>{
+    if(type==='program')saveProg(d.id||'');
+    else if(type==='mentor')saveMentor(d.id||'');
+    else if(type==='alumni')saveAlumni(d.id||'');
+    else if(type==='testimonial')saveTest(d.id||'');
+    else if(type==='blog')saveBlog(d.id||'');
+  });
   openModal();
 }
 
-/* ─── SAVE FUNCTIONS ─── */
+async function editRow(type,id){
+  const tbl={program:'programs',mentor:'mentors',alumni:'alumni',testimonial:'testimonials',blog:'blog'}[type];
+  const {data}=await db.from(tbl).select('*').eq('id',id).single();
+  openF(type,data||{});
+}
+
+async function delRow(tbl,id,reload){
+  if(!confirm('Hapus data ini? Tidak bisa dibatalkan.'))return;
+  const {error}=await db.from(tbl).delete().eq('id',id);
+  if(error){toast('Gagal hapus: '+error.message,'err');return;}
+  toast('Dihapus ✓','ok');reload();loadDash();
+}
+
+/* ── SAVE FUNCTIONS ── */
 async function saveProg(id){
   const p={
     judul:val('f-judul'),deskripsi:val('f-desc'),deskripsi_panjang:val('f-descl'),
     kategori:val('f-kat'),tipe:val('f-tipe'),harga:num('f-harga'),
-    emoji:val('f-emoji'),durasi:val('f-dur'),level:val('f-level'),
+    emoji:val('f-emoji'),thumbnail_url:val('f-thumburl'),
+    durasi:val('f-dur'),level:val('f-level'),
     mentor_nama:val('f-mentor'),mentor_inisial:val('f-inisial'),
     peserta:num('f-peserta'),urutan:num('f-urutan'),
     warna_cat:val('f-warna'),warna_bg:val('f-warnabg'),
@@ -1514,13 +1070,13 @@ async function saveProg(id){
   if(!p.judul){toast('Judul wajib diisi!','err');return;}
   const {error}=id?await db.from('programs').update(p).eq('id',id):await db.from('programs').insert([p]);
   if(error){toast('Gagal: '+error.message,'err');return;}
-  toast('Program disimpan ✓','ok');closeModal();loadPrograms();loadDashboard();
+  toast('Program disimpan ✓','ok');closeModal();loadPrograms();loadDash();
 }
 
 async function saveMentor(id){
   const p={
-    nama:val('f-nama'),emoji:val('f-emoji'),peran:val('f-peran'),
-    spesialisasi:val('f-spesialis'),rating:val('f-rating'),
+    nama:val('f-nama'),emoji:val('f-emoji'),foto_url:val('f-fotourl'),
+    peran:val('f-peran'),spesialisasi:val('f-spesialis'),rating:val('f-rating'),
     peserta:num('f-peserta'),urutan:num('f-urutan'),
     warna_avatar:val('f-warna'),aktif:chk('f-aktif')
   };
@@ -1532,9 +1088,10 @@ async function saveMentor(id){
 
 async function saveAlumni(id){
   const p={
-    nama:val('f-nama'),foto_emoji:val('f-emoji'),usaha:val('f-usaha'),kota:val('f-kota'),
-    pencapaian:val('f-capai'),program_diikuti:val('f-prog'),
-    omzet_sebelum:val('f-sblm'),omzet_sesudah:val('f-ssdh'),aktif:chk('f-aktif')
+    nama:val('f-nama'),foto_emoji:val('f-emoji'),foto_url:val('f-fotourl'),
+    usaha:val('f-usaha'),kota:val('f-kota'),pencapaian:val('f-capai'),
+    program_diikuti:val('f-prog'),omzet_sebelum:val('f-sblm'),omzet_sesudah:val('f-ssdh'),
+    aktif:chk('f-aktif')
   };
   if(!p.nama){toast('Nama wajib diisi!','err');return;}
   const {error}=id?await db.from('alumni').update(p).eq('id',id):await db.from('alumni').insert([p]);
@@ -1542,9 +1099,10 @@ async function saveAlumni(id){
   toast('Alumni disimpan ✓','ok');closeModal();loadAlumni();
 }
 
-async function saveTestimonial(id){
+async function saveTest(id){
   const p={
-    nama:val('f-nama'),emoji:val('f-emoji'),peran:val('f-peran'),isi:val('f-isi'),
+    nama:val('f-nama'),emoji:val('f-emoji'),foto_url:val('f-fotourl'),
+    peran:val('f-peran'),isi:val('f-isi'),
     bintang:num('f-bintang')||5,featured:$('f-feat')?.checked||false,aktif:chk('f-aktif')
   };
   if(!p.nama||!p.isi){toast('Nama & isi wajib diisi!','err');return;}
@@ -1558,54 +1116,50 @@ async function saveBlog(id){
   if(!judul){toast('Judul wajib diisi!','err');return;}
   let slug=id?(await db.from('blog').select('slug').eq('id',id).single()).data?.slug
     :judul.toLowerCase().replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,'-').slice(0,60)+'-'+Date.now().toString(36);
-  const p={
-    judul,slug,kategori:val('f-kat'),penulis:val('f-penulis'),
-    thumbnail:val('f-emoji'),thumbnail_url:val('f-thumburl'),
-    ringkasan:val('f-ring'),konten:val('f-konten'),aktif:chk('f-aktif')
-  };
+  const p={judul,slug,kategori:val('f-kat'),penulis:val('f-penulis'),thumbnail:val('f-emoji'),thumbnail_url:val('f-thumburl'),ringkasan:val('f-ring'),konten:val('f-konten'),aktif:chk('f-aktif')};
   const {error}=id?await db.from('blog').update(p).eq('id',id):await db.from('blog').insert([p]);
   if(error){toast('Gagal: '+error.message,'err');return;}
   toast('Artikel disimpan ✓','ok');closeModal();loadBlog();
 }
 
-/* ─── MODAL ─── */
-function openModal(){$('modal').classList.add('open');document.body.style.overflow='hidden'}
-function closeModal(){$('modal').classList.remove('open');document.body.style.overflow=''}
+/* ── MODAL ── */
+function openModal(){$('modal').classList.add('on');document.body.style.overflow='hidden';}
+function closeModal(){$('modal').classList.remove('on');document.body.style.overflow='';}
 
-/* ─── FILTER TABLE ─── */
+/* ── FILTER ── */
 function filterTbl(id,q){
-  document.querySelectorAll(`#${id} tr`).forEach(r=>{
+  document.querySelectorAll('#'+id+' tr').forEach(r=>{
     if(r.querySelector('th'))return;
     r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
   });
 }
 
-/* ─── DRAG DROP & FILE INPUT INIT ─── */
+/* ── CSV ── */
+function dlCSV(rows,name){
+  const csv=rows.map(r=>r.map(c=>`"${(c||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download=`${name}-${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  toast('CSV didownload ✓','ok');
+}
+
+/* ── DRAG DROP INIT ── */
 document.addEventListener('DOMContentLoaded',()=>{
-  const dz=$('drop-zone');
-  const fi=$('file-input');
+  const dz=$('drop-zone'),fi=$('file-input');
   if(!dz||!fi)return;
-
-  // Click to open file picker
   dz.addEventListener('click',()=>fi.click());
-
-  // File selected via picker
   fi.addEventListener('change',()=>{if(fi.files?.length)uploadFiles(fi.files);});
-
-  // Drag events
   dz.addEventListener('dragenter',e=>{e.preventDefault();dz.classList.add('drag');});
   dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
-  dz.addEventListener('dragleave',e=>{
-    if(!dz.contains(e.relatedTarget))dz.classList.remove('drag');
-  });
+  dz.addEventListener('dragleave',e=>{if(!dz.contains(e.relatedTarget))dz.classList.remove('drag');});
   dz.addEventListener('drop',e=>{
     e.preventDefault();dz.classList.remove('drag');
     if(e.dataTransfer?.files?.length)uploadFiles(e.dataTransfer.files);
   });
 });
 
-/* ─── START ─── */
-checkSession();
+/* ── START ── */
+checkAuth();
 </script>
 </body>
 </html>
